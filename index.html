@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Portfolio - Low Poly Art</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- ÜMUMİ DİZAYN (CSS) --- */
+        :root {
+            --bg-color: #0a0a0a;       /* Çox tünd qara */
+            --card-bg: #161616;        /* Kart üçün tünd boz */
+            --accent-color: #ffffff;   /* Ağ (vurğu üçün) */
+            --text-grey: #a0a0a0;      /* Boz mətn */
+            --border-color: #333333;   /* İncə çərçivə */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            font-family: 'Rajdhani', sans-serif; /* Modern, texnoloji font */
+            overflow-x: hidden;
+        }
+
+        /* Başlıq Hissəsi */
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-grey);
+            font-size: 1.1rem;
+        }
+
+        /* Portfolio Konteyneri */
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr; /* Alt-alta düzülüş */
+            gap: 60px;
+        }
+
+        /* MODEL KARTI (Hər maşın üçün bir blok) */
+        .model-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px; /* Keskin künclər üçün az radius */
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Modern xətlər - Dekorativ */
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--border-color);
+            transition: background-color 0.3s;
+        }
+
+        .model-card:hover::before {
+            background-color: var(--accent-color); /* Hover olanda ağ xətt yanır */
+        }
+
+        .model-info {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .model-info h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .model-info span {
+            background: #222;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            color: var(--text-grey);
+            border: 1px solid #444;
+        }
+
+        /* --- SÜRÜŞDÜRÜLƏN QALEREYA (SCROLL) --- */
+        .gallery-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Şəkillərin hündürlüyü */
+            background-color: #000;
+        }
+
+        .gallery-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory; /* Avtomatik mərkəzləmə */
+            height: 100%;
+            scrollbar-width: thin; /* Firefox üçün incə scrollbar */
+            scrollbar-color: #444 #111;
+        }
+
+        /* Scrollbar dizaynı (Chrome/Edge/Safari) */
+        .gallery-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .gallery-scroll::-webkit-scrollbar-track {
+            background: #111;
+        }
+        .gallery-scroll::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        .gallery-scroll::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Şəkillər */
+        .gallery-scroll img {
+            height: 100%;
+            width: auto; /* Proporsiyanı qoruyur */
+            min-width: 60%; /* Ekranda nə qədər yer tutsun */
+            object-fit: cover;
+            scroll-snap-align: center; /* Şəkli mərkəzdə saxlayır */
+            border-right: 2px solid var(--bg-color);
+            transition: opacity 0.3s;
+        }
+
+        /* Mobil üçün uyğunlaşdırma */
+        @media (max-width: 768px) {
+            .gallery-wrapper {
+                height: 250px;
+            }
+            .gallery-scroll img {
+                min-width: 85%;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Şəkil üzərinə gələndə ipucu */
+        .scroll-hint {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            border: 1px solid #555;
+            opacity: 0.8;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mənim Portfoliom</h1>
+        <p>3D Artist / Low Poly / Blender</p>
+    </header>
+
+    <div class="portfolio-container">
+
+        <article class="model-card">
+            <div class="model-info">
+                <h2>Bugatti Divo</h2>
+                <span>Low Poly</span>
+            </div>
+            
+            <div class="gallery-wrapper">
+                <div class="gallery-scroll">
+                    <img src="bugatti_front.jpg" alt="Bugatti Front View">
+                    
+                    <img src="bugatti_back.jpg" alt="Bugatti Back View">
+                    
+                    <img src="bugatti_side.jpg" alt="Bugatti Side View">
+                    
+                    <img src="bugatti_top.jpg" alt="Bugatti Perspective">
+                </div>
+                <div class="scroll-hint">Yana çək &rarr;</div>
+            </div>
+        </article>
+        </div>
+
+    <script>
+        const scrollContainers = document.querySelectorAll(".gallery-scroll");
+
+        scrollContainers.forEach((el) => {
+            el.addEventListener("wheel", (evt) => {
+                evt.preventDefault();
+                el.scrollLeft += evt.deltaY;
+            });
+        });
+    </script>
+
+</body>
+</html>
