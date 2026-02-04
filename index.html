@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yunis Rehmanzada | 3D Portfolio</title>
+    <title>Yunis Rehmanzada | 3D Artist Portfolio</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
@@ -11,203 +12,334 @@
             --bg-dark: #0f0c29;
             --gradient-main: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             --accent-purple: #8e2de2;
+            --accent-blue: #4a00e0;
             --glass-bg: rgba(255, 255, 255, 0.05);
             --border-glass: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
+            --text-dim: #b0b0b0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            background: var(--bg-dark);
             background: var(--gradient-main);
             background-attachment: fixed;
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Dil Düymələri */
+        /* --- LANGUAGE SWITCHER --- */
         .lang-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 2000;
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            margin-right: 20px;
         }
 
         .lang-btn {
             background: var(--glass-bg);
             border: 1px solid var(--border-glass);
             color: white;
-            padding: 6px 12px;
+            padding: 5px 10px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            font-weight: bold;
-            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
             transition: 0.3s;
+            border-radius: 5px;
         }
 
-        .lang-btn:hover { background: var(--accent-purple); border-color: white; }
+        .lang-btn:hover {
+            background: var(--accent-purple);
+        }
 
+        /* --- NAVIGATION --- */
         nav {
-            padding: 20px 8%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 8%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid var(--border-glass);
         }
 
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li { margin-left: 30px; }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover { color: var(--accent-purple); }
+
+        /* --- HERO SECTION --- */
         .hero {
-            height: 60vh;
+            height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 0 20px;
         }
 
-        .hero h1 { font-size: 4rem; letter-spacing: 5px; }
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
 
-        .section { padding: 40px 10%; }
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            max-width: 600px;
+        }
 
-        /* SCROLL QALEREYASI - ƏSAS HİSSƏ */
+        /* --- ABOUT ME --- */
+        .section {
+            padding: 100px 10%;
+        }
+
+        .about-container {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(15px);
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+        }
+
+        /* --- PORTFOLIO GALLERY --- */
         .model-card {
             background: var(--glass-bg);
             border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            margin-bottom: 50px;
-            overflow: hidden; /* Kenarlardan çıxan şəkilləri gizlət */
+            margin-bottom: 80px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .model-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-glass);
         }
 
         .gallery-wrapper {
-            display: flex; /* Şəkilləri yan-yana düzür */
-            overflow-x: auto; /* Yana scroll-u aktiv edir */
-            overflow-y: hidden;
-            scroll-snap-type: x mandatory; /* Şəkilləri mərkəzə "yapışdırır" */
+            position: relative;
             height: 550px;
-            scrollbar-width: thin; /* Scroll bar-ı incəlt */
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
             scrollbar-color: var(--accent-purple) transparent;
         }
 
-        /* Chrome və Safari üçün scrollbar-ı gizlətmək olar (istəyə bağlı) */
-        .gallery-wrapper::-webkit-scrollbar { height: 6px; }
-        .gallery-wrapper::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 10px; }
-
         .gallery-wrapper img {
-            flex-shrink: 0; /* BU ÇOX VACİBDİR: Şəklin sıxılmasını əngəlləyir */
-            width: 100%; /* Hər şəkil tam ekran enində olur */
+            flex-shrink: 0; /* Şəkillərin sıxılmaması üçün vacibdir */
             height: 100%;
+            min-width: 100%;
             object-fit: cover;
-            scroll-snap-align: start;
-            border-right: 2px solid var(--bg-dark);
+            scroll-snap-align: center;
+            border-right: 1px solid var(--border-glass);
         }
 
+        /* --- CONTACT SECTION --- */
         .contact-box {
             text-align: center;
+            background: linear-gradient(to bottom, var(--glass-bg), transparent);
             padding: 60px;
-            background: var(--glass-bg);
             border-radius: 20px;
             border: 1px solid var(--border-glass);
-            margin-top: 50px;
         }
 
-        .email-link { color: #fff; font-size: 1.8rem; text-decoration: none; border-bottom: 2px solid var(--accent-purple); transition: 0.3s; }
-        .email-link:hover { letter-spacing: 2px; }
+        .email-link {
+            font-size: 2rem;
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 2px solid var(--accent-purple);
+            transition: 0.3s;
+        }
 
+        .email-link:hover {
+            color: var(--accent-purple);
+            letter-spacing: 2px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .about-container { flex-direction: column; text-align: center; }
+            .gallery-wrapper { height: 350px; }
+            nav { flex-direction: column; gap: 15px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="lang-switcher">
-        <button class="lang-btn" onclick="setLanguage('az')">AZ</button>
-        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" onclick="setLanguage('ru')">RU</button>
-        <button class="lang-btn" onclick="setLanguage('tr')">TR</button>
-    </div>
-
     <nav>
-        <div class="logo" style="font-weight: 700; font-size: 1.5rem;">REHMANZADA.3D</div>
+        <div class="logo">REHMANZADA.3D</div>
+        <div style="display: flex; align-items: center;">
+            <div class="lang-switcher">
+                <button class="lang-btn" onclick="changeLang('az')">AZ</button>
+                <button class="lang-btn" onclick="changeLang('en')">EN</button>
+                <button class="lang-btn" onclick="changeLang('ru')">RU</button>
+                <button class="lang-btn" onclick="changeLang('tr')">TR</button>
+            </div>
+            <ul>
+                <li><a href="#home" id="nav-home">Home</a></li>
+                <li><a href="#work" id="nav-projects">Projects</a></li>
+                <li><a href="#about" id="nav-about">About</a></li>
+                <li><a href="#contact" id="nav-contact">Contact</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <section class="hero">
-        <h1 id="hero-title">THE FUTURE OF 3D</h1>
-        <p id="hero-sub">Hard Surface Modeling & Low Poly Environments</p>
+    <section class="hero" id="home">
+        <h1 id="hero-h1">THE FUTURE OF 3D</h1>
+        <p id="hero-p">Hard Surface Modeling & Low Poly Environments</p>
     </section>
 
-    <section class="section">
-        <div class="model-card">
-            <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-                <h2 id="model-name">01. BUGATTI DIVO</h2>
-                <span style="color: var(--accent-purple); font-weight: bold;">BLENDER / LOW POLY</span>
-            </div>
-            
-            <div class="gallery-wrapper">
-                <img src="divo1.jpg" alt="Perspective">
-                <img src="divo2.jpg" alt="Back">
-                <img src="divo3.jpg" alt="Front">
-                <img src="divo4.jpg" alt="Side">
-            </div>
-            <div style="padding: 15px; text-align: right; color: #888; font-size: 0.9rem;">
-                <span id="scroll-text">Scroll sideways to see more</span> &rarr;
+    <section class="section" id="about">
+        <div class="about-container">
+            <div class="about-text">
+                <h2 id="about-h2">About Me</h2>
+                <p id="about-p">I am a 3D Artist specializing in creating detailed hard-surface models and optimized low-poly assets. My workflow focuses on clean topology and futuristic aesthetics, primarily using Blender. I transform concepts into digital reality with a touch of modern design.</p>
             </div>
         </div>
+    </section>
+
+    <section class="section" id="work">
+        <h2 style="margin-bottom: 40px; font-size: 2rem; letter-spacing: 3px;" id="projects-h2">SELECTED WORKS</h2>
+
+        <article class="model-card">
+            <div class="model-header">
+                <h3>01. BUGATTI DIVO</h3>
+                <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
+            </div>
+            <div class="gallery-wrapper">
+                <img src="divo1.jpg" alt="Perspective View">
+                <img src="divo2.jpg" alt="Rear View">
+                <img src="divo3.jpg" alt="Front View">
+                <img src="divo4.jpg" alt="Wireframe/Clay">
+            </div>
+            <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" id="scroll-tip">Scroll horizontally to view perspectives &rarr;</p>
+        </article>
+
     </section>
 
     <section class="section" id="contact">
         <div class="contact-box">
-            <h2 id="contact-title" style="margin-bottom: 20px;">Get In Touch</h2>
+            <h2 style="margin-bottom: 20px;" id="contact-h2">Get In Touch</h2>
+            <p style="margin-bottom: 30px; color: var(--text-dim);" id="contact-p">Open for collaborations and freelance opportunities.</p>
             <a href="mailto:yunisrehmanzada@gmail.com" class="email-link">yunisrehmanzada@gmail.com</a>
         </div>
     </section>
 
+    <footer>
+        <p id="footer-copy">&copy; 2026 Yunis Rehmanzada. All rights reserved.</p>
+    </footer>
+
     <script>
-        // Tərcümə lüğəti
-        const translations = {
+        // 1. SCROLL LOGIC
+        const scrolls = document.querySelectorAll(".gallery-wrapper");
+        scrolls.forEach((el) => {
+            el.addEventListener("wheel", (evt) => {
+                if (evt.deltaY != 0) {
+                    evt.preventDefault();
+                    el.scrollLeft += evt.deltaY;
+                }
+            });
+        });
+
+        // 2. LANGUAGE LOGIC
+        const langData = {
             az: {
-                "hero-title": "3D-NİN GƏLƏCƏYİ",
-                "hero-sub": "Sərt Səth Modelləşdirmə və Low Poly Mühitlər",
-                "contact-title": "Mənimlə Əlaqə",
-                "scroll-text": "Daha çoxu üçün yana sürüşdürün"
+                "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-about": "Haqqımda", "nav-contact": "Əlaqə",
+                "hero-h1": "3D-NİN GƏLƏCƏYİ", "hero-p": "Sərt Səth Modelləşdirmə və Low Poly Mühitlər",
+                "about-h2": "Haqqımda", "about-p": "Mən detallı sərt səth (hard-surface) modelləri və optimallaşdırılmış low-poly aktivlər yaratmaq üzrə ixtisaslaşmış 3D rəssamam. İş axınım təmiz topologiya və futuristik estetikaya yönəlib. Konseptləri müasir dizayn toxunuşu ilə rəqəmsal reallığa çevirirəm.",
+                "projects-h2": "SEÇİLMİŞ İŞLƏR", "scroll-tip": "Perspektivləri görmək üçün yana sürüşdürün →",
+                "contact-h2": "Əlaqə Saxla", "contact-p": "Əməkdaşlıq və frilans imkanları üçün açığam.",
+                "footer-copy": "© 2026 Yunis Rehmanzada. Bütün hüquqlar qorunur."
             },
             en: {
-                "hero-title": "THE FUTURE OF 3D",
-                "hero-sub": "Hard Surface Modeling & Low Poly Environments",
-                "contact-title": "Get In Touch",
-                "scroll-text": "Scroll sideways to see more"
+                "nav-home": "Home", "nav-projects": "Projects", "nav-about": "About", "nav-contact": "Contact",
+                "hero-h1": "THE FUTURE OF 3D", "hero-p": "Hard Surface Modeling & Low Poly Environments",
+                "about-h2": "About Me", "about-p": "I am a 3D Artist specializing in creating detailed hard-surface models and optimized low-poly assets. My workflow focuses on clean topology and futuristic aesthetics, primarily using Blender. I transform concepts into digital reality with a touch of modern design.",
+                "projects-h2": "SELECTED WORKS", "scroll-tip": "Scroll horizontally to view perspectives →",
+                "contact-h2": "Get In Touch", "contact-p": "Open for collaborations and freelance opportunities.",
+                "footer-copy": "© 2026 Yunis Rehmanzada. All rights reserved."
             },
             ru: {
-                "hero-title": "БУДУЩЕЕ 3D",
-                "hero-sub": "Hard Surface моделирование и Low Poly окружение",
-                "contact-title": "Связаться со мной",
-                "scroll-text": "Листайте вбок, чтобы увидеть больше"
+                "nav-home": "Главная", "nav-projects": "Проекты", "nav-about": "Обо мне", "nav-contact": "Контакты",
+                "hero-h1": "БУДУЩЕЕ 3D", "hero-p": "Hard Surface моделирование и Low Poly окружение",
+                "about-h2": "Обо мне", "about-p": "Я 3D-художник, специализирующийся на создании детальных моделей hard-surface и оптимизированных low-poly ассетов. Мой рабочий процесс сосредоточен на чистой топологии и футуристической эстетике. Я превращаю концепты в цифровую реальность.",
+                "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "scroll-tip": "Прокрутите горизонтально, чтобы увидеть →",
+                "contact-h2": "Связаться", "contact-p": "Открыт для сотрудничества и фриланса.",
+                "footer-copy": "© 2026 Юнис Рехманзаде. Все права защищены."
             },
             tr: {
-                "hero-title": "3D'NİN GELECEĞİ",
-                "hero-sub": "Sert Yüzey Modelleme ve Low Poly Ortamlar",
-                "contact-title": "İletişime Geçin",
-                "scroll-text": "Daha fazlası için yana kaydırın"
+                "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-about": "Hakkımda", "nav-contact": "İletişim",
+                "hero-h1": "3D'NİN GELECEĞİ", "hero-p": "Sert Yüzey Modelleme ve Low Poly Ortamlar",
+                "about-h2": "Hakkımda", "about-p": "Detaylı sert yüzey modelleri ve optimize edilmiş low-poly varlıklar oluşturma konusunda uzmanlaşmış bir 3D sanatçısıyım. İş akışım temiz topoloji ve fütüristik estetiğe odaklanıyor. Konseptleri modern bir tasarımla dijital gerçekliğe dönüştürüyorum.",
+                "projects-h2": "SEÇİLMİŞ İŞLER", "scroll-tip": "Perspektifleri görmek için kaydırın →",
+                "contact-h2": "İletişime Geç", "contact-p": "İşbirlikleri ve freelance fırsatları için hazırım.",
+                "footer-copy": "© 2026 Yunis Rehmanzada. Tüm hakları saklıdır."
             }
         };
 
-        function setLanguage(lang) {
-            document.getElementById("hero-title").innerText = translations[lang]["hero-title"];
-            document.getElementById("hero-sub").innerText = translations[lang]["hero-sub"];
-            document.getElementById("contact-title").innerText = translations[lang]["contact-title"];
-            document.getElementById("scroll-text").innerText = translations[lang]["scroll-text"];
+        function changeLang(lang) {
+            for (let key in langData[lang]) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.innerText = langData[lang][key];
+                }
+            }
         }
-
-        // Mouse təkəri ilə horizontal scroll (PC üçün)
-        const scrollContainer = document.querySelector(".gallery-wrapper");
-        scrollContainer.addEventListener("wheel", (evt) => {
-            evt.preventDefault();
-            scrollContainer.scrollLeft += evt.deltaY;
-        });
     </script>
+
 </body>
 </html>
