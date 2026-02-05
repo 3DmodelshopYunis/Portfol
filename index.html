@@ -6,6 +6,7 @@
     <title>Yunis Rehmanzada | 3D Artist Portfolio</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         :root {
@@ -17,16 +18,13 @@
             --border-glass: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
             --text-dim: #b0b0b0;
+            --danger: #ff4b4b;
+            --success: #00d26a;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--bg-dark);
             background: var(--gradient-main);
             background-attachment: fixed;
             color: var(--text-main);
@@ -35,179 +33,195 @@
             overflow-x: hidden;
         }
 
-        /* --- LANGUAGE SWITCHER --- */
-        .lang-switcher {
-            display: flex;
-            gap: 10px;
-            margin-right: 20px;
-        }
-
-        .lang-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--border-glass);
-            color: white;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            transition: 0.3s;
-            border-radius: 5px;
-        }
-
-        .lang-btn:hover {
-            background: var(--accent-purple);
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-glass);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            background: linear-gradient(to right, #fff, var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li { margin-left: 30px; }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 500;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        nav ul li a:hover { color: var(--accent-purple); }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 80vh;
+        /* --- ENTRY GATE KEEPER --- */
+        #gatekeeper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f0c29;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 0 20px;
+            transition: opacity 0.8s ease;
         }
 
-        .hero h1 {
-            font-size: 5rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            color: var(--text-dim);
-            max-width: 600px;
-        }
-
-        /* --- ABOUT ME --- */
-        .section {
-            padding: 100px 10%;
-        }
-
-        .about-container {
-            display: flex;
-            gap: 50px;
-            align-items: center;
-            background: var(--glass-bg);
+        .gate-box {
+            background: rgba(255,255,255,0.1);
             padding: 40px;
             border-radius: 20px;
             border: 1px solid var(--border-glass);
-            backdrop-filter: blur(15px);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            animation: fadeInDown 1s ease;
         }
 
-        .about-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--accent-purple);
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        .gate-btn {
+            background: var(--accent-purple);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+        }
+
+        .gate-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-purple); }
+        .gate-btn.client { background: transparent; border: 2px solid var(--accent-purple); }
+
+        #password-modal {
+            display: none;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        #pass-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .hidden { display: none !important; }
+
+        /* --- LANGUAGE SWITCHER --- */
+        .lang-switcher { display: flex; gap: 10px; margin-right: 20px; }
+        .lang-btn {
+            background: var(--glass-bg); border: 1px solid var(--border-glass);
+            color: white; padding: 5px 10px; cursor: pointer;
+            font-family: 'Rajdhani', sans-serif; font-weight: 700;
+            transition: 0.3s; border-radius: 5px;
+        }
+        .lang-btn:hover { background: var(--accent-purple); }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border-glass);
+        }
+        .logo {
+            font-size: 1.8rem; font-weight: 700; letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, var(--accent-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a {
+            text-decoration: none; color: var(--text-main); font-weight: 500;
+            text-transform: uppercase; transition: 0.3s;
+        }
+        nav ul li a:hover { color: var(--accent-purple); }
+
+        /* --- HERO & SECTIONS --- */
+        .hero {
+            height: 80vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; padding: 0 20px;
+        }
+        .hero h1 { font-size: 5rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px; }
+        .hero p { font-size: 1.5rem; color: var(--text-dim); max-width: 600px; }
+        .section { padding: 100px 10%; }
+
+        /* --- ABOUT --- */
+        .about-container {
+            display: flex; gap: 50px; align-items: center; background: var(--glass-bg);
+            padding: 40px; border-radius: 20px; border: 1px solid var(--border-glass);
+            backdrop-filter: blur(15px);
+        }
+        .about-text h2 { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent-purple); }
 
         /* --- PORTFOLIO GALLERY --- */
         .model-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--border-glass);
-            margin-bottom: 80px;
-            border-radius: 15px;
-            overflow: hidden;
+            background: var(--glass-bg); border: 1px solid var(--border-glass);
+            margin-bottom: 80px; border-radius: 15px; overflow: hidden; position: relative;
         }
-
         .model-header {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-glass);
+            padding: 20px; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 1px solid var(--border-glass);
         }
-
         .gallery-wrapper {
-            position: relative;
-            height: 550px;
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-purple) transparent;
+            position: relative; height: 550px; display: flex;
+            overflow-x: auto; scroll-snap-type: x mandatory;
+            scrollbar-width: thin; scrollbar-color: var(--accent-purple) transparent;
         }
-
         .gallery-wrapper img {
-            flex-shrink: 0; /* Şəkillərin sıxılmaması üçün vacibdir */
-            height: 100%;
-            min-width: 100%;
-            object-fit: cover;
-            scroll-snap-align: center;
+            flex-shrink: 0; height: 100%; min-width: 100%;
+            object-fit: cover; scroll-snap-align: center;
             border-right: 1px solid var(--border-glass);
         }
 
-        /* --- CONTACT SECTION --- */
+        /* --- ADMIN CONTROLS --- */
+        .admin-controls {
+            padding: 10px; text-align: right; background: rgba(0,0,0,0.5);
+        }
+        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; }
+        
+        #add-project-btn {
+            display: none; /* Hidden for clients */
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--accent-purple); width: 60px; height: 60px;
+            border-radius: 50%; font-size: 30px; color: white; border: none;
+            cursor: pointer; box-shadow: 0 0 20px var(--accent-purple); z-index: 2000;
+        }
+
+        /* --- MODAL FOR ADDING PROJECT --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 3000; display: none;
+            justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: #1a1a40; padding: 40px; border-radius: 15px;
+            width: 90%; max-width: 500px; border: 1px solid var(--accent-purple);
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: var(--accent-purple); }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px; background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border-glass); color: white; border-radius: 5px;
+        }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+        /* --- COMMENTS SECTION --- */
+        .comments-section {
+            background: var(--glass-bg); padding: 40px; border-radius: 20px;
+            border: 1px solid var(--border-glass); margin-top: 50px;
+        }
+        .comment-form { margin-bottom: 40px; }
+        .stars { font-size: 1.5rem; color: gold; cursor: pointer; }
+        .comment-item {
+            background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;
+            margin-bottom: 15px; border-left: 3px solid var(--accent-purple);
+            position: relative;
+        }
+        .comment-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .comment-author { font-weight: bold; color: var(--accent-purple); }
+        .comment-category { font-size: 0.8rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; }
+        
+        /* --- CONTACT --- */
         .contact-box {
-            text-align: center;
-            background: linear-gradient(to bottom, var(--glass-bg), transparent);
-            padding: 60px;
-            border-radius: 20px;
-            border: 1px solid var(--border-glass);
+            text-align: center; background: linear-gradient(to bottom, var(--glass-bg), transparent);
+            padding: 60px; border-radius: 20px; border: 1px solid var(--border-glass);
         }
-
         .email-link {
-            font-size: 2rem;
-            color: #fff;
-            text-decoration: none;
-            border-bottom: 2px solid var(--accent-purple);
-            transition: 0.3s;
+            font-size: 2rem; color: #fff; text-decoration: none;
+            border-bottom: 2px solid var(--accent-purple); transition: 0.3s;
         }
-
-        .email-link:hover {
-            color: var(--accent-purple);
-            letter-spacing: 2px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
+        .email-link:hover { color: var(--accent-purple); letter-spacing: 2px; }
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.9rem; }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
@@ -220,153 +234,397 @@
 </head>
 <body>
 
-    <nav>
-        <div class="logo">REHMANZADA.3D</div>
-        <div style="display: flex; align-items: center;">
-            <div class="lang-switcher">
-                <button class="lang-btn" onclick="changeLang('az')">AZ</button>
-                <button class="lang-btn" onclick="changeLang('en')">EN</button>
-                <button class="lang-btn" onclick="changeLang('ru')">RU</button>
-                <button class="lang-btn" onclick="changeLang('tr')">TR</button>
-            </div>
-            <ul>
-                <li><a href="#home" id="nav-home">Home</a></li>
-                <li><a href="#work" id="nav-projects">Projects</a></li>
-                <li><a href="#about" id="nav-about">About</a></li>
-                <li><a href="#contact" id="nav-contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+    <div id="gatekeeper">
+        <div class="gate-box">
+            <h1 style="margin-bottom: 20px;">WELCOME TO REHMANZADA.3D</h1>
+            <p style="margin-bottom: 30px; color: #b0b0b0;">Select your access level / Giriş növünü seçin</p>
+            
+            <button class="gate-btn" onclick="showPasswordInput()">TEAM MEMBER (YUNIS)</button>
+            <button class="gate-btn client" onclick="enterSite('client')">CLIENT / MÜŞTƏRİ</button>
 
-    <section class="hero" id="home">
-        <h1 id="hero-h1">THE FUTURE OF 3D</h1>
-        <p id="hero-p">Hard Surface Modeling & Low Poly Environments</p>
-    </section>
-
-    <section class="section" id="about">
-        <div class="about-container">
-            <div class="about-text">
-                <h2 id="about-h2">About Me</h2>
-                <p id="about-p">I am a 3D Artist specializing in creating detailed hard-surface models and optimized low-poly assets. My workflow focuses on clean topology and futuristic aesthetics, primarily using Blender. I transform concepts into digital reality with a touch of modern design.</p>
+            <div id="password-modal">
+                <input type="password" id="pass-input" placeholder="Enter Password">
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="gate-btn" style="padding: 5px 15px; font-size: 1rem;" onclick="checkPassword()">ENTER</button>
+                    <button class="gate-btn client" style="padding: 5px 15px; font-size: 1rem; border-color: var(--danger);" onclick="cancelLogin()">CANCEL</button>
+                </div>
+                <p id="error-msg" style="color: var(--danger); margin-top: 10px; display: none;">Wrong Password!</p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section class="section" id="work">
-        <h2 style="margin-bottom: 40px; font-size: 2rem; letter-spacing: 3px;" id="projects-h2">SELECTED WORKS</h2>
-
-        <article class="model-card">
-            <div class="model-header">
-                <h3>BUGATTI DIVO</h3>
-                <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
+    <div id="site-content" class="hidden">
+        
+        <nav>
+            <div class="logo">REHMANZADA.3D</div>
+            <div style="display: flex; align-items: center;">
+                <div class="lang-switcher">
+                    <button class="lang-btn" onclick="changeLang('az')">AZ</button>
+                    <button class="lang-btn" onclick="changeLang('en')">EN</button>
+                    <button class="lang-btn" onclick="changeLang('ru')">RU</button>
+                    <button class="lang-btn" onclick="changeLang('tr')">TR</button>
+                </div>
+                <ul>
+                    <li><a href="#home" id="nav-home">Home</a></li>
+                    <li><a href="#work" id="nav-projects">Projects</a></li>
+                    <li><a href="#comments" id="nav-reviews">Reviews</a></li>
+                    <li><a href="#contact" id="nav-contact">Contact</a></li>
+                </ul>
             </div>
-            <div class="gallery-wrapper">
-                <img src="divo1.jpg" alt="Perspective View">
-                <img src="divo2.jpg" alt="Rear View">
-                <img src="divo3.jpg" alt="Front View">
-                <img src="divo4.jpg" alt="Wireframe/Clay">
+        </nav>
+
+        <section class="hero" id="home">
+            <h1 id="hero-h1">THE FUTURE OF 3D</h1>
+            <p id="hero-p">Hard Surface Modeling & Low Poly Environments</p>
+        </section>
+
+        <section class="section" id="about">
+            <div class="about-container">
+                <div class="about-text">
+                    <h2 id="about-h2">About Me</h2>
+                    <p id="about-p">I am a 3D Artist specializing in creating detailed hard-surface models and optimized low-poly assets. My workflow focuses on clean topology and futuristic aesthetics.</p>
+                </div>
             </div>
-            <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" id="scroll-tip">Scroll horizontally to view perspectives &rarr;</p>
-        </article>
+        </section>
 
-    </section>
+        <section class="section" id="work">
+            <h2 style="margin-bottom: 40px; font-size: 2rem; letter-spacing: 3px;" id="projects-h2">SELECTED WORKS</h2>
 
-     <section class="section" id="work">
-       
-         <article class="model-card">
-            <div class="model-header">
-                <h3>Lamborghini Aventador</h3>
-                <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
+            <article class="model-card">
+                <div class="model-header">
+                    <h3>BUGATTI DIVO</h3>
+                    <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
+                </div>
+                <div class="gallery-wrapper">
+                    <img src="divo1.jpg" alt="View 1">
+                    <img src="divo2.jpg" alt="View 2">
+                    <img src="divo3.jpg" alt="View 3">
+                    <img src="divo4.jpg" alt="View 4">
+                </div>
+                <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" class="scroll-tip">Scroll horizontally &rarr;</p>
+            </article>
+
+             <article class="model-card">
+                <div class="model-header">
+                    <h3>LAMBORGHINI AVENTADOR</h3>
+                    <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
+                </div>
+                <div class="gallery-wrapper">
+                    <img src="lamb1.jpg" alt="View 1">
+                    <img src="lamb2.jpg" alt="View 2">
+                    <img src="lamb3.jpg" alt="View 3">
+                    <img src="lamb4.jpg" alt="View 4">
+                </div>
+                <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" class="scroll-tip">Scroll horizontally &rarr;</p>
+            </article>
+
+            <div id="dynamic-projects-container"></div>
+
+        </section>
+
+        <section class="section" id="comments">
+            <h2 id="reviews-h2" style="margin-bottom: 30px;">CLIENT REVIEWS</h2>
+            <div class="comments-section">
+                
+                <div class="comment-form">
+                    <h3 id="leave-review-h3" style="color: var(--accent-purple); margin-bottom: 15px;">Leave a Review</h3>
+                    <div class="form-group">
+                        <input type="text" id="com-name" placeholder="Your Name / Adınız">
+                    </div>
+                    <div class="form-group">
+                        <select id="com-category">
+                            <option value="Hard Surface">Hard Surface Modeling</option>
+                            <option value="Low Poly">Low Poly Environment</option>
+                            <option value="Character">Character Design</option>
+                            <option value="Other">Other / Digər</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="stars" id="star-rating">
+                            <i class="far fa-star" data-val="1"></i>
+                            <i class="far fa-star" data-val="2"></i>
+                            <i class="far fa-star" data-val="3"></i>
+                            <i class="far fa-star" data-val="4"></i>
+                            <i class="far fa-star" data-val="5"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="com-text" rows="3" placeholder="Write your feedback... (No bad words allowed)"></textarea>
+                    </div>
+                    <button class="gate-btn" onclick="submitComment()">POST COMMENT</button>
+                </div>
+
+                <div id="comments-list">
+                    </div>
             </div>
-            <div class="gallery-wrapper">
-                <img src="lamb1.jpg" alt="Perspective View">
-                <img src="lamb2.jpg" alt="Rear View">
-                <img src="lamb3.jpg" alt="Front View">
-                <img src="lamb4.jpg" alt="Wireframe/Clay">
-                <img src="lamb5.jpg" alt="Wireframe/Clay">
+        </section>
+
+        <section class="section" id="contact">
+            <div class="contact-box">
+                <h2 style="margin-bottom: 20px;" id="contact-h2">Get In Touch</h2>
+                <p style="margin-bottom: 30px; color: var(--text-dim);" id="contact-p">Open for collaborations.</p>
+                <a href="mailto:yunisrehmanzada@gmail.com" class="email-link">yunisrehmanzada@gmail.com</a>
             </div>
-            <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" id="scroll-tip">Scroll horizontally to view perspectives &rarr;</p>
-        </article>
+        </section>
 
-    </section>
+        <footer>
+            <p id="footer-copy">&copy; 2026 Yunis Rehmanzada. All rights reserved.</p>
+        </footer>
+    </div>
 
-    <section class="section" id="work">
-       
-         <article class="model-card">
-            <div class="model-header">
-                <h3>Daimonds</h3>
-                <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
+    <button id="add-project-btn" onclick="openModal()">+</button>
+
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal-box">
+            <h2 style="color: white; margin-bottom: 20px;">Add New Project</h2>
+            <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" id="new-title">
             </div>
-            <div class="gallery-wrapper">
-                <img src="dam1.jpg" alt="Perspective View">
-                <img src="dam2.jpg" alt="Rear View">
-                <img src="dam3.jpg" alt="Front View">
-                <img src="dam4.jpg" alt="Wireframe/Clay">
-                <img src="dam5.jpg" alt="Wireframe/Clay">
-                <img src="dam6.jpg" alt="Wireframe/Clay">
-                <img src="dam7.jpg" alt="Wireframe/Clay">
+            <div class="form-group">
+                <label>Category (e.g. Low Poly)</label>
+                <input type="text" id="new-cat">
             </div>
-            <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" id="scroll-tip">Scroll horizontally to view perspectives &rarr;</p>
-        </article>
-
-    </section>
-
-    <section class="section" id="contact">
-        <div class="contact-box">
-            <h2 style="margin-bottom: 20px;" id="contact-h2">Get In Touch</h2>
-            <p style="margin-bottom: 30px; color: var(--text-dim);" id="contact-p">Open for collaborations and freelance opportunities.</p>
-            <a href="mailto:yunisrehmanzada@gmail.com" class="email-link">yunisrehmanzada@gmail.com</a>
+            <div class="form-group">
+                <label>Image Filenames (comma separated, e.g. divo1.jpg, divo2.jpg)</label>
+                <input type="text" id="new-imgs" placeholder="car1.jpg, car2.jpg">
+            </div>
+            <div class="modal-actions">
+                <button class="gate-btn client" onclick="closeModal()" style="border-color: var(--danger);">Cancel</button>
+                <button class="gate-btn" onclick="saveProject()">Apply</button>
+            </div>
         </div>
-    </section>
-
-    <footer>
-        <p id="footer-copy">&copy; 2026 Yunis Rehmanzada. All rights reserved.</p>
-    </footer>
+    </div>
 
     <script>
-        // 1. SCROLL LOGIC
-        const scrolls = document.querySelectorAll(".gallery-wrapper");
-        scrolls.forEach((el) => {
-            el.addEventListener("wheel", (evt) => {
-                if (evt.deltaY != 0) {
-                    evt.preventDefault();
-                    el.scrollLeft += evt.deltaY;
+        // --- GLOBAL VARIABLES ---
+        let isAdmin = false;
+        let selectedStar = 0;
+        const badWords = ["stupid", "idiot", "pis", "söyüş", "bad"]; // Add more words here
+
+        // --- 1. GATEKEEPER LOGIC ---
+        function showPasswordInput() {
+            document.getElementById('password-modal').style.display = 'flex';
+        }
+
+        function cancelLogin() {
+            document.getElementById('password-modal').style.display = 'none';
+            document.getElementById('pass-input').value = '';
+            document.getElementById('error-msg').style.display = 'none';
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('pass-input').value;
+            if (pass === 'Yr142536') {
+                isAdmin = true;
+                enterSite('admin');
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        function enterSite(role) {
+            const gate = document.getElementById('gatekeeper');
+            gate.style.opacity = '0';
+            setTimeout(() => {
+                gate.style.display = 'none';
+                document.getElementById('site-content').classList.remove('hidden');
+                
+                // If Admin, show Add Button
+                if (isAdmin) {
+                    document.getElementById('add-project-btn').style.display = 'block';
+                    renderProjects(); // Refresh to show delete buttons
+                    renderComments(); // Refresh to show delete buttons
                 }
+            }, 800);
+        }
+
+        // --- 2. DYNAMIC PROJECTS LOGIC ---
+        function openModal() { document.getElementById('project-modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('project-modal').style.display = 'none'; }
+
+        function saveProject() {
+            const title = document.getElementById('new-title').value;
+            const cat = document.getElementById('new-cat').value;
+            const imgStr = document.getElementById('new-imgs').value;
+            
+            if(!title || !imgStr) return alert("Please fill details");
+
+            const imgs = imgStr.split(',').map(s => s.trim());
+
+            const newProj = { id: Date.now(), title, cat, imgs };
+            
+            // Get existing, add new, save back
+            let projects = JSON.parse(localStorage.getItem('portfolio_projects') || "[]");
+            projects.push(newProj);
+            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+
+            closeModal();
+            renderProjects();
+        }
+
+        function deleteProject(id) {
+            if(!confirm("Are you sure? This will delete forever.")) return;
+            let projects = JSON.parse(localStorage.getItem('portfolio_projects') || "[]");
+            projects = projects.filter(p => p.id !== id);
+            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+            renderProjects();
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('dynamic-projects-container');
+            const projects = JSON.parse(localStorage.getItem('portfolio_projects') || "[]");
+            
+            container.innerHTML = ""; // Clear current
+
+            projects.forEach(p => {
+                let imgHTML = "";
+                p.imgs.forEach(src => {
+                    imgHTML += `<img src="${src}" alt="Project Image">`;
+                });
+
+                let adminHTML = isAdmin ? `<div class="admin-controls"><span class="btn-delete" onclick="deleteProject(${p.id})">DELETE PROJECT <i class="fas fa-trash"></i></span></div>` : "";
+
+                const html = `
+                <article class="model-card">
+                    ${adminHTML}
+                    <div class="model-header">
+                        <h3>${p.title}</h3>
+                        <span style="color: var(--accent-purple);">${p.cat.toUpperCase()}</span>
+                    </div>
+                    <div class="gallery-wrapper">
+                        ${imgHTML}
+                    </div>
+                    <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;">Scroll horizontally &rarr;</p>
+                </article>
+                `;
+                container.innerHTML += html;
+            });
+
+            // Re-attach scroll listener to new elements
+            attachScroll();
+        }
+
+        // --- 3. COMMENT SYSTEM LOGIC ---
+        // Star Rating UI
+        document.querySelectorAll('.stars i').forEach(star => {
+            star.addEventListener('click', function() {
+                selectedStar = this.getAttribute('data-val');
+                document.querySelectorAll('.stars i').forEach(s => {
+                    if(s.getAttribute('data-val') <= selectedStar) s.classList.remove('far'), s.classList.add('fas');
+                    else s.classList.remove('fas'), s.classList.add('far');
+                });
             });
         });
 
-        // 2. LANGUAGE LOGIC
+        function submitComment() {
+            const name = document.getElementById('com-name').value;
+            const cat = document.getElementById('com-category').value;
+            const text = document.getElementById('com-text').value;
+
+            // Validation
+            if(!name || !text || selectedStar === 0) return alert("Please fill all fields and select stars.");
+
+            // Profanity Filter
+            const hasBadWord = badWords.some(word => text.toLowerCase().includes(word));
+            if(hasBadWord) {
+                alert("Comment blocked due to inappropriate language.");
+                return;
+            }
+
+            const newComment = { id: Date.now(), name, cat, text, stars: selectedStar };
+            
+            let comments = JSON.parse(localStorage.getItem('portfolio_comments') || "[]");
+            comments.push(newComment);
+            localStorage.setItem('portfolio_comments', JSON.stringify(comments));
+
+            // Reset Form
+            document.getElementById('com-text').value = "";
+            document.getElementById('com-name').value = "";
+            renderComments();
+        }
+
+        function deleteComment(id) {
+            let comments = JSON.parse(localStorage.getItem('portfolio_comments') || "[]");
+            comments = comments.filter(c => c.id !== id);
+            localStorage.setItem('portfolio_comments', JSON.stringify(comments));
+            renderComments();
+        }
+
+        function renderComments() {
+            const list = document.getElementById('comments-list');
+            const comments = JSON.parse(localStorage.getItem('portfolio_comments') || "[]");
+
+            list.innerHTML = "";
+
+            comments.forEach(c => {
+                let starsHTML = "";
+                for(let i=0; i<5; i++) {
+                    starsHTML += i < c.stars ? '<i class="fas fa-star" style="color:gold;"></i>' : '<i class="far fa-star" style="color:gold;"></i>';
+                }
+
+                let deleteBtn = isAdmin ? `<button onclick="deleteComment(${c.id})" style="position:absolute; top:10px; right:10px; background:none; border:none; color:red; cursor:pointer;"><i class="fas fa-trash"></i></button>` : "";
+
+                const html = `
+                <div class="comment-item">
+                    ${deleteBtn}
+                    <div class="comment-header">
+                        <span class="comment-author">${c.name}</span>
+                        <span class="comment-category">${c.cat}</span>
+                    </div>
+                    <div style="margin-bottom: 5px;">${starsHTML}</div>
+                    <p>${c.text}</p>
+                </div>
+                `;
+                list.innerHTML += html;
+            });
+        }
+
+        // --- 4. UTILS & INIT ---
+        function attachScroll() {
+            const scrolls = document.querySelectorAll(".gallery-wrapper");
+            scrolls.forEach((el) => {
+                el.addEventListener("wheel", (evt) => {
+                    if (evt.deltaY != 0) {
+                        evt.preventDefault();
+                        el.scrollLeft += evt.deltaY;
+                    }
+                });
+            });
+        }
+
+        // Language Logic (Updated)
         const langData = {
             az: {
-                "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-about": "Haqqımda", "nav-contact": "Əlaqə",
+                "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-reviews": "Rəylər", "nav-contact": "Əlaqə",
                 "hero-h1": "3D-NİN GƏLƏCƏYİ", "hero-p": "Sərt Səth Modelləşdirmə və Low Poly Mühitlər",
-                "about-h2": "Haqqımda", "about-p": "Mən detallı sərt səth (hard-surface) modelləri və optimallaşdırılmış low-poly aktivlər yaratmaq üzrə ixtisaslaşmış 3D rəssamam. İş axınım təmiz topologiya və futuristik estetikaya yönəlib. Konseptləri müasir dizayn toxunuşu ilə rəqəmsal reallığa çevirirəm.",
-                "projects-h2": "SEÇİLMİŞ İŞLƏR", "scroll-tip": "Perspektivləri görmək üçün yana sürüşdürün →",
-                "contact-h2": "Əlaqə Saxla", "contact-p": "Əməkdaşlıq və frilans imkanları üçün açığam.",
+                "about-h2": "Haqqımda", "about-p": "Mən detallı sərt səth (hard-surface) modelləri üzrə ixtisaslaşmış 3D rəssamam.",
+                "projects-h2": "SEÇİLMİŞ İŞLƏR", "reviews-h2": "MÜŞTƏRİ RƏYLƏRİ", "leave-review-h3": "Rəy Yazın",
+                "contact-h2": "Əlaqə Saxla", "contact-p": "Əməkdaşlıq üçün açığam.",
                 "footer-copy": "© 2026 Yunis Rehmanzada. Bütün hüquqlar qorunur."
             },
             en: {
-                "nav-home": "Home", "nav-projects": "Projects", "nav-about": "About", "nav-contact": "Contact",
+                "nav-home": "Home", "nav-projects": "Projects", "nav-reviews": "Reviews", "nav-contact": "Contact",
                 "hero-h1": "THE FUTURE OF 3D", "hero-p": "Hard Surface Modeling & Low Poly Environments",
-                "about-h2": "About Me", "about-p": "I am a 3D Artist specializing in creating detailed hard-surface models and optimized low-poly assets. My workflow focuses on clean topology and futuristic aesthetics, primarily using Blender. I transform concepts into digital reality with a touch of modern design.",
-                "projects-h2": "SELECTED WORKS", "scroll-tip": "Scroll horizontally to view perspectives →",
-                "contact-h2": "Get In Touch", "contact-p": "Open for collaborations and freelance opportunities.",
+                "about-h2": "About Me", "about-p": "I am a 3D Artist specializing in creating detailed hard-surface models.",
+                "projects-h2": "SELECTED WORKS", "reviews-h2": "CLIENT REVIEWS", "leave-review-h3": "Leave a Review",
+                "contact-h2": "Get In Touch", "contact-p": "Open for collaborations.",
                 "footer-copy": "© 2026 Yunis Rehmanzada. All rights reserved."
             },
             ru: {
-                "nav-home": "Главная", "nav-projects": "Проекты", "nav-about": "Обо мне", "nav-contact": "Контакты",
-                "hero-h1": "БУДУЩЕЕ 3D", "hero-p": "Hard Surface моделирование и Low Poly окружение",
-                "about-h2": "Обо мне", "about-p": "Я 3D-художник, специализирующийся на создании детальных моделей hard-surface и оптимизированных low-poly ассетов. Мой рабочий процесс сосредоточен на чистой топологии и футуристической эстетике. Я превращаю концепты в цифровую реальность.",
-                "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "scroll-tip": "Прокрутите горизонтально, чтобы увидеть →",
-                "contact-h2": "Связаться", "contact-p": "Открыт для сотрудничества и фриланса.",
+                "nav-home": "Главная", "nav-projects": "Проекты", "nav-reviews": "Отзывы", "nav-contact": "Контакты",
+                "hero-h1": "БУДУЩЕЕ 3D", "hero-p": "Hard Surface моделирование",
+                "about-h2": "Обо мне", "about-p": "Я 3D-художник, специализирующийся на Hard Surface.",
+                "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "reviews-h2": "ОТЗЫВЫ КЛИЕНТОВ", "leave-review-h3": "Оставить отзыв",
+                "contact-h2": "Связаться", "contact-p": "Открыт для сотрудничества.",
                 "footer-copy": "© 2026 Юнис Рехманзаде. Все права защищены."
             },
             tr: {
-                "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-about": "Hakkımda", "nav-contact": "İletişim",
-                "hero-h1": "3D'NİN GELECEĞİ", "hero-p": "Sert Yüzey Modelleme ve Low Poly Ortamlar",
-                "about-h2": "Hakkımda", "about-p": "Detaylı sert yüzey modelleri ve optimize edilmiş low-poly varlıklar oluşturma konusunda uzmanlaşmış bir 3D sanatçısıyım. İş akışım temiz topoloji ve fütüristik estetiğe odaklanıyor. Konseptleri modern bir tasarımla dijital gerçekliğe dönüştürüyorum.",
-                "projects-h2": "SEÇİLMİŞ İŞLER", "scroll-tip": "Perspektifleri görmek için kaydırın →",
-                "contact-h2": "İletişime Geç", "contact-p": "İşbirlikleri ve freelance fırsatları için hazırım.",
+                "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-reviews": "Yorumlar", "nav-contact": "İletişim",
+                "hero-h1": "3D'NİN GELECEĞİ", "hero-p": "Sert Yüzey Modelleme",
+                "about-h2": "Hakkımda", "about-p": "Sert yüzey modelleme konusunda uzmanlaşmış bir 3D sanatçısıyım.",
+                "projects-h2": "SEÇİLMİŞ İŞLER", "reviews-h2": "MÜŞTERİ YORUMLARI", "leave-review-h3": "Yorum Yaz",
+                "contact-h2": "İletişime Geç", "contact-p": "İşbirlikleri için hazırım.",
                 "footer-copy": "© 2026 Yunis Rehmanzada. Tüm hakları saklıdır."
             }
         };
@@ -374,12 +632,17 @@
         function changeLang(lang) {
             for (let key in langData[lang]) {
                 const element = document.getElementById(key);
-                if (element) {
-                    element.innerText = langData[lang][key];
-                }
+                if (element) element.innerText = langData[lang][key];
             }
         }
-    </script>
 
+        // Initialize
+        window.onload = function() {
+            renderProjects();
+            renderComments();
+            attachScroll();
+        }
+
+    </script>
 </body>
 </html>
