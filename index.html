@@ -19,7 +19,6 @@
             --text-main: #ffffff;
             --text-dim: #b0b0b0;
             --danger: #ff4b4b;
-            --success: #00d26a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,197 +32,96 @@
             overflow-x: hidden;
         }
 
-        /* --- ENTRY GATE KEEPER --- */
+        /* --- LOADING SPINNER --- */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid var(--accent-purple); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- GATEKEEPER --- */
         #gatekeeper {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f0c29;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f0c29; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.8s ease;
         }
-
         .gate-box {
-            background: rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid var(--border-glass);
-            text-align: center;
-            backdrop-filter: blur(20px);
-            animation: fadeInDown 1s ease;
+            background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px;
+            border: 1px solid var(--border-glass); text-align: center;
+            backdrop-filter: blur(20px); animation: fadeInDown 1s ease;
         }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
 
         .gate-btn {
-            background: var(--accent-purple);
-            border: none;
-            color: white;
-            padding: 15px 30px;
-            margin: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
+            background: var(--accent-purple); border: none; color: white;
+            padding: 15px 30px; margin: 10px; font-size: 1.2rem; cursor: pointer;
+            border-radius: 10px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; font-weight: 700;
         }
-
         .gate-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-purple); }
         .gate-btn.client { background: transparent; border: 2px solid var(--accent-purple); }
 
-        #password-modal {
-            display: none;
-            flex-direction: column;
-            margin-top: 20px;
-        }
+        #password-modal { display: none; flex-direction: column; margin-top: 20px; }
+        #pass-input { padding: 10px; border-radius: 5px; border: none; margin-bottom: 10px; text-align: center; }
 
-        #pass-input {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin-bottom: 10px;
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        /* --- UI ELEMENTS --- */
+        /* --- MAIN UI --- */
         .hidden { display: none !important; }
-
-        /* --- LANGUAGE SWITCHER --- */
+        
+        /* Language & Nav */
         .lang-switcher { display: flex; gap: 10px; margin-right: 20px; }
-        .lang-btn {
-            background: var(--glass-bg); border: 1px solid var(--border-glass);
-            color: white; padding: 5px 10px; cursor: pointer;
-            font-family: 'Rajdhani', sans-serif; font-weight: 700;
-            transition: 0.3s; border-radius: 5px;
-        }
+        .lang-btn { background: var(--glass-bg); border: 1px solid var(--border-glass); color: white; padding: 5px 10px; cursor: pointer; border-radius: 5px; font-weight: 700; transition: 0.3s; }
         .lang-btn:hover { background: var(--accent-purple); }
 
-        /* --- NAVIGATION --- */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 8%; background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000;
-            border-bottom: 1px solid var(--border-glass);
-        }
-        .logo {
-            font-size: 1.8rem; font-weight: 700; letter-spacing: 2px;
-            background: linear-gradient(to right, #fff, var(--accent-purple));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-glass); }
+        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; background: linear-gradient(to right, #fff, var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         nav ul { display: flex; list-style: none; }
         nav ul li { margin-left: 30px; }
-        nav ul li a {
-            text-decoration: none; color: var(--text-main); font-weight: 500;
-            text-transform: uppercase; transition: 0.3s;
-        }
+        nav ul li a { text-decoration: none; color: white; font-weight: 500; text-transform: uppercase; transition: 0.3s; }
         nav ul li a:hover { color: var(--accent-purple); }
 
-        /* --- HERO & SECTIONS --- */
-        .hero {
-            height: 80vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center; padding: 0 20px;
-        }
+        /* Sections */
+        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hero h1 { font-size: 5rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px; }
-        .hero p { font-size: 1.5rem; color: var(--text-dim); max-width: 600px; }
         .section { padding: 100px 10%; }
-
-        /* --- ABOUT --- */
-        .about-container {
-            display: flex; gap: 50px; align-items: center; background: var(--glass-bg);
-            padding: 40px; border-radius: 20px; border: 1px solid var(--border-glass);
-            backdrop-filter: blur(15px);
-        }
-        .about-text h2 { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent-purple); }
-
-        /* --- PORTFOLIO GALLERY --- */
-        .model-card {
-            background: var(--glass-bg); border: 1px solid var(--border-glass);
-            margin-bottom: 80px; border-radius: 15px; overflow: hidden; position: relative;
-        }
-        .model-header {
-            padding: 20px; display: flex; justify-content: space-between;
-            align-items: center; border-bottom: 1px solid var(--border-glass);
-        }
-        .gallery-wrapper {
-            position: relative; height: 550px; display: flex;
-            overflow-x: auto; scroll-snap-type: x mandatory;
-            scrollbar-width: thin; scrollbar-color: var(--accent-purple) transparent;
-        }
-        .gallery-wrapper img {
-            flex-shrink: 0; height: 100%; min-width: 100%;
-            object-fit: cover; scroll-snap-align: center;
-            border-right: 1px solid var(--border-glass);
-        }
-
-        /* --- ADMIN CONTROLS --- */
-        .admin-controls {
-            padding: 10px; text-align: right; background: rgba(0,0,0,0.5);
-        }
-        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; }
+        .about-container { display: flex; gap: 50px; align-items: center; background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--border-glass); backdrop-filter: blur(15px); }
         
-        #add-project-btn {
-            display: none; /* Hidden for clients */
-            position: fixed; bottom: 30px; right: 30px;
-            background: var(--accent-purple); width: 60px; height: 60px;
-            border-radius: 50%; font-size: 30px; color: white; border: none;
-            cursor: pointer; box-shadow: 0 0 20px var(--accent-purple); z-index: 2000;
-        }
+        /* Gallery */
+        .model-card { background: var(--glass-bg); border: 1px solid var(--border-glass); margin-bottom: 80px; border-radius: 15px; overflow: hidden; position: relative; }
+        .model-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
+        .gallery-wrapper { position: relative; height: 550px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--accent-purple) transparent; }
+        .gallery-wrapper img { flex-shrink: 0; height: 100%; min-width: 100%; object-fit: cover; scroll-snap-align: center; border-right: 1px solid var(--border-glass); }
+        
+        /* Admin Elements */
+        .admin-controls { padding: 10px; text-align: right; background: rgba(0,0,0,0.5); }
+        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        #add-project-btn { display: none; position: fixed; bottom: 30px; right: 30px; background: var(--accent-purple); width: 60px; height: 60px; border-radius: 50%; font-size: 30px; color: white; border: none; cursor: pointer; box-shadow: 0 0 20px var(--accent-purple); z-index: 2000; }
 
-        /* --- MODAL FOR ADDING PROJECT --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 3000; display: none;
-            justify-content: center; align-items: center;
-        }
-        .modal-box {
-            background: #1a1a40; padding: 40px; border-radius: 15px;
-            width: 90%; max-width: 500px; border: 1px solid var(--accent-purple);
-        }
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; display: none; justify-content: center; align-items: center; }
+        .modal-box { background: #1a1a40; padding: 40px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid var(--accent-purple); }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; color: var(--accent-purple); }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 10px; background: rgba(255,255,255,0.1);
-            border: 1px solid var(--border-glass); color: white; border-radius: 5px;
-        }
-        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: white; border-radius: 5px; }
 
-        /* --- COMMENTS SECTION --- */
-        .comments-section {
-            background: var(--glass-bg); padding: 40px; border-radius: 20px;
-            border: 1px solid var(--border-glass); margin-top: 50px;
-        }
-        .comment-form { margin-bottom: 40px; }
+        /* Comments */
+        .comments-section { background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--border-glass); margin-top: 50px; }
         .stars { font-size: 1.5rem; color: gold; cursor: pointer; }
-        .comment-item {
-            background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;
-            margin-bottom: 15px; border-left: 3px solid var(--accent-purple);
-            position: relative;
-        }
+        .comment-item { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 3px solid var(--accent-purple); position: relative; }
         .comment-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
         .comment-author { font-weight: bold; color: var(--accent-purple); }
-        .comment-category { font-size: 0.8rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; }
-        
-        /* --- CONTACT --- */
-        .contact-box {
-            text-align: center; background: linear-gradient(to bottom, var(--glass-bg), transparent);
-            padding: 60px; border-radius: 20px; border: 1px solid var(--border-glass);
-        }
-        .email-link {
-            font-size: 2rem; color: #fff; text-decoration: none;
-            border-bottom: 2px solid var(--accent-purple); transition: 0.3s;
-        }
-        .email-link:hover { color: var(--accent-purple); letter-spacing: 2px; }
-        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.9rem; }
 
-        /* --- RESPONSIVE --- */
+        /* Contact & Footer */
+        .contact-box { text-align: center; background: linear-gradient(to bottom, var(--glass-bg), transparent); padding: 60px; border-radius: 20px; border: 1px solid var(--border-glass); }
+        .email-link { font-size: 2rem; color: #fff; text-decoration: none; border-bottom: 2px solid var(--accent-purple); transition: 0.3s; }
+        .email-link:hover { color: var(--accent-purple); }
+        footer { text-align: center; padding: 40px; color: var(--text-dim); }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
             .about-container { flex-direction: column; text-align: center; }
@@ -234,19 +132,19 @@
 </head>
 <body>
 
-    <div id="gatekeeper">
+    <div id="loading-screen"><div class="spinner"></div></div>
+
+    <div id="gatekeeper" class="hidden">
         <div class="gate-box">
-            <h1 style="margin-bottom: 20px;">WELCOME TO REHMANZADA.3D</h1>
-            <p style="margin-bottom: 30px; color: #b0b0b0;">Select your access level / Giriş növünü seçin</p>
-            
+            <h1>WELCOME TO REHMANZADA.3D</h1>
+            <p style="margin-bottom: 30px; color: #b0b0b0;">Select Access Level</p>
             <button class="gate-btn" onclick="showPasswordInput()">TEAM MEMBER (YUNIS)</button>
             <button class="gate-btn client" onclick="enterSite('client')">CLIENT / MÜŞTƏRİ</button>
-
             <div id="password-modal">
                 <input type="password" id="pass-input" placeholder="Enter Password">
                 <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="gate-btn" style="padding: 5px 15px; font-size: 1rem;" onclick="checkPassword()">ENTER</button>
-                    <button class="gate-btn client" style="padding: 5px 15px; font-size: 1rem; border-color: var(--danger);" onclick="cancelLogin()">CANCEL</button>
+                    <button class="gate-btn" style="padding: 5px 15px;" onclick="checkPassword()">ENTER</button>
+                    <button class="gate-btn client" style="padding: 5px 15px; border-color: var(--danger);" onclick="cancelLogin()">CANCEL</button>
                 </div>
                 <p id="error-msg" style="color: var(--danger); margin-top: 10px; display: none;">Wrong Password!</p>
             </div>
@@ -254,7 +152,6 @@
     </div>
 
     <div id="site-content" class="hidden">
-        
         <nav>
             <div class="logo">REHMANZADA.3D</div>
             <div style="display: flex; align-items: center;">
@@ -282,61 +179,35 @@
             <div class="about-container">
                 <div class="about-text">
                     <h2 id="about-h2">About Me</h2>
-                    <p id="about-p">I am a 3D Artist specializing in creating detailed hard-surface models and optimized low-poly assets. My workflow focuses on clean topology and futuristic aesthetics.</p>
+                    <p id="about-p">I am a 3D Artist specializing in detailed hard-surface models.</p>
                 </div>
             </div>
         </section>
 
         <section class="section" id="work">
             <h2 style="margin-bottom: 40px; font-size: 2rem; letter-spacing: 3px;" id="projects-h2">SELECTED WORKS</h2>
-
+            
             <article class="model-card">
-                <div class="model-header">
-                    <h3>BUGATTI DIVO</h3>
-                    <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
-                </div>
+                <div class="model-header"><h3>BUGATTI DIVO (STATIC)</h3><span style="color:var(--accent-purple);">DEMO</span></div>
                 <div class="gallery-wrapper">
-                    <img src="divo1.jpg" alt="View 1">
-                    <img src="divo2.jpg" alt="View 2">
-                    <img src="divo3.jpg" alt="View 3">
-                    <img src="divo4.jpg" alt="View 4">
+                    <img src="divo1.jpg" alt="img"><img src="divo2.jpg" alt="img">
                 </div>
-                <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" class="scroll-tip">Scroll horizontally &rarr;</p>
-            </article>
-
-             <article class="model-card">
-                <div class="model-header">
-                    <h3>LAMBORGHINI AVENTADOR</h3>
-                    <span style="color: var(--accent-purple);">BLENDER / LOW POLY</span>
-                </div>
-                <div class="gallery-wrapper">
-                    <img src="lamb1.jpg" alt="View 1">
-                    <img src="lamb2.jpg" alt="View 2">
-                    <img src="lamb3.jpg" alt="View 3">
-                    <img src="lamb4.jpg" alt="View 4">
-                </div>
-                <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;" class="scroll-tip">Scroll horizontally &rarr;</p>
             </article>
 
             <div id="dynamic-projects-container"></div>
-
         </section>
 
         <section class="section" id="comments">
-            <h2 id="reviews-h2" style="margin-bottom: 30px;">CLIENT REVIEWS</h2>
+            <h2 id="reviews-h2">CLIENT REVIEWS</h2>
             <div class="comments-section">
-                
                 <div class="comment-form">
                     <h3 id="leave-review-h3" style="color: var(--accent-purple); margin-bottom: 15px;">Leave a Review</h3>
-                    <div class="form-group">
-                        <input type="text" id="com-name" placeholder="Your Name / Adınız">
-                    </div>
+                    <div class="form-group"><input type="text" id="com-name" placeholder="Name / Ad"></div>
                     <div class="form-group">
                         <select id="com-category">
                             <option value="Hard Surface">Hard Surface Modeling</option>
                             <option value="Low Poly">Low Poly Environment</option>
-                            <option value="Character">Character Design</option>
-                            <option value="Other">Other / Digər</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -348,28 +219,20 @@
                             <i class="far fa-star" data-val="5"></i>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <textarea id="com-text" rows="3" placeholder="Write your feedback... (No bad words allowed)"></textarea>
-                    </div>
+                    <div class="form-group"><textarea id="com-text" rows="3" placeholder="Feedback..."></textarea></div>
                     <button class="gate-btn" onclick="submitComment()">POST COMMENT</button>
                 </div>
-
-                <div id="comments-list">
-                    </div>
+                <div id="comments-list"></div>
             </div>
         </section>
 
         <section class="section" id="contact">
             <div class="contact-box">
-                <h2 style="margin-bottom: 20px;" id="contact-h2">Get In Touch</h2>
-                <p style="margin-bottom: 30px; color: var(--text-dim);" id="contact-p">Open for collaborations.</p>
+                <h2 id="contact-h2">Get In Touch</h2>
                 <a href="mailto:yunisrehmanzada@gmail.com" class="email-link">yunisrehmanzada@gmail.com</a>
             </div>
         </section>
-
-        <footer>
-            <p id="footer-copy">&copy; 2026 Yunis Rehmanzada. All rights reserved.</p>
-        </footer>
+        <footer><p id="footer-copy">&copy; 2026 Yunis Rehmanzada.</p></footer>
     </div>
 
     <button id="add-project-btn" onclick="openModal()">+</button>
@@ -377,294 +240,216 @@
     <div class="modal-overlay" id="project-modal">
         <div class="modal-box">
             <h2 style="color: white; margin-bottom: 20px;">Add New Project</h2>
-            <div class="form-group">
-                <label>Project Name</label>
-                <input type="text" id="new-title">
-            </div>
-            <div class="form-group">
-                <label>Category (e.g. Low Poly)</label>
-                <input type="text" id="new-cat">
-            </div>
-            <div class="form-group">
-                <label>Image Filenames (comma separated, e.g. divo1.jpg, divo2.jpg)</label>
-                <input type="text" id="new-imgs" placeholder="car1.jpg, car2.jpg">
-            </div>
+            <div class="form-group"><label>Title</label><input type="text" id="new-title"></div>
+            <div class="form-group"><label>Category</label><input type="text" id="new-cat"></div>
+            <div class="form-group"><label>Image URLs (comma separated)</label><input type="text" id="new-imgs" placeholder="link1.jpg, link2.jpg"></div>
             <div class="modal-actions">
                 <button class="gate-btn client" onclick="closeModal()" style="border-color: var(--danger);">Cancel</button>
-                <button class="gate-btn" onclick="saveProject()">Apply</button>
+                <button class="gate-btn" onclick="addProjectFirebase()">Apply</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // --- GLOBAL VARIABLES ---
-        let isAdmin = false;
-        let selectedStar = 0;
-        const badWords = ["stupid", "idiot", "pis", "söyüş", "bad"]; // Add more words here
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // --- 1. GATEKEEPER LOGIC ---
-        function showPasswordInput() {
-            document.getElementById('password-modal').style.display = 'flex';
+        // --- SENIN GÖNDƏRDİYİN FIREBASE KODLARI ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
+            authDomain: "portfolio-yunis.firebaseapp.com",
+            projectId: "portfolio-yunis",
+            storageBucket: "portfolio-yunis.firebasestorage.app",
+            messagingSenderId: "1650727261",
+            appId: "1:1650727261:web:b472a1040274eb9d29b0b4",
+            measurementId: "G-DWZZTRB7N9"
+        };
+
+        // Initialize Firebase
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            console.log("Firebase Connected Successfully!");
+        } catch (e) {
+            console.error("Firebase Connection Error:", e);
+            alert("Firebase qoşulmadı. İnternet əlaqəsini yoxlayın.");
         }
 
-        function cancelLogin() {
+        // --- GLOBAL VARIABLES FOR UI ---
+        window.isAdmin = false;
+        let selectedStar = 0;
+        const badWords = ["stupid", "idiot", "pis", "söyüş", "bad"];
+
+        // --- GATEKEEPER LOGIC ---
+        window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
+        window.cancelLogin = () => {
             document.getElementById('password-modal').style.display = 'none';
             document.getElementById('pass-input').value = '';
-            document.getElementById('error-msg').style.display = 'none';
-        }
+        };
 
-        function checkPassword() {
-            const pass = document.getElementById('pass-input').value;
-            if (pass === 'Yr142536') {
-                isAdmin = true;
-                enterSite('admin');
+        window.checkPassword = () => {
+            if(document.getElementById('pass-input').value === 'Yr142536') {
+                window.isAdmin = true;
+                enterSite();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
             }
-        }
+        };
 
-        function enterSite(role) {
-            const gate = document.getElementById('gatekeeper');
-            gate.style.opacity = '0';
+        window.enterSite = (role) => {
+            document.getElementById('gatekeeper').style.opacity = '0';
             setTimeout(() => {
-                gate.style.display = 'none';
+                document.getElementById('gatekeeper').style.display = 'none';
                 document.getElementById('site-content').classList.remove('hidden');
-                
-                // If Admin, show Add Button
-                if (isAdmin) {
+                if(window.isAdmin) {
                     document.getElementById('add-project-btn').style.display = 'block';
-                    renderProjects(); // Refresh to show delete buttons
-                    renderComments(); // Refresh to show delete buttons
+                    loadProjects(); // Reload to show delete buttons
+                    loadComments(); // Reload to show delete buttons
                 }
             }, 800);
-        }
+        };
 
-        // --- 2. DYNAMIC PROJECTS LOGIC ---
-        function openModal() { document.getElementById('project-modal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('project-modal').style.display = 'none'; }
+        // --- PROJECTS LOGIC (ONLINE - FIREBASE) ---
+        window.openModal = () => document.getElementById('project-modal').style.display = 'flex';
+        window.closeModal = () => document.getElementById('project-modal').style.display = 'none';
 
-        function saveProject() {
+        window.addProjectFirebase = async () => {
             const title = document.getElementById('new-title').value;
             const cat = document.getElementById('new-cat').value;
             const imgStr = document.getElementById('new-imgs').value;
             
-            if(!title || !imgStr) return alert("Please fill details");
-
+            if(!title || !imgStr) return alert("Fill all fields");
             const imgs = imgStr.split(',').map(s => s.trim());
 
-            const newProj = { id: Date.now(), title, cat, imgs };
-            
-            // Get existing, add new, save back
-            let projects = JSON.parse(localStorage.getItem('portfolio_projects') || "[]");
-            projects.push(newProj);
-            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
-
-            closeModal();
-            renderProjects();
-        }
-
-        function deleteProject(id) {
-            if(!confirm("Are you sure? This will delete forever.")) return;
-            let projects = JSON.parse(localStorage.getItem('portfolio_projects') || "[]");
-            projects = projects.filter(p => p.id !== id);
-            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
-            renderProjects();
-        }
-
-        function renderProjects() {
-            const container = document.getElementById('dynamic-projects-container');
-            const projects = JSON.parse(localStorage.getItem('portfolio_projects') || "[]");
-            
-            container.innerHTML = ""; // Clear current
-
-            projects.forEach(p => {
-                let imgHTML = "";
-                p.imgs.forEach(src => {
-                    imgHTML += `<img src="${src}" alt="Project Image">`;
+            try {
+                await addDoc(collection(db, "projects"), {
+                    title: title,
+                    cat: cat,
+                    imgs: imgs,
+                    createdAt: Date.now()
                 });
+                closeModal();
+            } catch (e) {
+                console.error("Error adding project: ", e);
+                alert("Error adding project: " + e.message);
+            }
+        };
 
-                let adminHTML = isAdmin ? `<div class="admin-controls"><span class="btn-delete" onclick="deleteProject(${p.id})">DELETE PROJECT <i class="fas fa-trash"></i></span></div>` : "";
+        window.deleteProject = async (id) => {
+            if(!confirm("Həmişəlik silinsin?")) return;
+            await deleteDoc(doc(db, "projects", id));
+        };
 
-                const html = `
-                <article class="model-card">
-                    ${adminHTML}
-                    <div class="model-header">
-                        <h3>${p.title}</h3>
-                        <span style="color: var(--accent-purple);">${p.cat.toUpperCase()}</span>
-                    </div>
-                    <div class="gallery-wrapper">
-                        ${imgHTML}
-                    </div>
-                    <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;">Scroll horizontally &rarr;</p>
-                </article>
-                `;
-                container.innerHTML += html;
+        function loadProjects() {
+            const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                const container = document.getElementById('dynamic-projects-container');
+                container.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const p = doc.data();
+                    let imgHTML = "";
+                    p.imgs.forEach(src => imgHTML += `<img src="${src}" alt="Project Image">`);
+                    
+                    let deleteBtn = window.isAdmin ? `<div class="admin-controls"><span class="btn-delete" onclick="deleteProject('${doc.id}')">DELETE PROJECT <i class="fas fa-trash"></i></span></div>` : "";
+
+                    container.innerHTML += `
+                    <article class="model-card">
+                        ${deleteBtn}
+                        <div class="model-header"><h3>${p.title}</h3><span style="color: var(--accent-purple);">${p.cat}</span></div>
+                        <div class="gallery-wrapper">${imgHTML}</div>
+                        <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;">Scroll &rarr;</p>
+                    </article>`;
+                });
+                attachScroll();
             });
-
-            // Re-attach scroll listener to new elements
-            attachScroll();
         }
 
-        // --- 3. COMMENT SYSTEM LOGIC ---
-        // Star Rating UI
+        // --- COMMENTS LOGIC (ONLINE - FIREBASE) ---
         document.querySelectorAll('.stars i').forEach(star => {
             star.addEventListener('click', function() {
                 selectedStar = this.getAttribute('data-val');
                 document.querySelectorAll('.stars i').forEach(s => {
-                    if(s.getAttribute('data-val') <= selectedStar) s.classList.remove('far'), s.classList.add('fas');
-                    else s.classList.remove('fas'), s.classList.add('far');
+                    s.classList.toggle('fas', s.getAttribute('data-val') <= selectedStar);
+                    s.classList.toggle('far', s.getAttribute('data-val') > selectedStar);
                 });
             });
         });
 
-        function submitComment() {
+        window.submitComment = async () => {
             const name = document.getElementById('com-name').value;
             const cat = document.getElementById('com-category').value;
             const text = document.getElementById('com-text').value;
 
-            // Validation
-            if(!name || !text || selectedStar === 0) return alert("Please fill all fields and select stars.");
+            if(!name || !text || selectedStar === 0) return alert("Fill all fields & stars");
+            if(badWords.some(w => text.toLowerCase().includes(w))) return alert("Inappropriate language!");
 
-            // Profanity Filter
-            const hasBadWord = badWords.some(word => text.toLowerCase().includes(word));
-            if(hasBadWord) {
-                alert("Comment blocked due to inappropriate language.");
-                return;
+            try {
+                await addDoc(collection(db, "comments"), {
+                    name, cat, text, stars: selectedStar, createdAt: Date.now()
+                });
+                document.getElementById('com-text').value = "";
+                document.getElementById('com-name').value = "";
+                alert("Comment sent!");
+            } catch(e) {
+                console.error("Error sending comment:", e);
+                alert("Error sending comment. Check console.");
             }
+        };
 
-            const newComment = { id: Date.now(), name, cat, text, stars: selectedStar };
-            
-            let comments = JSON.parse(localStorage.getItem('portfolio_comments') || "[]");
-            comments.push(newComment);
-            localStorage.setItem('portfolio_comments', JSON.stringify(comments));
+        window.deleteComment = async (id) => {
+            if(!confirm("Delete comment?")) return;
+            await deleteDoc(doc(db, "comments", id));
+        };
 
-            // Reset Form
-            document.getElementById('com-text').value = "";
-            document.getElementById('com-name').value = "";
-            renderComments();
-        }
+        function loadComments() {
+            const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                const list = document.getElementById('comments-list');
+                list.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const c = doc.data();
+                    let starsHTML = "";
+                    for(let i=0; i<5; i++) starsHTML += i < c.stars ? '<i class="fas fa-star" style="color:gold;"></i>' : '<i class="far fa-star" style="color:gold;"></i>';
+                    
+                    let delBtn = window.isAdmin ? `<button onclick="deleteComment('${doc.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:red;cursor:pointer;"><i class="fas fa-trash"></i></button>` : "";
 
-        function deleteComment(id) {
-            let comments = JSON.parse(localStorage.getItem('portfolio_comments') || "[]");
-            comments = comments.filter(c => c.id !== id);
-            localStorage.setItem('portfolio_comments', JSON.stringify(comments));
-            renderComments();
-        }
-
-        function renderComments() {
-            const list = document.getElementById('comments-list');
-            const comments = JSON.parse(localStorage.getItem('portfolio_comments') || "[]");
-
-            list.innerHTML = "";
-
-            comments.forEach(c => {
-                let starsHTML = "";
-                for(let i=0; i<5; i++) {
-                    starsHTML += i < c.stars ? '<i class="fas fa-star" style="color:gold;"></i>' : '<i class="far fa-star" style="color:gold;"></i>';
-                }
-
-                let deleteBtn = isAdmin ? `<button onclick="deleteComment(${c.id})" style="position:absolute; top:10px; right:10px; background:none; border:none; color:red; cursor:pointer;"><i class="fas fa-trash"></i></button>` : "";
-
-                const html = `
-                <div class="comment-item">
-                    ${deleteBtn}
-                    <div class="comment-header">
-                        <span class="comment-author">${c.name}</span>
-                        <span class="comment-category">${c.cat}</span>
-                    </div>
-                    <div style="margin-bottom: 5px;">${starsHTML}</div>
-                    <p>${c.text}</p>
-                </div>
-                `;
-                list.innerHTML += html;
-            });
-        }
-
-        // --- 4. UTILS & INIT ---
-        function attachScroll() {
-            const scrolls = document.querySelectorAll(".gallery-wrapper");
-            scrolls.forEach((el) => {
-                el.addEventListener("wheel", (evt) => {
-                    if (evt.deltaY != 0) {
-                        evt.preventDefault();
-                        el.scrollLeft += evt.deltaY;
-                    }
+                    list.innerHTML += `
+                    <div class="comment-item">
+                        ${delBtn}
+                        <div class="comment-header"><span class="comment-author">${c.name}</span><span style="font-size:0.8rem;background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;">${c.cat}</span></div>
+                        <div style="margin-bottom: 5px;">${starsHTML}</div>
+                        <p>${c.text}</p>
+                    </div>`;
                 });
             });
         }
 
-        // Language Logic (Updated)
-        const langData = {
-            az: {
-                "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-reviews": "Rəylər", "nav-contact": "Əlaqə",
-                "hero-h1": "3D-NİN GƏLƏCƏYİ", "hero-p": "Sərt Səth Modelləşdirmə və Low Poly Mühitlər",
-                "about-h2": "Haqqımda", "about-p": "Mən detallı sərt səth (hard-surface) modelləri üzrə ixtisaslaşmış 3D rəssamam.",
-                "projects-h2": "SEÇİLMİŞ İŞLƏR", "reviews-h2": "MÜŞTƏRİ RƏYLƏRİ", "leave-review-h3": "Rəy Yazın",
-                "contact-h2": "Əlaqə Saxla", "contact-p": "Əməkdaşlıq üçün açığam.",
-                "footer-copy": "© 2026 Yunis Rehmanzada. Bütün hüquqlar qorunur."
-            },
-            en: {
-                "nav-home": "Home", "nav-projects": "Projects", "nav-reviews": "Reviews", "nav-contact": "Contact",
-                "hero-h1": "THE FUTURE OF 3D", "hero-p": "Hard Surface Modeling & Low Poly Environments",
-                "about-h2": "About Me", "about-p": "I am a 3D Artist specializing in creating detailed hard-surface models.",
-                "projects-h2": "SELECTED WORKS", "reviews-h2": "CLIENT REVIEWS", "leave-review-h3": "Leave a Review",
-                "contact-h2": "Get In Touch", "contact-p": "Open for collaborations.",
-                "footer-copy": "© 2026 Yunis Rehmanzada. All rights reserved."
-            },
-            ru: {
-                "nav-home": "Главная", "nav-projects": "Проекты", "nav-reviews": "Отзывы", "nav-contact": "Контакты",
-                "hero-h1": "БУДУЩЕЕ 3D", "hero-p": "Hard Surface моделирование",
-                "about-h2": "Обо мне", "about-p": "Я 3D-художник, специализирующийся на Hard Surface.",
-                "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "reviews-h2": "ОТЗЫВЫ КЛИЕНТОВ", "leave-review-h3": "Оставить отзыв",
-                "contact-h2": "Связаться", "contact-p": "Открыт для сотрудничества.",
-                "footer-copy": "© 2026 Юнис Рехманзаде. Все права защищены."
-            },
-            tr: {
-                "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-reviews": "Yorumlar", "nav-contact": "İletişim",
-                "hero-h1": "3D'NİN GELECEĞİ", "hero-p": "Sert Yüzey Modelleme",
-                "about-h2": "Hakkımda", "about-p": "Sert yüzey modelleme konusunda uzmanlaşmış bir 3D sanatçısıyım.",
-                "projects-h2": "SEÇİLMİŞ İŞLER", "reviews-h2": "MÜŞTERİ YORUMLARI", "leave-review-h3": "Yorum Yaz",
-                "contact-h2": "İletişime Geç", "contact-p": "İşbirlikleri için hazırım.",
-                "footer-copy": "© 2026 Yunis Rehmanzada. Tüm hakları saklıdır."
-            }
+        function attachScroll() {
+            document.querySelectorAll(".gallery-wrapper").forEach(el => {
+                el.addEventListener("wheel", (evt) => { if (evt.deltaY != 0) { evt.preventDefault(); el.scrollLeft += evt.deltaY; } });
+            });
+        }
+
+        // Init Loading
+        window.addEventListener('load', () => {
+            document.getElementById('loading-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('gatekeeper').classList.remove('hidden');
+                loadProjects(); // Load immediately so data is ready
+                loadComments();
+            }, 500);
+        });
+
+        // Language
+        window.langData = {
+            az: { "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-reviews": "Rəylər", "nav-contact": "Əlaqə", "hero-h1": "3D-NİN GƏLƏCƏYİ", "projects-h2": "SEÇİLMİŞ İŞLƏR", "reviews-h2": "MÜŞTƏRİ RƏYLƏRİ", "contact-h2": "Əlaqə Saxla" },
+            en: { "nav-home": "Home", "nav-projects": "Projects", "nav-reviews": "Reviews", "nav-contact": "Contact", "hero-h1": "THE FUTURE OF 3D", "projects-h2": "SELECTED WORKS", "reviews-h2": "CLIENT REVIEWS", "contact-h2": "Get In Touch" },
+            ru: { "nav-home": "Главная", "nav-projects": "Проекты", "nav-reviews": "Отзывы", "nav-contact": "Контакты", "hero-h1": "БУДУЩЕЕ 3D", "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "reviews-h2": "ОТЗЫВЫ КЛИЕНТОВ", "contact-h2": "Связаться" },
+            tr: { "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-reviews": "Yorumlar", "nav-contact": "İletişim", "hero-h1": "3D'NİN GELECEĞİ", "projects-h2": "SEÇİLMİŞ İŞLER", "reviews-h2": "MÜŞTERİ YORUMLARI", "contact-h2": "İletişime Geç" }
         };
-
-        function changeLang(lang) {
-            for (let key in langData[lang]) {
-                const element = document.getElementById(key);
-                if (element) element.innerText = langData[lang][key];
-            }
-        }
-
-        // Initialize
-        window.onload = function() {
-            renderProjects();
-            renderComments();
-            attachScroll();
-        }
-
-        // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
-  authDomain: "portfolio-yunis.firebaseapp.com",
-  projectId: "portfolio-yunis",
-  storageBucket: "portfolio-yunis.firebasestorage.app",
-  messagingSenderId: "1650727261",
-  appId: "1:1650727261:web:b472a1040274eb9d29b0b4",
-  measurementId: "G-DWZZTRB7N9"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
+        window.changeLang = (lang) => { for(let k in window.langData[lang]) if(document.getElementById(k)) document.getElementById(k).innerText = window.langData[lang][k]; };
     </script>
 </body>
 </html>
