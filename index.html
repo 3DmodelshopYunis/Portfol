@@ -10,12 +10,28 @@
 
     <style>
         :root {
-            --bg-dark: #050505; /* Tam qara - renderlərin daha yaxşı görünməsi üçün */
+            --bg-dark: #050505;
             --accent-purple: #8e2de2;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --border-glass: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
             --text-dim: #888888;
+        }
+
+        /* --- SİVRİ AĞ-QARA SCROLLBAR (SAYT ÜÇÜN) --- */
+        ::-webkit-scrollbar {
+            width: 10px; /* Eni */
+        }
+        ::-webkit-scrollbar-track {
+            background: #000; /* Yolun rəngi */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fff; /* Sürüşən hissə ağ */
+            border-radius: 0; /* Sivri/Kvadrat künclər */
+            border: 1px solid #000;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #cccccc;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,12 +45,11 @@
             overflow-x: hidden;
         }
 
-        /* --- GALLERY AUTO-ADAPTIVE LOGIC --- */
         .model-card { 
             background: rgba(10, 10, 10, 0.5); 
             border: 1px solid var(--border-glass); 
             margin-bottom: 100px; 
-            border-radius: 4px; /* Daha professional kəskin künclər */
+            border-radius: 4px; 
             overflow: hidden;
         }
 
@@ -49,31 +64,32 @@
 
         .model-header h3 { letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
 
-        /* Əsas düzəliş bura: Sabit hündürlük yoxdur */
         .gallery-wrapper { 
             position: relative; 
             display: flex; 
             overflow-x: auto; 
             scroll-snap-type: x mandatory; 
             background: #000; 
-            min-height: 200px; /* Boş qalmaması üçün */
-            max-height: 85vh; /* Ekranın çoxunu tutmasın deyə limit */
-            align-items: center; /* Kvadrat şəkilləri mərkəzləyir */
+            min-height: 200px;
+            max-height: 85vh;
+            align-items: center;
+            scrollbar-width: none; /* Firefox üçün scrollbar gizlət */
+        }
+
+        /* Şəkil bölməsinin öz daxili scrollbarını gizlədirik (mausla idarə edəcəyik) */
+        .gallery-wrapper::-webkit-scrollbar {
+            display: none;
         }
 
         .gallery-wrapper img { 
             flex-shrink: 0; 
-            width: 100%; /* Eni tam tutur */
-            height: auto; /* Hündürlük şəklin öz ölçüsünə görə dəyişir */
-            max-height: 85vh; /* Şəklin çox uzanmasının qarşısını alır */
-            object-fit: contain; /* Şəkli KƏSMİR, tam göstərir */
+            width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
             scroll-snap-align: center;
         }
 
-        .gallery-wrapper::-webkit-scrollbar { height: 6px; }
-        .gallery-wrapper::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 3px; }
-
-        /* UI ELEMENTS */
         nav { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 15px 8%; background: rgba(0,0,0,0.9); 
@@ -160,8 +176,8 @@
         <div class="modal-box" style="background:#111; padding:40px; border:1px solid var(--accent-purple); width:400px;">
             <h2 style="margin-bottom:20px;">Add Project</h2>
             <input type="text" id="new-title" placeholder="Project Title" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
-            <input type="text" id="new-cat" placeholder="Category (e.g. 3D Design)" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
-            <input type="text" id="new-imgs" placeholder="Image URLs (comma separated)" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
+            <input type="text" id="new-cat" placeholder="Category" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
+            <input type="text" id="new-imgs" placeholder="Image URLs" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
             <button class="gate-btn" onclick="addProjectFirebase()" style="width:100%;">PUBLISH</button>
             <button class="gate-btn" onclick="closeModal()" style="width:100%; border-color:red; margin-top:10px;">CANCEL</button>
         </div>
@@ -185,8 +201,18 @@
 
         window.isAdmin = false;
 
+        // --- MAUSLA HORIZONTAL SCROLL FUNKSIYASI ---
+        document.addEventListener('wheel', (evt) => {
+            const gallery = evt.target.closest('.gallery-wrapper');
+            if (gallery) {
+                if (evt.deltaY !== 0) {
+                    evt.preventDefault(); // Səhifənin aşağı düşməsini dayandır
+                    gallery.scrollLeft += evt.deltaY; // Şəkilləri yana sürüşdür
+                }
+            }
+        }, { passive: false });
+
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
-        
         window.checkPassword = () => {
             if(document.getElementById('pass-input').value === 'Yr142536') {
                 window.isAdmin = true;
@@ -210,7 +236,6 @@
             const imgStr = document.getElementById('new-imgs').value;
             if(!title || !imgStr) return alert("Fill fields!");
             const imgs = imgStr.split(',').map(s => s.trim());
-
             await addDoc(collection(db, "projects"), { title, cat, imgs, createdAt: Date.now() });
             closeModal();
         };
@@ -228,7 +253,6 @@
                     const p = doc.data();
                     let imgHTML = "";
                     p.imgs.forEach(src => imgHTML += `<img src="${src}" alt="3D Work">`);
-                    
                     let delBtn = window.isAdmin ? `<span onclick="deleteProject('${doc.id}')" style="color:red; cursor:pointer; font-size:0.8rem;">DELETE</span>` : "";
 
                     container.innerHTML += `
