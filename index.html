@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunis Rehmanzada | 3D Artist Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -46,7 +46,7 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- GATEKEEPER --- */
+        /* --- GATEKEEPER (Login Screen) --- */
         #gatekeeper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #0f0c29; z-index: 9999;
@@ -54,79 +54,166 @@
             transition: opacity 0.8s ease;
         }
         .gate-box {
-            background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px;
+            background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px;
             border: 1px solid var(--border-glass); text-align: center;
             backdrop-filter: blur(20px); animation: fadeInDown 1s ease;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            max-width: 90%;
         }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
 
         .gate-btn {
             background: var(--accent-purple); border: none; color: white;
-            padding: 15px 30px; margin: 10px; font-size: 1.2rem; cursor: pointer;
-            border-radius: 10px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; font-weight: 700;
+            padding: 12px 30px; margin: 10px; font-size: 1.1rem; cursor: pointer;
+            border-radius: 8px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
         }
         .gate-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-purple); }
         .gate-btn.client { background: transparent; border: 2px solid var(--accent-purple); }
+        .gate-btn.client:hover { background: var(--accent-purple); }
 
         #password-modal { display: none; flex-direction: column; margin-top: 20px; }
-        #pass-input { padding: 10px; border-radius: 5px; border: none; margin-bottom: 10px; text-align: center; }
+        #pass-input { 
+            padding: 12px; border-radius: 5px; border: 1px solid var(--border-glass); 
+            background: rgba(0,0,0,0.3); color: white; margin-bottom: 10px; text-align: center; font-size: 1rem;
+        }
 
         /* --- MAIN UI --- */
         .hidden { display: none !important; }
         
-        /* Language & Nav */
-        .lang-switcher { display: flex; gap: 10px; margin-right: 20px; }
-        .lang-btn { background: var(--glass-bg); border: 1px solid var(--border-glass); color: white; padding: 5px 10px; cursor: pointer; border-radius: 5px; font-weight: 700; transition: 0.3s; }
-        .lang-btn:hover { background: var(--accent-purple); }
+        /* Nav */
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 8%; background: rgba(15, 12, 41, 0.8); 
+            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid var(--border-glass); 
+        }
+        .logo { 
+            font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; 
+            background: linear-gradient(to right, #fff, var(--accent-purple)); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Language Switcher */
+        .lang-switcher { display: flex; gap: 5px; margin-right: 20px; }
+        .lang-btn { 
+            background: var(--glass-bg); border: 1px solid var(--border-glass); 
+            color: var(--text-dim); padding: 5px 10px; cursor: pointer; 
+            border-radius: 4px; font-weight: 600; transition: 0.3s; 
+        }
+        .lang-btn:hover { background: var(--accent-purple); color: white; }
 
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-glass); }
-        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; background: linear-gradient(to right, #fff, var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 30px; }
-        nav ul li a { text-decoration: none; color: white; font-weight: 500; text-transform: uppercase; transition: 0.3s; }
-        nav ul li a:hover { color: var(--accent-purple); }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { text-decoration: none; color: white; font-weight: 500; text-transform: uppercase; transition: 0.3s; font-size: 0.9rem; letter-spacing: 1px; }
+        nav ul li a:hover { color: var(--accent-purple); text-shadow: 0 0 10px var(--accent-purple); }
 
         /* Sections */
-        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: 5rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px; }
-        .section { padding: 100px 10%; }
-        .about-container { display: flex; gap: 50px; align-items: center; background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--border-glass); backdrop-filter: blur(15px); }
+        .section { padding: 80px 10%; }
         
-        /* Gallery */
-        .model-card { background: var(--glass-bg); border: 1px solid var(--border-glass); margin-bottom: 80px; border-radius: 15px; overflow: hidden; position: relative; }
-        .model-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
-        .gallery-wrapper { position: relative; height: 550px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--accent-purple) transparent; }
-        .gallery-wrapper img { flex-shrink: 0; height: 100%; min-width: 100%; object-fit: cover; scroll-snap-align: center; border-right: 1px solid var(--border-glass); }
-        
-        /* Admin Elements */
-        .admin-controls { padding: 10px; text-align: right; background: rgba(0,0,0,0.5); }
-        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; font-size: 0.9rem; }
-        #add-project-btn { display: none; position: fixed; bottom: 30px; right: 30px; background: var(--accent-purple); width: 60px; height: 60px; border-radius: 50%; font-size: 30px; color: white; border: none; cursor: pointer; box-shadow: 0 0 20px var(--accent-purple); z-index: 2000; }
+        .hero { 
+            height: 85vh; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center; 
+            background: radial-gradient(circle at center, rgba(142, 45, 226, 0.1) 0%, transparent 70%);
+        }
+        .hero h1 { font-size: 4rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px; line-height: 1.1; }
+        .hero p { font-size: 1.5rem; color: var(--text-dim); letter-spacing: 2px; }
 
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; display: none; justify-content: center; align-items: center; }
-        .modal-box { background: #1a1a40; padding: 40px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid var(--accent-purple); }
-        .form-group { margin-bottom: 15px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: white; border-radius: 5px; }
+        .about-container { 
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            background: var(--glass-bg); padding: 50px; border-radius: 20px; 
+            border: 1px solid var(--border-glass); backdrop-filter: blur(15px); 
+        }
+
+        /* Gallery / Models */
+        .model-card { 
+            background: var(--glass-bg); border: 1px solid var(--border-glass); 
+            margin-bottom: 60px; border-radius: 15px; overflow: hidden; position: relative;
+            transition: transform 0.3s;
+        }
+        .model-card:hover { border-color: var(--accent-purple); }
+
+        .model-header { 
+            padding: 20px; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--border-glass); background: rgba(0,0,0,0.2);
+        }
+        .model-header h3 { font-size: 1.5rem; letter-spacing: 2px; }
+
+        /* Horizontal Scroll Gallery */
+        .gallery-wrapper { 
+            position: relative; height: 500px; display: flex; 
+            overflow-x: auto; scroll-snap-type: x mandatory; 
+            scrollbar-width: thin; scrollbar-color: var(--accent-purple) transparent; 
+        }
+        .gallery-wrapper::-webkit-scrollbar { height: 8px; }
+        .gallery-wrapper::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 4px; }
+        
+        .gallery-wrapper img { 
+            flex-shrink: 0; height: 100%; min-width: 100%; object-fit: cover; 
+            scroll-snap-align: center; border-right: 1px solid var(--border-glass); 
+        }
 
         /* Comments */
-        .comments-section { background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--border-glass); margin-top: 50px; }
-        .stars { font-size: 1.5rem; color: gold; cursor: pointer; }
-        .comment-item { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 3px solid var(--accent-purple); position: relative; }
-        .comment-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .comment-author { font-weight: bold; color: var(--accent-purple); }
+        .comments-section { 
+            background: var(--glass-bg); padding: 40px; border-radius: 20px; 
+            border: 1px solid var(--border-glass); margin-top: 20px; 
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.3); 
+            border: 1px solid var(--border-glass); color: white; 
+            border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1rem;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-purple); outline: none; }
+        
+        .stars { font-size: 1.5rem; color: gold; cursor: pointer; margin-bottom: 10px; }
+        
+        .comment-item { 
+            background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; 
+            margin-bottom: 15px; border-left: 3px solid var(--accent-purple); position: relative; 
+        }
+        .comment-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .comment-author { font-weight: bold; color: var(--accent-purple); font-size: 1.1rem; }
+
+        /* Admin Controls */
+        .admin-controls { padding: 10px; text-align: right; background: rgba(0,0,0,0.6); position: absolute; top: 0; right: 0; z-index: 10; border-bottom-left-radius: 10px; }
+        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        
+        #add-project-btn { 
+            display: none; position: fixed; bottom: 30px; right: 30px; 
+            background: var(--accent-purple); width: 60px; height: 60px; 
+            border-radius: 50%; font-size: 30px; color: white; border: none; 
+            cursor: pointer; box-shadow: 0 0 20px var(--accent-purple); z-index: 2000; 
+            transition: 0.3s;
+        }
+        #add-project-btn:hover { transform: rotate(90deg); }
+
+        /* Modals */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); z-index: 3000; display: none; 
+            justify-content: center; align-items: center; 
+        }
+        .modal-box { 
+            background: #1a1a40; padding: 40px; border-radius: 15px; 
+            width: 90%; max-width: 500px; border: 1px solid var(--accent-purple); 
+            box-shadow: 0 0 50px rgba(142, 45, 226, 0.2);
+        }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
         /* Contact & Footer */
         .contact-box { text-align: center; background: linear-gradient(to bottom, var(--glass-bg), transparent); padding: 60px; border-radius: 20px; border: 1px solid var(--border-glass); }
-        .email-link { font-size: 2rem; color: #fff; text-decoration: none; border-bottom: 2px solid var(--accent-purple); transition: 0.3s; }
-        .email-link:hover { color: var(--accent-purple); }
-        footer { text-align: center; padding: 40px; color: var(--text-dim); }
+        .email-link { font-size: 1.8rem; color: #fff; text-decoration: none; border-bottom: 2px solid var(--accent-purple); transition: 0.3s; word-break: break-all; }
+        .email-link:hover { color: var(--accent-purple); border-color: transparent; }
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border-glass); margin-top: 50px; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .about-container { flex-direction: column; text-align: center; }
-            .gallery-wrapper { height: 350px; }
-            nav { flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            .gallery-wrapper { height: 300px; }
+            nav { flex-direction: column; gap: 15px; padding: 20px; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 0 10px; }
         }
     </style>
 </head>
@@ -137,16 +224,18 @@
     <div id="gatekeeper" class="hidden">
         <div class="gate-box">
             <h1>WELCOME TO REHMANZADA.3D</h1>
-            <p style="margin-bottom: 30px; color: #b0b0b0;">Select Access Level</p>
+            <p style="margin-bottom: 30px; color: #b0b0b0; letter-spacing: 1px;">HIGH END HARD-SURFACE MODELING</p>
+            
             <button class="gate-btn" onclick="showPasswordInput()">TEAM MEMBER (YUNIS)</button>
             <button class="gate-btn client" onclick="enterSite('client')">CLIENT / MÜŞTƏRİ</button>
+            
             <div id="password-modal">
                 <input type="password" id="pass-input" placeholder="Enter Password">
                 <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="gate-btn" style="padding: 5px 15px;" onclick="checkPassword()">ENTER</button>
-                    <button class="gate-btn client" style="padding: 5px 15px; border-color: var(--danger);" onclick="cancelLogin()">CANCEL</button>
+                    <button class="gate-btn" style="padding: 8px 20px;" onclick="checkPassword()">ENTER</button>
+                    <button class="gate-btn client" style="padding: 8px 20px; border-color: var(--danger);" onclick="cancelLogin()">CANCEL</button>
                 </div>
-                <p id="error-msg" style="color: var(--danger); margin-top: 10px; display: none;">Wrong Password!</p>
+                <p id="error-msg" style="color: var(--danger); margin-top: 10px; display: none;">Access Denied!</p>
             </div>
         </div>
     </div>
@@ -154,7 +243,7 @@
     <div id="site-content" class="hidden">
         <nav>
             <div class="logo">REHMANZADA.3D</div>
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
                 <div class="lang-switcher">
                     <button class="lang-btn" onclick="changeLang('az')">AZ</button>
                     <button class="lang-btn" onclick="changeLang('en')">EN</button>
@@ -173,27 +262,32 @@
         <section class="hero" id="home">
             <h1 id="hero-h1">THE FUTURE OF 3D</h1>
             <p id="hero-p">Hard Surface Modeling & Low Poly Environments</p>
+            <a href="#work" class="gate-btn client" style="margin-top: 30px; text-decoration: none; display: inline-block;">VIEW PORTFOLIO</a>
         </section>
 
         <section class="section" id="about">
             <div class="about-container">
-                <div class="about-text">
-                    <h2 id="about-h2">About Me</h2>
-                    <p id="about-p">I am a 3D Artist specializing in detailed hard-surface models.</p>
-                </div>
+                <h2 id="about-h2" style="font-size: 2.5rem; margin-bottom: 20px;">About Me</h2>
+                <p id="about-p" style="font-size: 1.2rem; max-width: 800px;">I am a 3D Artist specializing in detailed hard-surface models, automotive rendering, and immersive low-poly environments. My work focuses on precision, lighting, and optimized topology.</p>
             </div>
         </section>
 
         <section class="section" id="work">
-            <h2 style="margin-bottom: 40px; font-size: 2rem; letter-spacing: 3px;" id="projects-h2">SELECTED WORKS</h2>
+            <h2 style="margin-bottom: 40px; font-size: 2.5rem; letter-spacing: 3px; text-align: center;" id="projects-h2">SELECTED WORKS</h2>
             
             <article class="model-card">
-                <div class="model-header"><h3>BUGATTI DIVO (STATIC)</h3><span style="color:var(--accent-purple);">DEMO</span></div>
+                <div class="model-header">
+                    <h3>BUGATTI DIVO (STATIC)</h3>
+                    <span style="color:var(--accent-purple); font-weight: bold;">DEMO</span>
+                </div>
                 <div class="gallery-wrapper">
-                    <img src="divo1.jpg" alt="img"> 
-                    <img src="divo2.jpg" alt="img">
-                    <img src="divo3.jpg" alt="img">
-                    <img src="divo4.jpg" alt="img">
+                    <img src="divo1.jpg" alt="Bugatti 1"> 
+                    <img src="divo2.jpg" alt="Bugatti 2">
+                    <img src="divo3.jpg" alt="Bugatti 3">
+                    <img src="divo4.jpg" alt="Bugatti 4">
+                </div>
+                <div style="padding: 10px; text-align: center; color: var(--text-dim); font-size: 0.8rem;">
+                    <i class="fas fa-arrows-alt-h"></i> SCROLL / SÜRÜŞDÜR
                 </div>
             </article>
 
@@ -201,7 +295,7 @@
         </section>
 
         <section class="section" id="comments">
-            <h2 id="reviews-h2">CLIENT REVIEWS</h2>
+            <h2 id="reviews-h2" style="text-align: center; margin-bottom: 30px;">CLIENT REVIEWS</h2>
             <div class="comments-section">
                 <div class="comment-form">
                     <h3 id="leave-review-h3" style="color: var(--accent-purple); margin-bottom: 15px;">Leave a Review</h3>
@@ -210,6 +304,7 @@
                         <select id="com-category">
                             <option value="Hard Surface">Hard Surface Modeling</option>
                             <option value="Low Poly">Low Poly Environment</option>
+                            <option value="Automotive">Automotive</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -225,17 +320,24 @@
                     <div class="form-group"><textarea id="com-text" rows="3" placeholder="Feedback..."></textarea></div>
                     <button class="gate-btn" onclick="submitComment()">POST COMMENT</button>
                 </div>
-                <div id="comments-list"></div>
+                
+                <div id="comments-list" style="margin-top: 40px;"></div>
             </div>
         </section>
 
         <section class="section" id="contact">
             <div class="contact-box">
-                <h2 id="contact-h2">Get In Touch</h2>
+                <h2 id="contact-h2" style="margin-bottom: 20px;">Get In Touch</h2>
                 <a href="mailto:yunisrehmanzada@gmail.com" class="email-link">yunisrehmanzada@gmail.com</a>
+                <div style="margin-top: 30px; font-size: 1.5rem;">
+                    <i class="fab fa-instagram" style="margin: 0 10px; cursor: pointer;"></i>
+                    <i class="fab fa-artstation" style="margin: 0 10px; cursor: pointer;"></i>
+                    <i class="fab fa-linkedin" style="margin: 0 10px; cursor: pointer;"></i>
+                </div>
             </div>
         </section>
-        <footer><p id="footer-copy">&copy; 2026 Yunis Rehmanzada.</p></footer>
+        
+        <footer><p id="footer-copy">&copy; 2026 Yunis Rehmanzada. All Rights Reserved.</p></footer>
     </div>
 
     <button id="add-project-btn" onclick="openModal()">+</button>
@@ -257,7 +359,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // --- SENIN GÖNDƏRDİYİN FIREBASE KODLARI ---
+        // FIREBASE CONFIG (Sizin açarlar)
         const firebaseConfig = {
             apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
             authDomain: "portfolio-yunis.firebaseapp.com",
@@ -276,13 +378,13 @@
             console.log("Firebase Connected Successfully!");
         } catch (e) {
             console.error("Firebase Connection Error:", e);
-            alert("Firebase qoşulmadı. İnternet əlaqəsini yoxlayın.");
+            alert("Firebase Error. Check console.");
         }
 
-        // --- GLOBAL VARIABLES FOR UI ---
+        // --- GLOBAL UI VARIABLES ---
         window.isAdmin = false;
         let selectedStar = 0;
-        const badWords = ["stupid", "idiot", "pis", "söyüş", "bad"];
+        const badWords = ["stupid", "idiot", "pis", "söyüş", "bad", "axmaq"];
 
         // --- GATEKEEPER LOGIC ---
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
@@ -292,6 +394,7 @@
         };
 
         window.checkPassword = () => {
+            // Şifrə: Yr142536
             if(document.getElementById('pass-input').value === 'Yr142536') {
                 window.isAdmin = true;
                 enterSite();
@@ -307,13 +410,13 @@
                 document.getElementById('site-content').classList.remove('hidden');
                 if(window.isAdmin) {
                     document.getElementById('add-project-btn').style.display = 'block';
-                    loadProjects(); // Reload to show delete buttons
-                    loadComments(); // Reload to show delete buttons
+                    loadProjects(); 
+                    loadComments(); 
                 }
             }, 800);
         };
 
-        // --- PROJECTS LOGIC (ONLINE - FIREBASE) ---
+        // --- PROJECT FUNCTIONS ---
         window.openModal = () => document.getElementById('project-modal').style.display = 'flex';
         window.closeModal = () => document.getElementById('project-modal').style.display = 'none';
 
@@ -335,12 +438,12 @@
                 closeModal();
             } catch (e) {
                 console.error("Error adding project: ", e);
-                alert("Error adding project: " + e.message);
+                alert("Error: " + e.message);
             }
         };
 
         window.deleteProject = async (id) => {
-            if(!confirm("Həmişəlik silinsin?")) return;
+            if(!confirm("Silmək istədiyinizə əminsiniz?")) return;
             await deleteDoc(doc(db, "projects", id));
         };
 
@@ -361,14 +464,14 @@
                         ${deleteBtn}
                         <div class="model-header"><h3>${p.title}</h3><span style="color: var(--accent-purple);">${p.cat}</span></div>
                         <div class="gallery-wrapper">${imgHTML}</div>
-                        <p style="padding: 15px; color: var(--text-dim); font-size: 0.9rem;">Scroll &rarr;</p>
+                        <div style="padding: 10px; text-align: center; color: var(--text-dim); font-size: 0.8rem;"><i class="fas fa-arrows-alt-h"></i> SCROLL</div>
                     </article>`;
                 });
                 attachScroll();
             });
         }
 
-        // --- COMMENTS LOGIC (ONLINE - FIREBASE) ---
+        // --- COMMENT FUNCTIONS ---
         document.querySelectorAll('.stars i').forEach(star => {
             star.addEventListener('click', function() {
                 selectedStar = this.getAttribute('data-val');
@@ -396,7 +499,7 @@
                 alert("Comment sent!");
             } catch(e) {
                 console.error("Error sending comment:", e);
-                alert("Error sending comment. Check console.");
+                alert("Error sending comment.");
             }
         };
 
@@ -420,7 +523,10 @@
                     list.innerHTML += `
                     <div class="comment-item">
                         ${delBtn}
-                        <div class="comment-header"><span class="comment-author">${c.name}</span><span style="font-size:0.8rem;background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;">${c.cat}</span></div>
+                        <div class="comment-header">
+                            <span class="comment-author">${c.name}</span>
+                            <span style="font-size:0.8rem;background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;">${c.cat}</span>
+                        </div>
                         <div style="margin-bottom: 5px;">${starsHTML}</div>
                         <p>${c.text}</p>
                     </div>`;
@@ -430,29 +536,36 @@
 
         function attachScroll() {
             document.querySelectorAll(".gallery-wrapper").forEach(el => {
-                el.addEventListener("wheel", (evt) => { if (evt.deltaY != 0) { evt.preventDefault(); el.scrollLeft += evt.deltaY; } });
+                el.addEventListener("wheel", (evt) => { 
+                    if (evt.deltaY != 0) { 
+                        evt.preventDefault(); 
+                        el.scrollLeft += evt.deltaY; 
+                    } 
+                });
             });
         }
 
-        // Init Loading
+        // --- INIT ---
         window.addEventListener('load', () => {
             document.getElementById('loading-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('gatekeeper').classList.remove('hidden');
-                loadProjects(); // Load immediately so data is ready
+                loadProjects(); 
                 loadComments();
             }, 500);
         });
 
-        // Language
+        // --- TRANSLATION ---
         window.langData = {
             az: { "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-reviews": "Rəylər", "nav-contact": "Əlaqə", "hero-h1": "3D-NİN GƏLƏCƏYİ", "projects-h2": "SEÇİLMİŞ İŞLƏR", "reviews-h2": "MÜŞTƏRİ RƏYLƏRİ", "contact-h2": "Əlaqə Saxla" },
             en: { "nav-home": "Home", "nav-projects": "Projects", "nav-reviews": "Reviews", "nav-contact": "Contact", "hero-h1": "THE FUTURE OF 3D", "projects-h2": "SELECTED WORKS", "reviews-h2": "CLIENT REVIEWS", "contact-h2": "Get In Touch" },
             ru: { "nav-home": "Главная", "nav-projects": "Проекты", "nav-reviews": "Отзывы", "nav-contact": "Контакты", "hero-h1": "БУДУЩЕЕ 3D", "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "reviews-h2": "ОТЗЫВЫ КЛИЕНТОВ", "contact-h2": "Связаться" },
             tr: { "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-reviews": "Yorumlar", "nav-contact": "İletişim", "hero-h1": "3D'NİN GELECEĞİ", "projects-h2": "SEÇİLMİŞ İŞLER", "reviews-h2": "MÜŞTERİ YORUMLARI", "contact-h2": "İletişime Geç" }
         };
-        window.changeLang = (lang) => { for(let k in window.langData[lang]) if(document.getElementById(k)) document.getElementById(k).innerText = window.langData[lang][k]; };
+        window.changeLang = (lang) => { 
+            for(let k in window.langData[lang]) if(document.getElementById(k)) document.getElementById(k).innerText = window.langData[lang][k]; 
+        };
     </script>
 </body>
 </html>
