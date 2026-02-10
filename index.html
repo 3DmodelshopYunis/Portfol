@@ -18,22 +18,22 @@
 
         /* --- SİVRİ (KVADRAT) AĞ-QARA SCROLLBAR --- */
         ::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
         }
         ::-webkit-scrollbar-track {
             background: #000;
         }
         ::-webkit-scrollbar-thumb {
-            background: #fff;
-            border: 2px solid #000;
-            border-radius: 0 !important; /* Sivri künclər */
+            background: #ffffff;
+            border-radius: 0px !important; /* Tam kvadrat */
+            border: 1px solid #000;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #ddd;
+            background: #cccccc;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scrollbar-width: thin; scrollbar-color: white black; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-dark);
@@ -46,8 +46,8 @@
         .model-card { 
             background: rgba(10, 10, 10, 0.5); 
             border: 1px solid var(--border-glass); 
-            margin-bottom: 100px; 
-            border-radius: 0; 
+            margin-bottom: 120px; 
+            border-radius: 0px; 
             overflow: hidden;
         }
 
@@ -65,15 +65,17 @@
             position: relative; 
             display: flex; 
             overflow-x: auto; 
-            scroll-snap-type: x mandatory; 
             background: #000; 
             min-height: 200px;
             max-height: 85vh;
             align-items: center;
-            -ms-overflow-style: none; /* IE/Edge */
-            scrollbar-width: none; /* Firefox */
+            /* Scroll-snap-i JS ilə idarə edəcəyik ki, smooth-a mane olmasın */
+            scroll-snap-type: none; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
         }
-        .gallery-wrapper::-webkit-scrollbar { display: none; } /* Chrome/Safari scroll gizlət */
+        .gallery-wrapper::-webkit-scrollbar { display: none; }
 
         .gallery-wrapper img { 
             flex-shrink: 0; 
@@ -81,8 +83,8 @@
             height: auto;
             max-height: 85vh;
             object-fit: contain;
-            scroll-snap-align: center;
-            pointer-events: none; /* Şəklin kliklənməsi mane olmasın */
+            pointer-events: none;
+            display: block;
         }
 
         nav { 
@@ -92,16 +94,17 @@
             border-bottom: 1px solid var(--border-glass); 
         }
 
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; }
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; color: #fff; }
 
         .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: 4.5rem; letter-spacing: 15px; font-weight: 700; }
+        .hero h1 { font-size: 4.5rem; letter-spacing: 15px; margin-bottom: 10px; font-weight: 700; }
+        .hero p { color: var(--accent-purple); letter-spacing: 5px; font-weight: 300; }
 
         .gate-btn {
             background: none; border: 1px solid var(--accent-purple); color: white;
             padding: 12px 25px; cursor: pointer; font-family: 'Rajdhani';
             font-weight: 700; letter-spacing: 2px; transition: 0.4s;
-            border-radius: 0;
+            border-radius: 0px;
         }
         .gate-btn:hover { background: var(--accent-purple); box-shadow: 0 0 30px var(--accent-purple); }
 
@@ -110,8 +113,8 @@
         #add-project-btn {
             display: none; position: fixed; bottom: 30px; right: 30px; 
             background: var(--accent-purple); width: 60px; height: 60px; 
-            border-radius: 0; border: none; color: white; cursor: pointer;
-            z-index: 2000; font-size: 24px;
+            border-radius: 0px; border: none; color: white; cursor: pointer;
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.6); z-index: 2000; font-size: 24px;
         }
 
         .hidden { display: none !important; }
@@ -127,7 +130,7 @@
         <div class="gate-box" style="text-align:center;">
             <h1 style="letter-spacing:10px; margin-bottom:40px;">YUNIS REHMANZADA</h1>
             <button class="gate-btn" onclick="showPasswordInput()">ADMIN ACCESS</button>
-            <button class="gate-btn" onclick="enterSite('client')" style="border-color:#555; margin-left:10px;">VIEW AS GUEST</button>
+            <button class="gate-btn" onclick="enterSite('client')" style="border-color:#555; margin-left:10px;">GUEST</button>
             <div id="password-modal" style="margin-top:30px; display:none; flex-direction:column; gap:10px; align-items:center;">
                 <input type="password" id="pass-input" placeholder="Password" style="padding:10px; background:#111; border:1px solid #333; color:white; text-align:center;">
                 <button class="gate-btn" onclick="checkPassword()">LOGIN</button>
@@ -146,7 +149,7 @@
 
         <section class="hero">
             <h1>SURFACE ARTIST</h1>
-            <p style="color:var(--accent-purple); letter-spacing:5px;">CGI / HARD-SURFACE / ENVIRONMENTS</p>
+            <p>CGI / HARD-SURFACE / ENVIRONMENTS</p>
         </section>
 
         <section class="section" id="work">
@@ -166,7 +169,7 @@
             <h2 style="margin-bottom:20px;">Add Project</h2>
             <input type="text" id="new-title" placeholder="Project Title" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
             <input type="text" id="new-cat" placeholder="Category" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
-            <input type="text" id="new-imgs" placeholder="Image URLs (comma separated)" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
+            <input type="text" id="new-imgs" placeholder="Image URLs" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
             <button class="gate-btn" onclick="addProjectFirebase()" style="width:100%;">PUBLISH</button>
             <button class="gate-btn" onclick="closeModal()" style="width:100%; border-color:red; margin-top:10px;">CANCEL</button>
         </div>
@@ -190,24 +193,27 @@
 
         window.isAdmin = false;
 
-        // --- MAUSUN TƏKƏRİ İLƏ SAĞA-SOLA ETMAQ (HƏQİQİ VERSİYA) ---
-        window.addEventListener('wheel', (evt) => {
-            const gallery = evt.target.closest('.gallery-wrapper');
-            if (gallery) {
-                evt.preventDefault(); // Səhifənin aşağı qaçmasını dayandır
-                // Scroll-snap-i müvəqqəti söndürürük ki, donma olmasın
-                gallery.style.scrollSnapType = 'none';
-                
-                gallery.scrollLeft += evt.deltaY * 2; // Təkər fırlananda sağa-sola get
-                
-                // Bir az fasilədən sonra snap-i geri qaytarırıq (şəkil mərkəzləşsin deyə)
-                clearTimeout(gallery.isScrolling);
-                gallery.isScrolling = setTimeout(() => {
-                    gallery.style.scrollSnapType = 'x mandatory';
-                }, 100);
-            }
+        // --- ULTRA SMOOTH MOMENTUM SCROLL LOGIC ---
+        let isScrolling = false;
+        
+        document.addEventListener('wheel', (e) => {
+            const container = e.target.closest('.gallery-wrapper');
+            if (!container) return;
+
+            e.preventDefault(); // Səhifənin aşağı qaçmasını dayandır
+
+            // Mausun fırlanma gücünü alırıq
+            const scrollSpeed = e.deltaY * 1.5;
+            
+            // Hamar hərəkət üçün scrollTo istifadə edirik
+            container.scrollBy({
+                left: scrollSpeed,
+                behavior: 'smooth'
+            });
+
         }, { passive: false });
 
+        // Şifrə və Giriş funksiyaları
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
         window.checkPassword = () => {
             if(document.getElementById('pass-input').value === 'Yr142536') {
