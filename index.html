@@ -5,237 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunis Rehmanzada | 3D Artist Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-dark: #0f0c29;
-            --gradient-main: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --bg-dark: #050505; /* Tam qara - renderlərin daha yaxşı görünməsi üçün */
             --accent-purple: #8e2de2;
-            --accent-blue: #4a00e0;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --border-glass: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
-            --text-dim: #b0b0b0;
-            --danger: #ff4b4b;
+            --text-dim: #888888;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--gradient-main);
-            background-attachment: fixed;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #050505 50%);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* --- LOADING SPINNER --- */
-        #loading-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); z-index: 10000;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.5s;
-        }
-        .spinner {
-            width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1);
-            border-top: 5px solid var(--accent-purple); border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* --- GATEKEEPER (Login Screen) --- */
-        #gatekeeper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f0c29; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease;
-        }
-        .gate-box {
-            background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px;
-            border: 1px solid var(--border-glass); text-align: center;
-            backdrop-filter: blur(20px); animation: fadeInDown 1s ease;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            max-width: 90%;
-        }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
-
-        .gate-btn {
-            background: var(--accent-purple); border: none; color: white;
-            padding: 12px 30px; margin: 10px; font-size: 1.1rem; cursor: pointer;
-            border-radius: 8px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .gate-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-purple); }
-        .gate-btn.client { background: transparent; border: 2px solid var(--accent-purple); }
-        .gate-btn.client:hover { background: var(--accent-purple); }
-
-        #password-modal { display: none; flex-direction: column; margin-top: 20px; }
-        #pass-input { 
-            padding: 12px; border-radius: 5px; border: 1px solid var(--border-glass); 
-            background: rgba(0,0,0,0.3); color: white; margin-bottom: 10px; text-align: center; font-size: 1rem;
-        }
-
-        /* --- MAIN UI --- */
-        .hidden { display: none !important; }
-        
-        /* Nav */
-        nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 8%; background: rgba(15, 12, 41, 0.8); 
-            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; 
-            border-bottom: 1px solid var(--border-glass); 
-        }
-        .logo { 
-            font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; 
-            background: linear-gradient(to right, #fff, var(--accent-purple)); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-        }
-        
-        /* Language Switcher */
-        .lang-switcher { display: flex; gap: 5px; margin-right: 20px; }
-        .lang-btn { 
-            background: var(--glass-bg); border: 1px solid var(--border-glass); 
-            color: var(--text-dim); padding: 5px 10px; cursor: pointer; 
-            border-radius: 4px; font-weight: 600; transition: 0.3s; 
-        }
-        .lang-btn:hover { background: var(--accent-purple); color: white; }
-
-        nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 25px; }
-        nav ul li a { text-decoration: none; color: white; font-weight: 500; text-transform: uppercase; transition: 0.3s; font-size: 0.9rem; letter-spacing: 1px; }
-        nav ul li a:hover { color: var(--accent-purple); text-shadow: 0 0 10px var(--accent-purple); }
-
-        /* Sections */
-        .section { padding: 80px 10%; }
-        
-        .hero { 
-            height: 85vh; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; text-align: center; 
-            background: radial-gradient(circle at center, rgba(142, 45, 226, 0.1) 0%, transparent 70%);
-        }
-        .hero h1 { font-size: 4rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px; line-height: 1.1; }
-        .hero p { font-size: 1.5rem; color: var(--text-dim); letter-spacing: 2px; }
-
-        .about-container { 
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            background: var(--glass-bg); padding: 50px; border-radius: 20px; 
-            border: 1px solid var(--border-glass); backdrop-filter: blur(15px); 
-        }
-
-        /* Gallery / Models */
+        /* --- GALLERY AUTO-ADAPTIVE LOGIC --- */
         .model-card { 
-            background: var(--glass-bg); border: 1px solid var(--border-glass); 
-            margin-bottom: 60px; border-radius: 15px; overflow: hidden; position: relative;
-            transition: transform 0.3s;
+            background: rgba(10, 10, 10, 0.5); 
+            border: 1px solid var(--border-glass); 
+            margin-bottom: 100px; 
+            border-radius: 4px; /* Daha professional kəskin künclər */
+            overflow: hidden;
         }
-        .model-card:hover { border-color: var(--accent-purple); }
 
         .model-header { 
-            padding: 20px; display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid var(--border-glass); background: rgba(0,0,0,0.2);
+            padding: 25px; 
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .model-header h3 { font-size: 1.5rem; letter-spacing: 2px; }
 
-        /* Horizontal Scroll Gallery */
+        .model-header h3 { letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+
+        /* Əsas düzəliş bura: Sabit hündürlük yoxdur */
         .gallery-wrapper { 
-            position: relative; height: 500px; display: flex; 
-            overflow-x: auto; scroll-snap-type: x mandatory; 
-            scrollbar-width: thin; scrollbar-color: var(--accent-purple) transparent; 
+            position: relative; 
+            display: flex; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            background: #000; 
+            min-height: 200px; /* Boş qalmaması üçün */
+            max-height: 85vh; /* Ekranın çoxunu tutmasın deyə limit */
+            align-items: center; /* Kvadrat şəkilləri mərkəzləyir */
         }
-        .gallery-wrapper::-webkit-scrollbar { height: 8px; }
-        .gallery-wrapper::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 4px; }
-        
+
         .gallery-wrapper img { 
-            flex-shrink: 0; height: 100%; min-width: 100%; object-fit: cover; 
-            scroll-snap-align: center; border-right: 1px solid var(--border-glass); 
+            flex-shrink: 0; 
+            width: 100%; /* Eni tam tutur */
+            height: auto; /* Hündürlük şəklin öz ölçüsünə görə dəyişir */
+            max-height: 85vh; /* Şəklin çox uzanmasının qarşısını alır */
+            object-fit: contain; /* Şəkli KƏSMİR, tam göstərir */
+            scroll-snap-align: center;
         }
 
-        /* Comments */
-        .comments-section { 
-            background: var(--glass-bg); padding: 40px; border-radius: 20px; 
-            border: 1px solid var(--border-glass); margin-top: 20px; 
-        }
-        .form-group { margin-bottom: 15px; }
-        .form-group input, .form-group textarea, .form-group select { 
-            width: 100%; padding: 12px; background: rgba(0,0,0,0.3); 
-            border: 1px solid var(--border-glass); color: white; 
-            border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-purple); outline: none; }
-        
-        .stars { font-size: 1.5rem; color: gold; cursor: pointer; margin-bottom: 10px; }
-        
-        .comment-item { 
-            background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; 
-            margin-bottom: 15px; border-left: 3px solid var(--accent-purple); position: relative; 
-        }
-        .comment-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .comment-author { font-weight: bold; color: var(--accent-purple); font-size: 1.1rem; }
+        .gallery-wrapper::-webkit-scrollbar { height: 6px; }
+        .gallery-wrapper::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 3px; }
 
-        /* Admin Controls */
-        .admin-controls { padding: 10px; text-align: right; background: rgba(0,0,0,0.6); position: absolute; top: 0; right: 0; z-index: 10; border-bottom-left-radius: 10px; }
-        .btn-delete { color: var(--danger); cursor: pointer; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
-        
-        #add-project-btn { 
+        /* UI ELEMENTS */
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 8%; background: rgba(0,0,0,0.9); 
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid var(--border-glass); 
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; color: #fff; }
+
+        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-size: 4.5rem; letter-spacing: 15px; margin-bottom: 10px; font-weight: 700; }
+        .hero p { color: var(--accent-purple); letter-spacing: 5px; font-weight: 300; }
+
+        .gate-btn {
+            background: none; border: 1px solid var(--accent-purple); color: white;
+            padding: 12px 25px; cursor: pointer; font-family: 'Rajdhani';
+            font-weight: 700; letter-spacing: 2px; transition: 0.4s;
+        }
+        .gate-btn:hover { background: var(--accent-purple); box-shadow: 0 0 30px var(--accent-purple); }
+
+        .section { padding: 60px 10%; }
+
+        #add-project-btn {
             display: none; position: fixed; bottom: 30px; right: 30px; 
             background: var(--accent-purple); width: 60px; height: 60px; 
-            border-radius: 50%; font-size: 30px; color: white; border: none; 
-            cursor: pointer; box-shadow: 0 0 20px var(--accent-purple); z-index: 2000; 
-            transition: 0.3s;
+            border-radius: 50%; border: none; color: white; cursor: pointer;
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.6); z-index: 2000; font-size: 24px;
         }
-        #add-project-btn:hover { transform: rotate(90deg); }
 
-        /* Modals */
-        .modal-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); z-index: 3000; display: none; 
-            justify-content: center; align-items: center; 
-        }
-        .modal-box { 
-            background: #1a1a40; padding: 40px; border-radius: 15px; 
-            width: 90%; max-width: 500px; border: 1px solid var(--accent-purple); 
-            box-shadow: 0 0 50px rgba(142, 45, 226, 0.2);
-        }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-
-        /* Contact & Footer */
-        .contact-box { text-align: center; background: linear-gradient(to bottom, var(--glass-bg), transparent); padding: 60px; border-radius: 20px; border: 1px solid var(--border-glass); }
-        .email-link { font-size: 1.8rem; color: #fff; text-decoration: none; border-bottom: 2px solid var(--accent-purple); transition: 0.3s; word-break: break-all; }
-        .email-link:hover { color: var(--accent-purple); border-color: transparent; }
-        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border-glass); margin-top: 50px; }
+        .hidden { display: none !important; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero p { font-size: 1rem; }
-            .gallery-wrapper { height: 300px; }
-            nav { flex-direction: column; gap: 15px; padding: 20px; }
-            nav ul { flex-wrap: wrap; justify-content: center; }
-            nav ul li { margin: 0 10px; }
+            .hero h1 { font-size: 2.5rem; letter-spacing: 5px; }
+            .gallery-wrapper { max-height: 50vh; }
         }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen"><div class="spinner"></div></div>
+    <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
+        <div class="spinner" style="width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top-color:var(--accent-purple); border-radius:50%; animation:spin 1s linear infinite;"></div>
+    </div>
+    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 
-    <div id="gatekeeper" class="hidden">
-        <div class="gate-box">
-            <h1>WELCOME TO REHMANZADA.3D</h1>
-            <p style="margin-bottom: 30px; color: #b0b0b0; letter-spacing: 1px;">HIGH END HARD-SURFACE MODELING</p>
-            
-            <button class="gate-btn" onclick="showPasswordInput()">TEAM MEMBER (YUNIS)</button>
-            <button class="gate-btn client" onclick="enterSite('client')">CLIENT / MÜŞTƏRİ</button>
-            
-            <div id="password-modal">
-                <input type="password" id="pass-input" placeholder="Enter Password">
-                <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="gate-btn" style="padding: 8px 20px;" onclick="checkPassword()">ENTER</button>
-                    <button class="gate-btn client" style="padding: 8px 20px; border-color: var(--danger);" onclick="cancelLogin()">CANCEL</button>
-                </div>
-                <p id="error-msg" style="color: var(--danger); margin-top: 10px; display: none;">Access Denied!</p>
+    <div id="gatekeeper" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:9999; display:flex; justify-content:center; align-items:center;">
+        <div class="gate-box" style="text-align:center;">
+            <h1 style="letter-spacing:10px; margin-bottom:40px;">YUNIS REHMANZADA</h1>
+            <button class="gate-btn" onclick="showPasswordInput()">ADMIN ACCESS</button>
+            <button class="gate-btn" onclick="enterSite('client')" style="border-color:#555; margin-left:10px;">VIEW AS GUEST</button>
+            <div id="password-modal" style="margin-top:30px; display:none; flex-direction:column; gap:10px; align-items:center;">
+                <input type="password" id="pass-input" placeholder="Password" style="padding:10px; background:#111; border:1px solid #333; color:white; text-align:center;">
+                <button class="gate-btn" onclick="checkPassword()" style="padding:5px 20px;">LOGIN</button>
             </div>
         </div>
     </div>
@@ -243,180 +133,74 @@
     <div id="site-content" class="hidden">
         <nav>
             <div class="logo">REHMANZADA.3D</div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                <div class="lang-switcher">
-                    <button class="lang-btn" onclick="changeLang('az')">AZ</button>
-                    <button class="lang-btn" onclick="changeLang('en')">EN</button>
-                    <button class="lang-btn" onclick="changeLang('ru')">RU</button>
-                    <button class="lang-btn" onclick="changeLang('tr')">TR</button>
-                </div>
-                <ul>
-                    <li><a href="#home" id="nav-home">Home</a></li>
-                    <li><a href="#work" id="nav-projects">Projects</a></li>
-                    <li><a href="#comments" id="nav-reviews">Reviews</a></li>
-                    <li><a href="#contact" id="nav-contact">Contact</a></li>
-                </ul>
-            </div>
+            <ul style="display:flex; list-style:none; gap:30px;">
+                <li><a href="#work" style="color:white; text-decoration:none; font-weight:700; letter-spacing:1px;">WORKS</a></li>
+                <li><a href="#contact" style="color:white; text-decoration:none; font-weight:700; letter-spacing:1px;">CONTACT</a></li>
+            </ul>
         </nav>
 
-        <section class="hero" id="home">
-            <h1 id="hero-h1">THE FUTURE OF 3D</h1>
-            <p id="hero-p">Hard Surface Modeling & Low Poly Environments</p>
-            <a href="#work" class="gate-btn client" style="margin-top: 30px; text-decoration: none; display: inline-block;">VIEW PORTFOLIO</a>
-        </section>
-
-        <section class="section" id="about">
-            <div class="about-container">
-                <h2 id="about-h2" style="font-size: 2.5rem; margin-bottom: 20px;">About Me</h2>
-                <p id="about-p" style="font-size: 1.2rem; max-width: 800px;">I am a 3D Artist specializing in detailed hard-surface models, automotive rendering, and immersive low-poly environments. My work focuses on precision, lighting, and optimized topology.</p>
-            </div>
+        <section class="hero">
+            <h1 id="hero-h1">SURFACE ARTIST</h1>
+            <p id="hero-p">CGI / HARD-SURFACE / ENVIRONMENTS</p>
         </section>
 
         <section class="section" id="work">
-            <h2 style="margin-bottom: 40px; font-size: 2.5rem; letter-spacing: 3px; text-align: center;" id="projects-h2">SELECTED WORKS</h2>
-            
-            <article class="model-card">
-                <div class="model-header">
-                    <h3>BUGATTI DIVO (STATIC)</h3>
-                    <span style="color:var(--accent-purple); font-weight: bold;">DEMO</span>
-                </div>
-                <div class="gallery-wrapper">
-                    <img src="divo1.jpg" alt="Bugatti 1"> 
-                    <img src="divo2.jpg" alt="Bugatti 2">
-                    <img src="divo3.jpg" alt="Bugatti 3">
-                    <img src="divo4.jpg" alt="Bugatti 4">
-                </div>
-                <div style="padding: 10px; text-align: center; color: var(--text-dim); font-size: 0.8rem;">
-                    <i class="fas fa-arrows-alt-h"></i> SCROLL / SÜRÜŞDÜR
-                </div>
-            </article>
-
             <div id="dynamic-projects-container"></div>
         </section>
 
-        <section class="section" id="comments">
-            <h2 id="reviews-h2" style="text-align: center; margin-bottom: 30px;">CLIENT REVIEWS</h2>
-            <div class="comments-section">
-                <div class="comment-form">
-                    <h3 id="leave-review-h3" style="color: var(--accent-purple); margin-bottom: 15px;">Leave a Review</h3>
-                    <div class="form-group"><input type="text" id="com-name" placeholder="Name / Ad"></div>
-                    <div class="form-group">
-                        <select id="com-category">
-                            <option value="Hard Surface">Hard Surface Modeling</option>
-                            <option value="Low Poly">Low Poly Environment</option>
-                            <option value="Automotive">Automotive</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <div class="stars" id="star-rating">
-                            <i class="far fa-star" data-val="1"></i>
-                            <i class="far fa-star" data-val="2"></i>
-                            <i class="far fa-star" data-val="3"></i>
-                            <i class="far fa-star" data-val="4"></i>
-                            <i class="far fa-star" data-val="5"></i>
-                        </div>
-                    </div>
-                    <div class="form-group"><textarea id="com-text" rows="3" placeholder="Feedback..."></textarea></div>
-                    <button class="gate-btn" onclick="submitComment()">POST COMMENT</button>
-                </div>
-                
-                <div id="comments-list" style="margin-top: 40px;"></div>
-            </div>
+        <section class="section" id="contact" style="text-align:center; border-top:1px solid var(--border-glass);">
+            <h2 style="margin-bottom:20px; letter-spacing:5px;">GET IN TOUCH</h2>
+            <a href="mailto:yunisrehmanzada@gmail.com" style="font-size:1.5rem; color:var(--accent-purple); text-decoration:none; font-weight:700;">yunisrehmanzada@gmail.com</a>
         </section>
-
-        <section class="section" id="contact">
-            <div class="contact-box">
-                <h2 id="contact-h2" style="margin-bottom: 20px;">Get In Touch</h2>
-                <a href="mailto:yunisrehmanzada@gmail.com" class="email-link">yunisrehmanzada@gmail.com</a>
-                <div style="margin-top: 30px; font-size: 1.5rem;">
-                    <i class="fab fa-instagram" style="margin: 0 10px; cursor: pointer;"></i>
-                    <i class="fab fa-artstation" style="margin: 0 10px; cursor: pointer;"></i>
-                    <i class="fab fa-linkedin" style="margin: 0 10px; cursor: pointer;"></i>
-                </div>
-            </div>
-        </section>
-        
-        <footer><p id="footer-copy">&copy; 2026 Yunis Rehmanzada. All Rights Reserved.</p></footer>
     </div>
 
     <button id="add-project-btn" onclick="openModal()">+</button>
 
-    <div class="modal-overlay" id="project-modal">
-        <div class="modal-box">
-            <h2 style="color: white; margin-bottom: 20px;">Add New Project</h2>
-            <div class="form-group"><label>Title</label><input type="text" id="new-title"></div>
-            <div class="form-group"><label>Category</label><input type="text" id="new-cat"></div>
-            <div class="form-group"><label>Image URLs (comma separated)</label><input type="text" id="new-imgs" placeholder="link1.jpg, link2.jpg"></div>
-            <div class="modal-actions">
-                <button class="gate-btn client" onclick="closeModal()" style="border-color: var(--danger);">Cancel</button>
-                <button class="gate-btn" onclick="addProjectFirebase()">Apply</button>
-            </div>
+    <div class="modal-overlay" id="project-modal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; display:none; justify-content:center; align-items:center;">
+        <div class="modal-box" style="background:#111; padding:40px; border:1px solid var(--accent-purple); width:400px;">
+            <h2 style="margin-bottom:20px;">Add Project</h2>
+            <input type="text" id="new-title" placeholder="Project Title" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
+            <input type="text" id="new-cat" placeholder="Category (e.g. 3D Design)" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
+            <input type="text" id="new-imgs" placeholder="Image URLs (comma separated)" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
+            <button class="gate-btn" onclick="addProjectFirebase()" style="width:100%;">PUBLISH</button>
+            <button class="gate-btn" onclick="closeModal()" style="width:100%; border-color:red; margin-top:10px;">CANCEL</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // FIREBASE CONFIG (Sizin açarlar)
         const firebaseConfig = {
             apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
             authDomain: "portfolio-yunis.firebaseapp.com",
             projectId: "portfolio-yunis",
             storageBucket: "portfolio-yunis.firebasestorage.app",
             messagingSenderId: "1650727261",
-            appId: "1:1650727261:web:b472a1040274eb9d29b0b4",
-            measurementId: "G-DWZZTRB7N9"
+            appId: "1:1650727261:web:b472a1040274eb9d29b0b4"
         };
 
-        // Initialize Firebase
-        let db;
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            console.log("Firebase Connected Successfully!");
-        } catch (e) {
-            console.error("Firebase Connection Error:", e);
-            alert("Firebase Error. Check console.");
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        // --- GLOBAL UI VARIABLES ---
         window.isAdmin = false;
-        let selectedStar = 0;
-        const badWords = ["stupid", "idiot", "pis", "söyüş", "bad", "axmaq"];
 
-        // --- GATEKEEPER LOGIC ---
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
-        window.cancelLogin = () => {
-            document.getElementById('password-modal').style.display = 'none';
-            document.getElementById('pass-input').value = '';
-        };
-
+        
         window.checkPassword = () => {
-            // Şifrə: Yr142536
             if(document.getElementById('pass-input').value === 'Yr142536') {
                 window.isAdmin = true;
                 enterSite();
-            } else {
-                document.getElementById('error-msg').style.display = 'block';
-            }
+            } else { alert("Wrong Password!"); }
         };
 
-        window.enterSite = (role) => {
-            document.getElementById('gatekeeper').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('gatekeeper').style.display = 'none';
-                document.getElementById('site-content').classList.remove('hidden');
-                if(window.isAdmin) {
-                    document.getElementById('add-project-btn').style.display = 'block';
-                    loadProjects(); 
-                    loadComments(); 
-                }
-            }, 800);
+        window.enterSite = () => {
+            document.getElementById('gatekeeper').style.display = 'none';
+            document.getElementById('site-content').classList.remove('hidden');
+            if(window.isAdmin) document.getElementById('add-project-btn').style.display = 'block';
+            loadProjects();
         };
 
-        // --- PROJECT FUNCTIONS ---
         window.openModal = () => document.getElementById('project-modal').style.display = 'flex';
         window.closeModal = () => document.getElementById('project-modal').style.display = 'none';
 
@@ -424,27 +208,15 @@
             const title = document.getElementById('new-title').value;
             const cat = document.getElementById('new-cat').value;
             const imgStr = document.getElementById('new-imgs').value;
-            
-            if(!title || !imgStr) return alert("Fill all fields");
+            if(!title || !imgStr) return alert("Fill fields!");
             const imgs = imgStr.split(',').map(s => s.trim());
 
-            try {
-                await addDoc(collection(db, "projects"), {
-                    title: title,
-                    cat: cat,
-                    imgs: imgs,
-                    createdAt: Date.now()
-                });
-                closeModal();
-            } catch (e) {
-                console.error("Error adding project: ", e);
-                alert("Error: " + e.message);
-            }
+            await addDoc(collection(db, "projects"), { title, cat, imgs, createdAt: Date.now() });
+            closeModal();
         };
 
         window.deleteProject = async (id) => {
-            if(!confirm("Silmək istədiyinizə əminsiniz?")) return;
-            await deleteDoc(doc(db, "projects", id));
+            if(confirm("Delete this project?")) await deleteDoc(doc(db, "projects", id));
         };
 
         function loadProjects() {
@@ -455,117 +227,32 @@
                 snapshot.forEach((doc) => {
                     const p = doc.data();
                     let imgHTML = "";
-                    p.imgs.forEach(src => imgHTML += `<img src="${src}" alt="Project Image">`);
+                    p.imgs.forEach(src => imgHTML += `<img src="${src}" alt="3D Work">`);
                     
-                    let deleteBtn = window.isAdmin ? `<div class="admin-controls"><span class="btn-delete" onclick="deleteProject('${doc.id}')">DELETE PROJECT <i class="fas fa-trash"></i></span></div>` : "";
+                    let delBtn = window.isAdmin ? `<span onclick="deleteProject('${doc.id}')" style="color:red; cursor:pointer; font-size:0.8rem;">DELETE</span>` : "";
 
                     container.innerHTML += `
                     <article class="model-card">
-                        ${deleteBtn}
-                        <div class="model-header"><h3>${p.title}</h3><span style="color: var(--accent-purple);">${p.cat}</span></div>
+                        <div class="model-header">
+                            <div>
+                                <h3>${p.title}</h3>
+                                <p style="font-size:0.8rem; color:var(--accent-purple);">${p.cat}</p>
+                            </div>
+                            ${delBtn}
+                        </div>
                         <div class="gallery-wrapper">${imgHTML}</div>
-                        <div style="padding: 10px; text-align: center; color: var(--text-dim); font-size: 0.8rem;"><i class="fas fa-arrows-alt-h"></i> SCROLL</div>
                     </article>`;
                 });
-                attachScroll();
             });
         }
 
-        // --- COMMENT FUNCTIONS ---
-        document.querySelectorAll('.stars i').forEach(star => {
-            star.addEventListener('click', function() {
-                selectedStar = this.getAttribute('data-val');
-                document.querySelectorAll('.stars i').forEach(s => {
-                    s.classList.toggle('fas', s.getAttribute('data-val') <= selectedStar);
-                    s.classList.toggle('far', s.getAttribute('data-val') > selectedStar);
-                });
-            });
-        });
-
-        window.submitComment = async () => {
-            const name = document.getElementById('com-name').value;
-            const cat = document.getElementById('com-category').value;
-            const text = document.getElementById('com-text').value;
-
-            if(!name || !text || selectedStar === 0) return alert("Fill all fields & stars");
-            if(badWords.some(w => text.toLowerCase().includes(w))) return alert("Inappropriate language!");
-
-            try {
-                await addDoc(collection(db, "comments"), {
-                    name, cat, text, stars: selectedStar, createdAt: Date.now()
-                });
-                document.getElementById('com-text').value = "";
-                document.getElementById('com-name').value = "";
-                alert("Comment sent!");
-            } catch(e) {
-                console.error("Error sending comment:", e);
-                alert("Error sending comment.");
-            }
-        };
-
-        window.deleteComment = async (id) => {
-            if(!confirm("Delete comment?")) return;
-            await deleteDoc(doc(db, "comments", id));
-        };
-
-        function loadComments() {
-            const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
-            onSnapshot(q, (snapshot) => {
-                const list = document.getElementById('comments-list');
-                list.innerHTML = "";
-                snapshot.forEach((doc) => {
-                    const c = doc.data();
-                    let starsHTML = "";
-                    for(let i=0; i<5; i++) starsHTML += i < c.stars ? '<i class="fas fa-star" style="color:gold;"></i>' : '<i class="far fa-star" style="color:gold;"></i>';
-                    
-                    let delBtn = window.isAdmin ? `<button onclick="deleteComment('${doc.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:red;cursor:pointer;"><i class="fas fa-trash"></i></button>` : "";
-
-                    list.innerHTML += `
-                    <div class="comment-item">
-                        ${delBtn}
-                        <div class="comment-header">
-                            <span class="comment-author">${c.name}</span>
-                            <span style="font-size:0.8rem;background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;">${c.cat}</span>
-                        </div>
-                        <div style="margin-bottom: 5px;">${starsHTML}</div>
-                        <p>${c.text}</p>
-                    </div>`;
-                });
-            });
-        }
-
-        function attachScroll() {
-            document.querySelectorAll(".gallery-wrapper").forEach(el => {
-                el.addEventListener("wheel", (evt) => { 
-                    if (evt.deltaY != 0) { 
-                        evt.preventDefault(); 
-                        el.scrollLeft += evt.deltaY; 
-                    } 
-                });
-            });
-        }
-
-        // --- INIT ---
         window.addEventListener('load', () => {
             document.getElementById('loading-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('gatekeeper').classList.remove('hidden');
-                loadProjects(); 
-                loadComments();
             }, 500);
         });
-
-        // --- TRANSLATION ---
-        window.langData = {
-            az: { "nav-home": "Ana Səhifə", "nav-projects": "Layihələr", "nav-reviews": "Rəylər", "nav-contact": "Əlaqə", "hero-h1": "3D-NİN GƏLƏCƏYİ", "projects-h2": "SEÇİLMİŞ İŞLƏR", "reviews-h2": "MÜŞTƏRİ RƏYLƏRİ", "contact-h2": "Əlaqə Saxla" },
-            en: { "nav-home": "Home", "nav-projects": "Projects", "nav-reviews": "Reviews", "nav-contact": "Contact", "hero-h1": "THE FUTURE OF 3D", "projects-h2": "SELECTED WORKS", "reviews-h2": "CLIENT REVIEWS", "contact-h2": "Get In Touch" },
-            ru: { "nav-home": "Главная", "nav-projects": "Проекты", "nav-reviews": "Отзывы", "nav-contact": "Контакты", "hero-h1": "БУДУЩЕЕ 3D", "projects-h2": "ИЗБРАННЫЕ РАБОТЫ", "reviews-h2": "ОТЗЫВЫ КЛИЕНТОВ", "contact-h2": "Связаться" },
-            tr: { "nav-home": "Anasayfa", "nav-projects": "Projeler", "nav-reviews": "Yorumlar", "nav-contact": "İletişim", "hero-h1": "3D'NİN GELECEĞİ", "projects-h2": "SEÇİLMİŞ İŞLER", "reviews-h2": "MÜŞTERİ YORUMLARI", "contact-h2": "İletişime Geç" }
-        };
-        window.changeLang = (lang) => { 
-            for(let k in window.langData[lang]) if(document.getElementById(k)) document.getElementById(k).innerText = window.langData[lang][k]; 
-        };
     </script>
 </body>
 </html>
