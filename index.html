@@ -12,55 +12,54 @@
         :root {
             --bg-dark: #050505;
             --accent-purple: #8e2de2;
-            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.1); /* Bir az daha parlaq çərçivə */
             --text-main: #ffffff;
+            --neon-glow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- SİVRİ (KVADRAT) AĞ-QARA SCROLLBAR --- */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #000;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ffffff;
-            border-radius: 0px !important; /* Tam kvadrat */
-            border: 1px solid #000;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #cccccc;
-        }
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #ffffff; border-radius: 0px !important; border: 1px solid #000; }
+        ::-webkit-scrollbar-thumb:hover { background: #cccccc; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #050505 50%);
+            background-image: radial-gradient(circle at 50% 0%, #12121f 0%, #050505 60%);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
         }
 
+        /* --- KART DİZAYNI & VISUAL UPGRADE --- */
         .model-card { 
-            background: rgba(10, 10, 10, 0.5); 
+            background: rgba(15, 15, 15, 0.7); 
             border: 1px solid var(--border-glass); 
             margin-bottom: 120px; 
             border-radius: 0px; 
             overflow: hidden;
+            /* Vizual detal: Yüngül kölgə */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transition: border-color 0.3s ease;
+        }
+        
+        .model-card:hover {
+            border-color: rgba(255, 255, 255, 0.2); /* Hover edəndə çərçivə parlayır */
         }
 
         .model-header { 
             padding: 25px; 
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
             border-bottom: 1px solid var(--border-glass);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* GALLERY WRAPPER */
+        /* --- GALEREYA (SIFIR MƏSAFƏ) --- */
         .gallery-wrapper { 
             position: relative; 
             display: flex; 
@@ -69,11 +68,10 @@
             min-height: 200px;
             max-height: 85vh;
             align-items: center;
-            /* Scroll-snap-i JS ilə idarə edəcəyik ki, smooth-a mane olmasın */
             scroll-snap-type: none; 
             scrollbar-width: none; 
-            -ms-overflow-style: none;
-            -webkit-overflow-scrolling: touch;
+            /* Məsafəni tam sıfırlamaq üçün */
+            gap: 0px !important; 
         }
         .gallery-wrapper::-webkit-scrollbar { display: none; }
 
@@ -84,21 +82,41 @@
             max-height: 85vh;
             object-fit: contain;
             pointer-events: none;
-            display: block;
+            /* Blok rejimi boşluqları ləğv edir */
+            display: block; 
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
+        /* --- NAV & NEON MENU --- */
         nav { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 8%; background: rgba(0,0,0,0.9); 
+            padding: 20px 8%; background: rgba(5,5,5,0.95); 
             backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; 
             border-bottom: 1px solid var(--border-glass); 
         }
 
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; color: #fff; }
+        .logo { font-size: 1.6rem; font-weight: 700; letter-spacing: 4px; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.1); }
+
+        .nav-links li a {
+            color: white; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+        }
+
+        /* NEON GLOW EFFECT */
+        .nav-links li a:hover {
+            text-shadow: var(--neon-glow);
+            color: #fff;
+        }
 
         .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: 4.5rem; letter-spacing: 15px; margin-bottom: 10px; font-weight: 700; }
-        .hero p { color: var(--accent-purple); letter-spacing: 5px; font-weight: 300; }
+        .hero h1 { font-size: 5rem; letter-spacing: 15px; margin-bottom: 10px; font-weight: 700; text-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .hero p { color: var(--accent-purple); letter-spacing: 6px; font-weight: 500; text-transform: uppercase; }
 
         .gate-btn {
             background: none; border: 1px solid var(--accent-purple); color: white;
@@ -109,6 +127,22 @@
         .gate-btn:hover { background: var(--accent-purple); box-shadow: 0 0 30px var(--accent-purple); }
 
         .section { padding: 60px 10%; }
+
+        /* --- EMAIL HOVER ANIMATION --- */
+        .contact-email {
+            font-size: 1.8rem; 
+            color: var(--accent-purple); 
+            text-decoration: none; 
+            font-weight: 700;
+            display: inline-block;
+            transition: letter-spacing 0.4s ease, text-shadow 0.4s ease, color 0.4s ease;
+        }
+
+        .contact-email:hover {
+            letter-spacing: 4px; /* Hərflər aralanır */
+            text-shadow: 0 0 15px var(--accent-purple); /* Bənövşəyi parıltı */
+            color: #fff;
+        }
 
         #add-project-btn {
             display: none; position: fixed; bottom: 30px; right: 30px; 
@@ -141,9 +175,9 @@
     <div id="site-content" class="hidden">
         <nav>
             <div class="logo">REHMANZADA.3D</div>
-            <ul style="display:flex; list-style:none; gap:30px;">
-                <li><a href="#work" style="color:white; text-decoration:none; font-weight:700;">WORKS</a></li>
-                <li><a href="#contact" style="color:white; text-decoration:none; font-weight:700;">CONTACT</a></li>
+            <ul class="nav-links" style="display:flex; list-style:none; gap:30px;">
+                <li><a href="#work">WORKS</a></li>
+                <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
 
@@ -157,19 +191,19 @@
         </section>
 
         <section class="section" id="contact" style="text-align:center; border-top:1px solid var(--border-glass);">
-            <h2 style="margin-bottom:20px; letter-spacing:5px;">GET IN TOUCH</h2>
-            <a href="mailto:yunisrehmanzada@gmail.com" style="font-size:1.5rem; color:var(--accent-purple); text-decoration:none; font-weight:700;">yunisrehmanzada@gmail.com</a>
+            <h2 style="margin-bottom:30px; letter-spacing:5px; font-weight:300;">GET IN TOUCH</h2>
+            <a href="mailto:yunisrehmanzada@gmail.com" class="contact-email">yunisrehmanzada@gmail.com</a>
         </section>
     </div>
 
     <button id="add-project-btn" onclick="openModal()">+</button>
 
     <div class="modal-overlay" id="project-modal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; display:none; justify-content:center; align-items:center;">
-        <div class="modal-box" style="background:#111; padding:40px; border:1px solid var(--accent-purple); width:400px;">
+        <div class="modal-box" style="background:#111; padding:40px; border:1px solid var(--accent-purple); width:400px; box-shadow: 0 0 30px rgba(142,45,226,0.2);">
             <h2 style="margin-bottom:20px;">Add Project</h2>
             <input type="text" id="new-title" placeholder="Project Title" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
             <input type="text" id="new-cat" placeholder="Category" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
-            <input type="text" id="new-imgs" placeholder="Image URLs" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
+            <input type="text" id="new-imgs" placeholder="Image URLs (comma separated)" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
             <button class="gate-btn" onclick="addProjectFirebase()" style="width:100%;">PUBLISH</button>
             <button class="gate-btn" onclick="closeModal()" style="width:100%; border-color:red; margin-top:10px;">CANCEL</button>
         </div>
@@ -194,26 +228,15 @@
         window.isAdmin = false;
 
         // --- ULTRA SMOOTH MOMENTUM SCROLL LOGIC ---
-        let isScrolling = false;
-        
         document.addEventListener('wheel', (e) => {
             const container = e.target.closest('.gallery-wrapper');
             if (!container) return;
 
-            e.preventDefault(); // Səhifənin aşağı qaçmasını dayandır
-
-            // Mausun fırlanma gücünü alırıq
+            e.preventDefault(); 
             const scrollSpeed = e.deltaY * 1.5;
-            
-            // Hamar hərəkət üçün scrollTo istifadə edirik
-            container.scrollBy({
-                left: scrollSpeed,
-                behavior: 'smooth'
-            });
-
+            container.scrollBy({ left: scrollSpeed, behavior: 'smooth' });
         }, { passive: false });
 
-        // Şifrə və Giriş funksiyaları
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
         window.checkPassword = () => {
             if(document.getElementById('pass-input').value === 'Yr142536') {
@@ -236,8 +259,13 @@
             const title = document.getElementById('new-title').value;
             const cat = document.getElementById('new-cat').value;
             const imgStr = document.getElementById('new-imgs').value;
+            
             if(!title || !imgStr) return alert("Fill fields!");
-            const imgs = imgStr.split(',').map(s => s.trim());
+
+            // FIX: Boşluqları təmizləmək üçün filtr əlavə etdim
+            // Bu kod "sınıq qara şəkil" problemini yaradan boşluqları silir
+            const imgs = imgStr.split(',').map(s => s.trim()).filter(s => s !== "");
+            
             await addDoc(collection(db, "projects"), { title, cat, imgs, createdAt: Date.now() });
             closeModal();
         };
@@ -254,7 +282,12 @@
                 snapshot.forEach((doc) => {
                     const p = doc.data();
                     let imgHTML = "";
-                    p.imgs.forEach(src => imgHTML += `<img src="${src}" alt="3D Work">`);
+                    
+                    // FIX: onerror əlavə etdim. Şəkil yoxdursa və ya link səhvdirsə, o hissə tamamilə silinəcək.
+                    p.imgs.forEach(src => {
+                        imgHTML += `<img src="${src}" alt="3D Work" onerror="this.remove()">`;
+                    });
+
                     let delBtn = window.isAdmin ? `<span onclick="deleteProject('${doc.id}')" style="color:red; cursor:pointer;">DELETE</span>` : "";
 
                     container.innerHTML += `
@@ -262,7 +295,7 @@
                         <div class="model-header">
                             <div>
                                 <h3>${p.title}</h3>
-                                <p style="font-size:0.8rem; color:var(--accent-purple);">${p.cat}</p>
+                                <p style="font-size:0.8rem; color:var(--accent-purple); letter-spacing:1px;">${p.cat}</p>
                             </div>
                             ${delBtn}
                         </div>
