@@ -17,13 +17,16 @@
             --neon-glow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- SCROLLBAR --- */
+        /* --- TƏHLÜKƏSİZLİK ÜÇÜN SEÇİMİ BLOKLAMAQ --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        
+        /* Inputlara yazmağa icazə veririk */
+        input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #ffffff; border-radius: 0px !important; border: 1px solid #000; }
         ::-webkit-scrollbar-thumb:hover { background: #cccccc; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-dark);
@@ -41,6 +44,7 @@
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             transition: border-color 0.3s ease;
+            position: relative;
         }
         
         .model-card:hover { border-color: rgba(255, 255, 255, 0.2); }
@@ -55,32 +59,88 @@
             align-items: center;
         }
 
-        /* --- GALEREYA (FIXED) --- */
         .gallery-wrapper { 
             position: relative; 
             display: flex; 
             overflow-x: auto; 
             background: #000; 
-            height: 85vh; /* Hündürlüyü fix etdik */
-            align-items: flex-start; /* Yuxarıdan hizala */
+            height: 85vh; 
+            align-items: flex-start;
             scroll-snap-type: none; 
             scrollbar-width: none; 
             gap: 0px !important; 
         }
         .gallery-wrapper::-webkit-scrollbar { display: none; }
 
-        /* --- DÜZƏLİŞ EDİLƏN HİSSƏ (Şəkillər yapışsın deyə) --- */
         .gallery-wrapper img { 
             flex-shrink: 0; 
-            height: 100%;       /* Konteynerin hündürlüyünü tam tutur */
-            width: auto;        /* Eni şəklin nisbətinə görə dəyişir (boşluq qalmır) */
-            max-width: none;    /* Məhdudiyyəti götürdük */
-            object-fit: cover;  /* Tam doldurur */
+            height: 100%;       
+            width: auto;        
+            max-width: none;    
+            object-fit: cover;  
             pointer-events: none;
             display: block; 
             margin: 0 !important;
             padding: 0 !important;
         }
+
+        /* --- YOUTUBE CONTAINER --- */
+        .video-container {
+            width: 100%;
+            padding: 20px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid var(--border-glass);
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #333;
+        }
+
+        /* --- ADMIN CONTROLS --- */
+        .admin-controls {
+            padding: 15px;
+            background: #111;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-input {
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 8px;
+            flex-grow: 1;
+            font-family: 'Rajdhani';
+        }
+        .admin-btn-small {
+            background: var(--accent-purple);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .move-btns { display: flex; gap: 5px; }
+        .move-btn {
+            background: #333; color: white; border: 1px solid #555;
+            padding: 5px 10px; cursor: pointer;
+        }
+        .move-btn:hover { background: #555; }
 
         nav { 
             display: flex; justify-content: space-between; align-items: center; 
@@ -133,9 +193,7 @@
         .hidden { display: none !important; }
     </style>
 </head>
-<body>
-
-    <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
+<body oncontextmenu="return false"> <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
         <div class="spinner" style="width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top-color:var(--accent-purple); border-radius:50%; animation:spin 1s linear infinite;"></div>
     </div>
 
@@ -145,7 +203,7 @@
             <button class="gate-btn" onclick="showPasswordInput()">ADMIN ACCESS</button>
             <button class="gate-btn" onclick="enterSite('client')" style="border-color:#555; margin-left:10px;">GUEST</button>
             <div id="password-modal" style="margin-top:30px; display:none; flex-direction:column; gap:10px; align-items:center;">
-                <input type="password" id="pass-input" placeholder="Password" style="padding:10px; background:#111; border:1px solid #333; color:white; text-align:center;">
+                <input type="password" id="pass-input" placeholder="••••••••" style="padding:10px; background:#111; border:1px solid #333; color:white; text-align:center;">
                 <button class="gate-btn" onclick="checkPassword()">LOGIN</button>
             </div>
         </div>
@@ -190,7 +248,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, query, orderBy, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
@@ -205,23 +263,47 @@
         const db = getFirestore(app);
 
         window.isAdmin = false;
+        let allProjectsData = []; // Layihələri yadda saxlamaq üçün (yer dəyişməsi üçün)
 
-        // --- ULTRA SMOOTH MOMENTUM SCROLL LOGIC ---
+        // --- ANTI-HACK & ANTI-COPY BLOCKERS ---
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+        };
+
+        // --- PASSWORD HASHING FUNCTION (SHA-256) ---
+        async function hashPassword(string) {
+            const utf8 = new TextEncoder().encode(string);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // --- SMOOTH SCROLL ---
         document.addEventListener('wheel', (e) => {
             const container = e.target.closest('.gallery-wrapper');
             if (!container) return;
-
             e.preventDefault(); 
             const scrollSpeed = e.deltaY * 1.5;
             container.scrollBy({ left: scrollSpeed, behavior: 'smooth' });
         }, { passive: false });
 
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
-        window.checkPassword = () => {
-            if(document.getElementById('pass-input').value === 'Yr142536') {
+        
+        window.checkPassword = async () => {
+            const input = document.getElementById('pass-input').value;
+            const hashedInput = await hashPassword(input);
+            
+            // "Yr142536" şifrəsinin SHA-256 Hash qarşılığı:
+            const correctHash = "57982f801646279f9775080e72f9a918e7e9233f81e779a95782782725e6833c"; 
+
+            if(hashedInput === correctHash) {
                 window.isAdmin = true;
                 enterSite();
-            } else { alert("Wrong Password!"); }
+            } else { alert("Access Denied!"); }
         };
 
         window.enterSite = () => {
@@ -243,7 +325,12 @@
 
             const imgs = imgStr.split(',').map(s => s.trim()).filter(s => s !== "");
             
-            await addDoc(collection(db, "projects"), { title, cat, imgs, createdAt: Date.now() });
+            // orderId - Yeni iş ən üstdə gəlsin deyə böyük rəqəm veririk
+            await addDoc(collection(db, "projects"), { 
+                title, cat, imgs, 
+                orderId: Date.now(), 
+                youtubeLink: "" // Başlanğıcda boş
+            });
             closeModal();
         };
 
@@ -251,20 +338,99 @@
             if(confirm("Delete this project?")) await deleteDoc(doc(db, "projects", id));
         };
 
+        // --- YOUTUBE UPDATE ---
+        window.saveVideo = async (id, inputId) => {
+            const val = document.getElementById(inputId).value;
+            await updateDoc(doc(db, "projects", id), { youtubeLink: val });
+            alert("Video Updated!");
+        };
+
+        // --- ORDER REORDERING (Yuxarı/Aşağı) ---
+        window.moveProject = async (index, direction) => {
+            if (!window.isAdmin) return;
+            
+            // Yuxarı (direction -1) və ya Aşağı (direction +1)
+            const targetIndex = index + direction;
+
+            // Sərhədləri yoxla
+            if (targetIndex < 0 || targetIndex >= allProjectsData.length) return;
+
+            const currentDoc = allProjectsData[index];
+            const targetDoc = allProjectsData[targetIndex];
+
+            // Order ID-ləri dəyişdiririk (Swap)
+            const batch = writeBatch(db);
+            const ref1 = doc(db, "projects", currentDoc.id);
+            const ref2 = doc(db, "projects", targetDoc.id);
+
+            batch.update(ref1, { orderId: targetDoc.data.orderId });
+            batch.update(ref2, { orderId: currentDoc.data.orderId });
+
+            await batch.commit();
+        };
+
+        function getYoutubeID(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         function loadProjects() {
-            const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+            // orderId-yə görə sıralayırıq (desc)
+            const q = query(collection(db, "projects"), orderBy("orderId", "desc"));
+            
             onSnapshot(q, (snapshot) => {
                 const container = document.getElementById('dynamic-projects-container');
                 container.innerHTML = "";
+                allProjectsData = []; // Reset array
+
+                // Dataları array-ə yığırıq ki, indekslə işləyə bilək
                 snapshot.forEach((doc) => {
-                    const p = doc.data();
-                    let imgHTML = "";
+                    allProjectsData.push({ id: doc.id, data: doc.data() });
+                });
+
+                allProjectsData.forEach((item, index) => {
+                    const p = item.data;
+                    const docId = item.id;
                     
+                    let imgHTML = "";
                     p.imgs.forEach(src => {
                         imgHTML += `<img src="${src}" alt="3D Work" onerror="this.remove()">`;
                     });
 
-                    let delBtn = window.isAdmin ? `<span onclick="deleteProject('${doc.id}')" style="color:red; cursor:pointer;">DELETE</span>` : "";
+                    // ADMIN CONTROLS
+                    let adminControls = "";
+                    let moveButtons = "";
+                    if (window.isAdmin) {
+                        moveButtons = `
+                            <div class="move-btns">
+                                <button class="move-btn" onclick="moveProject(${index}, -1)">▲</button>
+                                <button class="move-btn" onclick="moveProject(${index}, 1)">▼</button>
+                            </div>
+                        `;
+
+                        adminControls = `
+                        <div class="admin-controls">
+                            ${moveButtons}
+                            <input type="text" class="admin-input" id="yt-${docId}" placeholder="Paste YouTube Link here..." value="${p.youtubeLink || ''}">
+                            <button class="admin-btn-small" onclick="saveVideo('${docId}', 'yt-${docId}')">SAVE VIDEO</button>
+                            <span onclick="deleteProject('${docId}')" style="color:red; cursor:pointer; margin-left:10px; font-weight:bold;">DELETE PROJECT</span>
+                        </div>`;
+                    }
+
+                    // YOUTUBE DISPLAY
+                    let videoHTML = "";
+                    if (p.youtubeLink) {
+                        const vidId = getYoutubeID(p.youtubeLink);
+                        if (vidId) {
+                            videoHTML = `
+                            <div class="video-container">
+                                <div class="video-wrapper">
+                                    <iframe src="https://www.youtube.com/embed/${vidId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>`;
+                        }
+                    }
 
                     container.innerHTML += `
                     <article class="model-card">
@@ -273,9 +439,10 @@
                                 <h3>${p.title}</h3>
                                 <p style="font-size:0.8rem; color:var(--accent-purple); letter-spacing:1px;">${p.cat}</p>
                             </div>
-                            ${delBtn}
                         </div>
                         <div class="gallery-wrapper">${imgHTML}</div>
+                        ${videoHTML}
+                        ${adminControls}
                     </article>`;
                 });
             });
