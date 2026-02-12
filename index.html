@@ -173,6 +173,71 @@
 
         .section { padding: 60px 10%; }
 
+        /* --- ABOUT SECTION --- */
+        .about-text {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #dcdcdc;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-glass);
+        }
+
+        /* --- REVIEWS SECTION --- */
+        .review-form {
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+            background: #111;
+            padding: 30px;
+            border: 1px solid var(--border-glass);
+            text-align: center;
+        }
+        .review-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            font-family: 'Rajdhani';
+        }
+        .star-rating {
+            font-size: 2rem;
+            color: #333;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .star-rating i { transition: color 0.2s; }
+        .star-rating i.active { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .review-card {
+            background: rgba(15, 15, 15, 0.8);
+            border: 1px solid var(--border-glass);
+            padding: 20px;
+            position: relative;
+        }
+        .review-header {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+            border-bottom: 1px solid #222; padding-bottom: 10px;
+        }
+        .review-name { font-weight: 700; color: var(--accent-purple); }
+        .review-stars { color: #ffd700; }
+        .review-text { font-size: 0.95rem; color: #ddd; line-height: 1.4; }
+        .delete-review-btn {
+            position: absolute; top: 10px; right: 10px;
+            color: red; cursor: pointer; font-size: 0.8rem; border: 1px solid red; padding: 2px 5px;
+            display: none; /* hidden by default */
+        }
+
         .contact-email {
             font-size: 1.8rem; color: var(--accent-purple); 
             text-decoration: none; font-weight: 700; display: inline-block;
@@ -193,7 +258,9 @@
         .hidden { display: none !important; }
     </style>
 </head>
-<body oncontextmenu="return false"> <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
+<body oncontextmenu="return false">
+
+    <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
         <div class="spinner" style="width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top-color:var(--accent-purple); border-radius:50%; animation:spin 1s linear infinite;"></div>
     </div>
 
@@ -213,7 +280,9 @@
         <nav>
             <div class="logo">REHMANZADA.3D</div>
             <ul class="nav-links" style="display:flex; list-style:none; gap:30px;">
+                <li><a href="#about">ABOUT</a></li>
                 <li><a href="#work">WORKS</a></li>
+                <li><a href="#reviews">REVIEWS</a></li>
                 <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
@@ -223,10 +292,42 @@
             <p>CGI / HARD-SURFACE / ENVIRONMENTS</p>
         </section>
 
-        <section class="section" id="work">
+        <section class="section" id="about">
+            <h2 style="text-align:center; margin-bottom:30px; letter-spacing:5px;">ABOUT ME</h2>
+            <div class="about-text">
+                <p>
+                    I am a dedicated 3D Generalist with over 3 years of experience specializing in Blender. My core expertise lies in 3D Modeling, where I focus on creating high-quality, optimized, and visually compelling assets.
+                    <br><br>
+                    While modeling is my primary passion, I possess a solid mid-level understanding of the entire 3D pipeline—including texturing, lighting, and rendering. This allows me to bridge the gap between initial concepts and final, polished visuals. I am constantly pushing the boundaries of my creativity to deliver professional results that meet industry standards.
+                </p>
+            </div>
+        </section>
+        <section class="section" id="work" style="border-top: 1px solid var(--border-glass);">
             <div id="dynamic-projects-container"></div>
         </section>
 
+        <section class="section" id="reviews" style="border-top: 1px solid var(--border-glass);">
+            <h2 style="text-align:center; margin-bottom:40px; letter-spacing:5px;">CLIENT REVIEWS</h2>
+            
+            <div class="review-form">
+                <h3 style="margin-bottom:15px; color:var(--accent-purple);">LEAVE A REVIEW</h3>
+                <input type="text" id="rev-name" class="review-input" placeholder="Your Name or Company">
+                <textarea id="rev-text" class="review-input" rows="3" placeholder="Share your experience working with me..."></textarea>
+                
+                <div class="star-rating" id="star-container">
+                    <i class="fas fa-star" onclick="setRating(1)"></i>
+                    <i class="fas fa-star" onclick="setRating(2)"></i>
+                    <i class="fas fa-star" onclick="setRating(3)"></i>
+                    <i class="fas fa-star" onclick="setRating(4)"></i>
+                    <i class="fas fa-star" onclick="setRating(5)"></i>
+                </div>
+                <br>
+                <button class="gate-btn" onclick="submitReview()">SUBMIT REVIEW</button>
+            </div>
+
+            <div id="reviews-container" class="reviews-grid">
+                </div>
+        </section>
         <section class="section" id="contact" style="text-align:center; border-top:1px solid var(--border-glass);">
             <h2 style="margin-bottom:30px; letter-spacing:5px; font-weight:300;">GET IN TOUCH</h2>
             <a href="mailto:yunisrehmanzada@gmail.com" class="contact-email">yunisrehmanzada@gmail.com</a>
@@ -264,6 +365,7 @@
 
         window.isAdmin = false;
         let allProjectsData = [];
+        let currentRating = 0;
 
         // --- ANTI-HACK & ANTI-COPY BLOCKERS ---
         document.onkeydown = function(e) {
@@ -285,10 +387,8 @@
 
         window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
         
-        // --- SADƏ ŞİFRƏ YOXLANMASI (DƏQİQ İŞLƏYƏCƏK) ---
         window.checkPassword = () => {
             const input = document.getElementById('pass-input').value;
-            // Şifrə buradadır, dəyişməyib:
             if(input === 'Yr142536') {
                 window.isAdmin = true;
                 enterSite();
@@ -300,11 +400,13 @@
             document.getElementById('site-content').classList.remove('hidden');
             if(window.isAdmin) document.getElementById('add-project-btn').style.display = 'block';
             loadProjects();
+            loadReviews(); // Load reviews
         };
 
         window.openModal = () => document.getElementById('project-modal').style.display = 'flex';
         window.closeModal = () => document.getElementById('project-modal').style.display = 'none';
 
+        // --- PROJECTS LOGIC ---
         window.addProjectFirebase = async () => {
             const title = document.getElementById('new-title').value;
             const cat = document.getElementById('new-cat').value;
@@ -326,30 +428,23 @@
             if(confirm("Delete this project?")) await deleteDoc(doc(db, "projects", id));
         };
 
-        // --- YOUTUBE UPDATE ---
         window.saveVideo = async (id, inputId) => {
             const val = document.getElementById(inputId).value;
             await updateDoc(doc(db, "projects", id), { youtubeLink: val });
             alert("Video Updated!");
         };
 
-        // --- ORDER REORDERING (Yuxarı/Aşağı) ---
         window.moveProject = async (index, direction) => {
             if (!window.isAdmin) return;
-            
             const targetIndex = index + direction;
             if (targetIndex < 0 || targetIndex >= allProjectsData.length) return;
-
             const currentDoc = allProjectsData[index];
             const targetDoc = allProjectsData[targetIndex];
-
             const batch = writeBatch(db);
             const ref1 = doc(db, "projects", currentDoc.id);
             const ref2 = doc(db, "projects", targetDoc.id);
-
             batch.update(ref1, { orderId: targetDoc.data.orderId });
             batch.update(ref2, { orderId: currentDoc.data.orderId });
-
             await batch.commit();
         };
 
@@ -361,7 +456,6 @@
 
         function loadProjects() {
             const q = query(collection(db, "projects"), orderBy("orderId", "desc"));
-            
             onSnapshot(q, (snapshot) => {
                 const container = document.getElementById('dynamic-projects-container');
                 container.innerHTML = "";
@@ -398,27 +492,84 @@
                     if (p.youtubeLink) {
                         const vidId = getYoutubeID(p.youtubeLink);
                         if (vidId) {
-                            videoHTML = `
-                            <div class="video-container">
-                                <div class="video-wrapper">
-                                    <iframe src="https://www.youtube.com/embed/${vidId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>`;
+                            videoHTML = `<div class="video-container"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${vidId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
                         }
                     }
 
                     container.innerHTML += `
                     <article class="model-card">
                         <div class="model-header">
-                            <div>
-                                <h3>${p.title}</h3>
-                                <p style="font-size:0.8rem; color:var(--accent-purple); letter-spacing:1px;">${p.cat}</p>
-                            </div>
+                            <div><h3>${p.title}</h3><p style="font-size:0.8rem; color:var(--accent-purple); letter-spacing:1px;">${p.cat}</p></div>
                         </div>
                         <div class="gallery-wrapper">${imgHTML}</div>
                         ${videoHTML}
                         ${adminControls}
                     </article>`;
+                });
+            });
+        }
+
+        // --- REVIEWS LOGIC ---
+        window.setRating = (n) => {
+            currentRating = n;
+            const stars = document.querySelectorAll('#star-container i');
+            stars.forEach((s, idx) => {
+                if(idx < n) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        };
+
+        window.submitReview = async () => {
+            const name = document.getElementById('rev-name').value;
+            const text = document.getElementById('rev-text').value;
+            
+            if(!name || !text || currentRating === 0) return alert("Please fill name, comment and select stars!");
+
+            await addDoc(collection(db, "reviews"), {
+                name, text, stars: currentRating,
+                timestamp: Date.now()
+            });
+
+            document.getElementById('rev-name').value = "";
+            document.getElementById('rev-text').value = "";
+            window.setRating(0);
+            alert("Review Submitted!");
+        };
+
+        window.deleteReview = async (id) => {
+            if(confirm("Delete this review permanently?")) {
+                await deleteDoc(doc(db, "reviews", id));
+            }
+        };
+
+        function loadReviews() {
+            const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                const container = document.getElementById('reviews-container');
+                container.innerHTML = "";
+                
+                snapshot.forEach((doc) => {
+                    const r = doc.data();
+                    let starsHTML = "";
+                    for(let i=0; i<5; i++) {
+                        starsHTML += `<i class="fas fa-star" style="color: ${i < r.stars ? '#ffd700' : '#444'}"></i>`;
+                    }
+
+                    let deleteBtn = "";
+                    if(window.isAdmin) {
+                        deleteBtn = `<div class="delete-review-btn" style="display:block;" onclick="deleteReview('${doc.id}')">DELETE</div>`;
+                    }
+
+                    container.innerHTML += `
+                    <div class="review-card">
+                        ${deleteBtn}
+                        <div class="review-header">
+                            <span class="review-name">${r.name}</span>
+                            <span class="review-stars">${starsHTML}</span>
+                        </div>
+                        <p class="review-text">${r.text}</p>
+                    </div>`;
                 });
             });
         }
