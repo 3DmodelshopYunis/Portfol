@@ -20,7 +20,6 @@
         /* --- TƏHLÜKƏSİZLİK ÜÇÜN SEÇİMİ BLOKLAMAQ --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         
-        /* Inputlara yazmağa icazə veririk */
         input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
         ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -84,10 +83,9 @@
             padding: 0 !important;
         }
 
-        /* --- YOUTUBE CONTAINER (UPDATED FOR 16:9 FULL WIDTH) --- */
         .video-container {
             width: 100%;
-            padding: 0; /* Boşluqlar yığışdırıldı */
+            padding: 0; 
             background: #000;
             display: flex;
             justify-content: center;
@@ -95,9 +93,8 @@
         }
         .video-wrapper {
             position: relative;
-            width: 100%; /* Tam eni tutur */
-            max-width: none; /* Məhdudiyyət götürüldü */
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio qorunur */
+            width: 100%; 
+            padding-bottom: 56.25%; 
             height: 0;
         }
         .video-wrapper iframe {
@@ -109,7 +106,6 @@
             border: none;
         }
 
-        /* --- ADMIN CONTROLS --- */
         .admin-controls {
             padding: 15px;
             background: #111;
@@ -149,11 +145,24 @@
             border-bottom: 1px solid var(--border-glass); 
         }
 
-        /* LOGO STYLING */
+        /* LOGO & BRANDING STYLING */
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
         .logo-img {
-            height: 50px; /* Logo hündürlüyü */
+            height: 50px; 
             width: auto;
             display: block;
+        }
+        .brand-name {
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+            color: #fff;
+            border-left: 1px solid var(--border-glass);
+            padding-left: 15px;
         }
 
         .nav-links li a {
@@ -178,7 +187,6 @@
 
         .section { padding: 60px 10%; }
 
-        /* --- ABOUT SECTION --- */
         .about-text {
             max-width: 900px;
             margin: 0 auto;
@@ -191,7 +199,6 @@
             border: 1px solid var(--border-glass);
         }
 
-        /* --- REVIEWS SECTION --- */
         .review-form {
             max-width: 600px;
             margin: 0 auto 50px auto;
@@ -240,10 +247,9 @@
         .delete-review-btn {
             position: absolute; top: 10px; right: 10px;
             color: red; cursor: pointer; font-size: 0.8rem; border: 1px solid red; padding: 2px 5px;
-            display: none; /* hidden by default */
+            display: none;
         }
 
-        /* --- CONTACT SECTION UPDATES --- */
         .contact-logo {
             height: 80px;
             width: auto;
@@ -311,8 +317,9 @@
 
     <div id="site-content" class="hidden">
         <nav>
-            <div class="logo">
-                <img src="logo_n.jpg" alt="REHMANZADA.3D" class="logo-img">
+            <div class="brand-container">
+                <img src="logo_n.jpg" alt="Logo" class="logo-img">
+                <span class="brand-name">Yunis | Virtual Craft</span>
             </div>
             <ul class="nav-links" style="display:flex; list-style:none; gap:30px;">
                 <li><a href="#about">ABOUT</a></li>
@@ -413,16 +420,14 @@
         let allProjectsData = [];
         let currentRating = 0;
 
-        // --- ANTI-HACK & ANTI-COPY BLOCKERS ---
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; // F12
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+            if(e.keyCode == 123) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
         };
 
-        // --- SMOOTH SCROLL ---
         document.addEventListener('wheel', (e) => {
             const container = e.target.closest('.gallery-wrapper');
             if (!container) return;
@@ -446,13 +451,12 @@
             document.getElementById('site-content').classList.remove('hidden');
             if(window.isAdmin) document.getElementById('add-project-btn').style.display = 'block';
             loadProjects();
-            loadReviews(); // Load reviews
+            loadReviews(); 
         };
 
         window.openModal = () => document.getElementById('project-modal').style.display = 'flex';
         window.closeModal = () => document.getElementById('project-modal').style.display = 'none';
 
-        // --- PROJECTS LOGIC ---
         window.addProjectFirebase = async () => {
             const title = document.getElementById('new-title').value;
             const cat = document.getElementById('new-cat').value;
@@ -555,7 +559,6 @@
             });
         }
 
-        // --- REVIEWS LOGIC ---
         window.setRating = (n) => {
             currentRating = n;
             const stars = document.querySelectorAll('#star-container i');
@@ -590,11 +593,9 @@
 
         function loadReviews() {
             const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-            
             onSnapshot(q, (snapshot) => {
                 const container = document.getElementById('reviews-container');
                 container.innerHTML = "";
-                
                 snapshot.forEach((doc) => {
                     const r = doc.data();
                     let starsHTML = "";
