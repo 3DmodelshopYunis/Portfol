@@ -74,7 +74,7 @@
 
         .gallery-wrapper img { 
             flex-shrink: 0; 
-            height: 100%;       
+            height: 100%;        
             width: auto;        
             max-width: none;    
             object-fit: cover;  
@@ -84,10 +84,10 @@
             padding: 0 !important;
         }
 
-        /* --- YOUTUBE CONTAINER --- */
+        /* --- YOUTUBE CONTAINER (UPDATED FOR 16:9 FULL WIDTH) --- */
         .video-container {
             width: 100%;
-            padding: 20px;
+            padding: 0; /* Boşluqlar yığışdırıldı */
             background: #000;
             display: flex;
             justify-content: center;
@@ -95,9 +95,9 @@
         }
         .video-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 800px;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            width: 100%; /* Tam eni tutur */
+            max-width: none; /* Məhdudiyyət götürüldü */
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio qorunur */
             height: 0;
         }
         .video-wrapper iframe {
@@ -106,7 +106,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border: 1px solid #333;
+            border: none;
         }
 
         /* --- ADMIN CONTROLS --- */
@@ -144,12 +144,17 @@
 
         nav { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 8%; background: rgba(5,5,5,0.95); 
+            padding: 15px 8%; background: rgba(5,5,5,0.95); 
             backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; 
             border-bottom: 1px solid var(--border-glass); 
         }
 
-        .logo { font-size: 1.6rem; font-weight: 700; letter-spacing: 4px; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        /* LOGO STYLING */
+        .logo-img {
+            height: 50px; /* Logo hündürlüyü */
+            width: auto;
+            display: block;
+        }
 
         .nav-links li a {
             color: white; text-decoration: none; font-weight: 700; 
@@ -238,14 +243,42 @@
             display: none; /* hidden by default */
         }
 
+        /* --- CONTACT SECTION UPDATES --- */
+        .contact-logo {
+            height: 80px;
+            width: auto;
+            margin-bottom: 20px;
+        }
+
         .contact-email {
             font-size: 1.8rem; color: var(--accent-purple); 
             text-decoration: none; font-weight: 700; display: inline-block;
             transition: letter-spacing 0.4s ease, text-shadow 0.4s ease, color 0.4s ease;
+            margin-bottom: 30px;
         }
 
         .contact-email:hover {
             letter-spacing: 4px; text-shadow: 0 0 15px var(--accent-purple); color: #fff;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .social-btn {
+            font-size: 2rem;
+            color: white;
+            transition: 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            color: var(--accent-purple);
+            transform: scale(1.1);
+            text-shadow: 0 0 15px var(--accent-purple);
         }
 
         #add-project-btn {
@@ -278,7 +311,9 @@
 
     <div id="site-content" class="hidden">
         <nav>
-            <div class="logo">REHMANZADA.3D</div>
+            <div class="logo">
+                <img src="logo_n.jpg" alt="REHMANZADA.3D" class="logo-img">
+            </div>
             <ul class="nav-links" style="display:flex; list-style:none; gap:30px;">
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#work">WORKS</a></li>
@@ -329,8 +364,19 @@
                 </div>
         </section>
         <section class="section" id="contact" style="text-align:center; border-top:1px solid var(--border-glass);">
-            <h2 style="margin-bottom:30px; letter-spacing:5px; font-weight:300;">GET IN TOUCH</h2>
+            <img src="logo_n.jpg" alt="Logo" class="contact-logo">
+            <h2 style="margin-bottom:20px; letter-spacing:5px; font-weight:300;">GET IN TOUCH</h2>
+            
             <a href="mailto:yunisrehmanzada@gmail.com" class="contact-email">yunisrehmanzada@gmail.com</a>
+            
+            <div class="social-icons">
+                <a href="https://youtube.com/@yunis-qg3ih?si=jUHWYyuq5ci66Ydj" target="_blank" class="social-btn">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://discord.gg/UFZdyZVP" target="_blank" class="social-btn">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
         </section>
     </div>
 
@@ -391,7 +437,7 @@
             const input = document.getElementById('pass-input').value;
             if(input === 'Yr142536') {
                 window.isAdmin = true;
-                enterSite();
+                window.enterSite();
             } else { alert("Wrong Password!"); }
         };
 
@@ -492,7 +538,7 @@
                     if (p.youtubeLink) {
                         const vidId = getYoutubeID(p.youtubeLink);
                         if (vidId) {
-                            videoHTML = `<div class="video-container"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${vidId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
+                            videoHTML = `<div class="video-container"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${vidId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
                         }
                     }
 
