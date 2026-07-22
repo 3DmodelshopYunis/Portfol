@@ -29,7 +29,7 @@
             background-color: var(--bg-dark);
             background-image: radial-gradient(circle at 50% 0%, #11111a 0%, var(--bg-dark) 70%);
             color: var(--text-main);
-            font-family: 'Inter', sans-serif; /* Mətnlər üçün daha oxunaqlı şrift */
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
@@ -63,7 +63,6 @@
         .hero p { color: var(--text-muted); letter-spacing: 5px; font-weight: 400; text-transform: uppercase; font-size: 1.1rem; }
 
         .section { padding: 80px 10%; }
-        .section-title { text-align: center; margin-bottom: 50px; letter-spacing: 4px; font-size: 2.5rem; font-weight: 300;}
 
         /* Portfel Kartları */
         .model-card { 
@@ -89,7 +88,7 @@
         .btn:hover { background: var(--accent-purple); box-shadow: var(--neon-glow); }
         
         .admin-panel { display: none; background: #111; padding: 15px; border-top: 1px solid #333; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .admin-input { background: #0a0a0a; border: 1px solid #333; color: white; padding: 10px; flex-grow: 1; border-radius: 4px; outline: none; transition: 0.3s; }
+        .admin-input { background: #0a0a0a; border: 1px solid #333; color: white; padding: 10px; flex-grow: 1; border-radius: 4px; outline: none; transition: 0.3s; font-family: 'Inter', sans-serif;}
         .admin-input:focus { border-color: var(--accent-purple); }
 
         #add-project-btn {
@@ -100,10 +99,11 @@
         }
         #add-project-btn:hover { transform: scale(1.1); }
 
-        /* Modal Pəncərə (Login & Add Project) */
+        /* Modal Pəncərələr */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 3000; display: none; justify-content: center; align-items: center; }
         .modal-box { background: #111; padding: 40px; border: 1px solid #333; border-radius: 8px; width: 400px; text-align: center; }
-        .modal-box input { width: 100%; margin-bottom: 15px; }
+        .modal-box input, .modal-box textarea { width: 100%; margin-bottom: 15px; }
+        .modal-box textarea { resize: vertical; min-height: 80px; }
 
     </style>
 </head>
@@ -114,7 +114,7 @@
         <div style="width:50px; height:50px; border:2px solid transparent; border-top-color:var(--accent-purple); border-radius:50%; animation:spin 1s linear infinite;"></div>
     </div>
 
-    <!-- Admin Login Modalı (Gizlidir) -->
+    <!-- Admin Login Modalı -->
     <div class="modal-overlay" id="login-modal">
         <div class="modal-box">
             <h2 style="margin-bottom:20px; font-family:'Rajdhani'; letter-spacing: 2px;">Admin Login</h2>
@@ -125,14 +125,27 @@
         </div>
     </div>
 
+    <!-- Yeni Proyekt Əlavə Etmə Modalı (BƏRPA EDİLDİ) -->
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal-box" style="width: 500px;">
+            <h2 style="margin-bottom:20px; font-family:'Rajdhani'; letter-spacing: 2px;">Add New Project</h2>
+            <input type="text" id="proj-title" class="admin-input" placeholder="Project Title (e.g., Cyberpunk Car)">
+            <input type="text" id="proj-cat" class="admin-input" placeholder="Category (e.g., Hard-Surface)">
+            <textarea id="proj-imgs" class="admin-input" placeholder="Image URLs (virgül ilə ayırın. Məs: link1, link2)"></textarea>
+            
+            <button class="btn" onclick="saveProject()" style="width:100%; margin-top: 10px;">SAVE TO DATABASE</button>
+            <button class="btn" onclick="closeProjectModal()" style="width:100%; margin-top: 10px; border-color: #555; background: transparent;">CANCEL</button>
+        </div>
+    </div>
+
     <div id="site-content">
         <nav>
             <div class="brand-container">
+                <!-- Şəkil yoxdursa "alt" yazısı görünəcək -->
                 <img src="logo_n.jpg" alt="Yunis Logo" class="logo-img">
                 <span class="brand-name">YUNIS | 3D ARTIST</span>
             </div>
             <ul class="nav-links">
-                <li><a href="#about">ABOUT</a></li>
                 <li><a href="#work">WORKS</a></li>
                 <li><a href="#contact">CONTACT</a></li>
             </ul>
@@ -150,15 +163,15 @@
         </section>
     </div>
 
+    <!-- Plus düyməsi -->
     <button id="add-project-btn" onclick="openProjectModal()">+</button>
 
     <script type="module">
-        // 1. Firebase Modullarını Import edirik
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        // ƏSKİK OLAN addDoc, deleteDoc və doc BƏRPA EDİLDİ
+        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        // Firebase Config (Sizin məlumatlarınız)
         const firebaseConfig = {
             apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
             authDomain: "portfolio-yunis.firebaseapp.com",
@@ -170,84 +183,125 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app); // Avtorizasiya obyekti
+        const auth = getAuth(app);
 
         window.isAdmin = false;
 
-        // Sayt yükləndikdə yoxlayırıq ki, əvvəlcədən login olmuşuqmu?
+        // Sayt yüklənəndə Auth vəziyyətini yoxlayır
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Əgər istifadəçi tanındısa (Avto-Login işə düşür)
                 window.isAdmin = true;
                 document.getElementById('add-project-btn').style.display = 'block';
-                console.log("Admin avtomatik tanındı!");
-                loadProjects(); // Proyektləri admin rejimi ilə yükləyirik
+                console.log("Admin kimi daxil olundu.");
             } else {
                 window.isAdmin = false;
                 document.getElementById('add-project-btn').style.display = 'none';
-                loadProjects(); // Proyektləri müştəri rejimi ilə yükləyirik
             }
+            loadProjects(); 
             
-            // Yüklənmə ekranını gizlədirik
             setTimeout(() => {
                 document.getElementById('loading-screen').style.opacity = '0';
                 setTimeout(() => document.getElementById('loading-screen').style.display = 'none', 500);
             }, 800);
         });
 
-        // "GİZLİ" ADMİN PƏNCƏRƏSİNİ AÇMAQ ÜÇÜN
-        // 1-ci yol: URL-in sonuna ?admin=1 yazmaq
-        const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.get('admin') === '1' && !window.isAdmin) {
-            document.getElementById('login-modal').style.display = 'flex';
-        }
-
-        // 2-ci yol: Klaviaturada eyni anda Ctrl + Q basmaq
+        // CTRL + Q ilə admin login açmaq
         document.addEventListener('keydown', (e) => {
             if(e.ctrlKey && e.key === 'q') {
                 document.getElementById('login-modal').style.display = 'flex';
             }
         });
 
-        // Admin daxil olma funksiyası
+        // Qlobal window obyektinə funksiyaları təyin edirik ki, HTML-dəki onclick işləsin
         window.loginAdmin = () => {
             const email = document.getElementById('admin-email').value;
             const pass = document.getElementById('admin-pass').value;
             
             signInWithEmailAndPassword(auth, email, pass)
                 .then((userCredential) => {
-                    alert("Uğurla giriş edildi!");
                     document.getElementById('login-modal').style.display = 'none';
-                    // Səhifəni yeniləməyə ehtiyac yoxdur, onAuthStateChanged yuxarıda avtomatik işə düşəcək
+                    alert("Admin olaraq daxil oldunuz!");
                 })
                 .catch((error) => {
                     alert("Xəta: Email və ya Şifrə yalnışdır!");
                 });
         };
 
-        // Proyektləri Yükləmə (Qısa versiya, yuxarıdakı isAdmin yoxlanışına uyğun)
+        // Pəncərəni açmaq
+        window.openProjectModal = () => {
+            document.getElementById('add-modal').style.display = 'flex';
+        };
+
+        // Pəncərəni bağlamaq
+        window.closeProjectModal = () => {
+            document.getElementById('add-modal').style.display = 'none';
+            document.getElementById('proj-title').value = '';
+            document.getElementById('proj-cat').value = '';
+            document.getElementById('proj-imgs').value = '';
+        };
+
+        // BAZAYA MƏLUMAT YAZMAQ (BƏRPA EDİLDİ)
+        window.saveProject = async () => {
+            const title = document.getElementById('proj-title').value;
+            const cat = document.getElementById('proj-cat').value;
+            const imgsRaw = document.getElementById('proj-imgs').value;
+            
+            if(!title || !imgsRaw) {
+                alert("Başlıq və Şəkil URL-ləri mütləqdir!");
+                return;
+            }
+            
+            // Vergüllə ayrılmış linkləri Array-ə (siyahıya) çeviririk
+            const imgsArray = imgsRaw.split(',').map(s => s.trim()).filter(s => s !== "");
+            
+            try {
+                await addDoc(collection(db, "projects"), {
+                    title: title,
+                    cat: cat,
+                    imgs: imgsArray,
+                    orderId: Date.now() // Sıralama üçün indiki vaxt
+                });
+                alert("Proyekt uğurla əlavə edildi!");
+                window.closeProjectModal();
+            } catch (error) {
+                console.error("Xəta baş verdi: ", error);
+                alert("Əlavə etmək mümkün olmadı. Konsola baxın.");
+            }
+        };
+
+        // BAZADAN MƏLUMAT SİLMƏK (BƏRPA EDİLDİ)
+        window.deleteProject = async (docId) => {
+            if(confirm("Bu proyekti silmək istədiyinizə əminsiniz?")) {
+                try {
+                    await deleteDoc(doc(db, "projects", docId));
+                } catch (error) {
+                    console.error("Silinmə xətası:", error);
+                    alert("Silinmə zamanı xəta oldu.");
+                }
+            }
+        };
+
+        // Proyektləri Firebase-dən oxumaq
         function loadProjects() {
             const q = query(collection(db, "projects"), orderBy("orderId", "desc"));
             onSnapshot(q, (snapshot) => {
                 const container = document.getElementById('dynamic-projects-container');
                 container.innerHTML = "";
 
-                snapshot.forEach((doc) => {
-                    const p = doc.data();
+                snapshot.forEach((docItem) => {
+                    const p = docItem.data();
+                    const docId = docItem.id; // Silmək üçün Firebase Document ID-si lazımdır
                     
                     let adminControls = "";
-                    // YALNIZ Admin olduqda idarəetmə paneli render olunur!
                     if (window.isAdmin) {
                         adminControls = `
                         <div class="admin-panel" style="display:flex;">
-                            <button class="btn" style="padding: 5px 10px;">▲</button>
-                            <button class="btn" style="padding: 5px 10px;">▼</button>
-                            <span style="color:red; cursor:pointer; font-weight:bold; margin-left:auto;">DELETE</span>
+                            <!-- Sil düyməsi artıq birbaşa docId-ni alır -->
+                            <span onclick="deleteProject('${docId}')" style="color:red; cursor:pointer; font-weight:bold; margin-left:auto; letter-spacing: 1px;">DELETE PROJECT</span>
                         </div>`;
                     }
 
-                    // Şəkilləri generirasiya etmək
-                    let imgHTML = p.imgs.map(src => `<img src="${src}" alt="3D Work">`).join('');
+                    let imgHTML = p.imgs.map(src => `<img src="${src}" alt="${p.title}">`).join('');
 
                     container.innerHTML += `
                     <article class="model-card">
@@ -261,7 +315,7 @@
             });
         }
 
-        // Qalereyada Mouse tekeri ile saga-sola surusdurmek
+        // Qalereyada Mouse tekeri ilə sağa-sola sürüşdürmək
         document.addEventListener('wheel', (e) => {
             const container = e.target.closest('.gallery-wrapper');
             if (container) {
