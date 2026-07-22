@@ -3,407 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yunis Rehmanzada | 3D Artist Portfolio</title>
+    <title>Yunis | 3D Artist Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         :root {
             --bg-dark: #050505;
             --accent-purple: #8e2de2;
-            --border-glass: rgba(255, 255, 255, 0.1);
+            --border-glass: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
-            --neon-glow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+            --text-muted: #a0a0a0;
+            --neon-glow: 0 0 15px rgba(142, 45, 226, 0.4);
         }
 
-        /* --- TƏHLÜKƏSİZLİK ÜÇÜN SEÇİMİ BLOKLAMAQ --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-        
-        input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #ffffff; border-radius: 0px !important; border: 1px solid #000; }
-        ::-webkit-scrollbar-thumb:hover { background: #cccccc; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
 
         body {
             background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 0%, #12121f 0%, #050505 60%);
+            background-image: radial-gradient(circle at 50% 0%, #11111a 0%, var(--bg-dark) 70%);
             color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Inter', sans-serif; /* Mətnlər üçün daha oxunaqlı şrift */
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .model-card { 
-            background: rgba(15, 15, 15, 0.7); 
-            border: 1px solid var(--border-glass); 
-            margin-bottom: 120px; 
-            border-radius: 0px; 
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            transition: border-color 0.3s ease;
-            position: relative;
-        }
-        
-        .model-card:hover { border-color: rgba(255, 255, 255, 0.2); }
-
-        .model-header { 
-            padding: 25px; 
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid var(--border-glass);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        h1, h2, h3, .brand-name, .nav-links a, .gate-btn {
+            font-family: 'Rajdhani', sans-serif;
         }
 
-        .gallery-wrapper { 
-            position: relative; 
-            display: flex; 
-            overflow-x: auto; 
-            background: #000; 
-            height: 85vh; 
-            align-items: flex-start;
-            scroll-snap-type: none; 
-            scrollbar-width: none; 
-            gap: 0px !important; 
-        }
-        .gallery-wrapper::-webkit-scrollbar { display: none; }
-
-        .gallery-wrapper img { 
-            flex-shrink: 0; 
-            height: 100%;        
-            width: auto;        
-            max-width: none;    
-            object-fit: cover;  
-            pointer-events: none;
-            display: block; 
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        .video-container {
-            width: 100%;
-            padding: 0; 
-            background: #000;
-            display: flex;
-            justify-content: center;
-            border-top: 1px solid var(--border-glass);
-        }
-        .video-wrapper {
-            position: relative;
-            width: 100%; 
-            padding-bottom: 56.25%; 
-            height: 0;
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .admin-controls {
-            padding: 15px;
-            background: #111;
-            border-top: 1px solid #333;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .admin-input {
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            padding: 8px;
-            flex-grow: 1;
-            font-family: 'Rajdhani';
-        }
-        .admin-btn-small {
-            background: var(--accent-purple);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .move-btns { display: flex; gap: 5px; }
-        .move-btn {
-            background: #333; color: white; border: 1px solid #555;
-            padding: 5px 10px; cursor: pointer;
-        }
-        .move-btn:hover { background: #555; }
-
+        /* Naviqasiya */
         nav { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 8%; background: rgba(5,5,5,0.95); 
-            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; 
+            padding: 20px 8%; background: rgba(5,5,5,0.85); 
+            backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; 
             border-bottom: 1px solid var(--border-glass); 
         }
 
-        /* LOGO & BRANDING STYLING */
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .logo-img {
-            height: 50px; 
-            width: auto;
-            display: block;
-        }
-        .brand-name {
-            font-weight: 700;
-            letter-spacing: 2px;
-            font-size: 1.2rem;
-            color: #fff;
-            border-left: 1px solid var(--border-glass);
-            padding-left: 15px;
-        }
+        .brand-container { display: flex; align-items: center; gap: 15px; }
+        .logo-img { height: 45px; width: auto; border-radius: 4px; }
+        .brand-name { font-weight: 700; letter-spacing: 2px; font-size: 1.3rem; color: #fff; }
 
+        .nav-links { display: flex; list-style: none; gap: 35px; }
         .nav-links li a {
-            color: white; text-decoration: none; font-weight: 700; 
-            font-size: 1.1rem; letter-spacing: 1px; transition: all 0.3s ease;
-            padding: 5px 10px;
+            color: var(--text-muted); text-decoration: none; font-weight: 600; 
+            font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s;
         }
+        .nav-links li a:hover { color: #fff; text-shadow: var(--neon-glow); }
 
-        .nav-links li a:hover { text-shadow: var(--neon-glow); color: #fff; }
+        /* Hero Bölməsi */
+        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-size: 5.5rem; letter-spacing: 12px; margin-bottom: 10px; font-weight: 700; background: linear-gradient(to right, #fff, var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-muted); letter-spacing: 5px; font-weight: 400; text-transform: uppercase; font-size: 1.1rem; }
 
-        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: 5rem; letter-spacing: 15px; margin-bottom: 10px; font-weight: 700; text-shadow: 0 0 20px rgba(0,0,0,0.8); }
-        .hero p { color: var(--accent-purple); letter-spacing: 6px; font-weight: 500; text-transform: uppercase; }
+        .section { padding: 80px 10%; }
+        .section-title { text-align: center; margin-bottom: 50px; letter-spacing: 4px; font-size: 2.5rem; font-weight: 300;}
 
-        .gate-btn {
-            background: none; border: 1px solid var(--accent-purple); color: white;
-            padding: 12px 25px; cursor: pointer; font-family: 'Rajdhani';
-            font-weight: 700; letter-spacing: 2px; transition: 0.4s;
-            border-radius: 0px;
+        /* Portfel Kartları */
+        .model-card { 
+            background: rgba(20, 20, 20, 0.4); border: 1px solid var(--border-glass); 
+            margin-bottom: 100px; border-radius: 8px; overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .gate-btn:hover { background: var(--accent-purple); box-shadow: 0 0 30px var(--accent-purple); }
+        .model-card:hover { border-color: rgba(142, 45, 226, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
 
-        .section { padding: 60px 10%; }
+        .model-header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
+        .model-header h3 { font-size: 1.8rem; letter-spacing: 1px; }
+        .model-header p { font-family: 'Inter'; color: var(--accent-purple); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;}
 
-        .about-text {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #dcdcdc;
-            padding: 20px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border-glass);
-        }
+        .gallery-wrapper { display: flex; overflow-x: auto; height: 75vh; scroll-snap-type: x mandatory; background: #000; }
+        .gallery-wrapper img { height: 100%; width: auto; object-fit: cover; scroll-snap-align: start; }
 
-        .review-form {
-            max-width: 600px;
-            margin: 0 auto 50px auto;
-            background: #111;
-            padding: 30px;
-            border: 1px solid var(--border-glass);
-            text-align: center;
+        /* Admin Düymələri */
+        .btn {
+            background: transparent; border: 1px solid var(--accent-purple); color: white;
+            padding: 10px 25px; cursor: pointer; font-family: 'Rajdhani';
+            font-weight: 700; letter-spacing: 1px; transition: 0.3s; border-radius: 4px;
         }
-        .review-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            font-family: 'Rajdhani';
-        }
-        .star-rating {
-            font-size: 2rem;
-            color: #333;
-            cursor: pointer;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-        .star-rating i { transition: color 0.2s; }
-        .star-rating i.active { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .btn:hover { background: var(--accent-purple); box-shadow: var(--neon-glow); }
         
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .review-card {
-            background: rgba(15, 15, 15, 0.8);
-            border: 1px solid var(--border-glass);
-            padding: 20px;
-            position: relative;
-        }
-        .review-header {
-            display: flex; justify-content: space-between; margin-bottom: 10px;
-            border-bottom: 1px solid #222; padding-bottom: 10px;
-        }
-        .review-name { font-weight: 700; color: var(--accent-purple); }
-        .review-stars { color: #ffd700; }
-        .review-text { font-size: 0.95rem; color: #ddd; line-height: 1.4; }
-        .delete-review-btn {
-            position: absolute; top: 10px; right: 10px;
-            color: red; cursor: pointer; font-size: 0.8rem; border: 1px solid red; padding: 2px 5px;
-            display: none;
-        }
-
-        .contact-logo {
-            height: 80px;
-            width: auto;
-            margin-bottom: 20px;
-        }
-
-        .contact-email {
-            font-size: 1.8rem; color: var(--accent-purple); 
-            text-decoration: none; font-weight: 700; display: inline-block;
-            transition: letter-spacing 0.4s ease, text-shadow 0.4s ease, color 0.4s ease;
-            margin-bottom: 30px;
-        }
-
-        .contact-email:hover {
-            letter-spacing: 4px; text-shadow: 0 0 15px var(--accent-purple); color: #fff;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 10px;
-        }
-
-        .social-btn {
-            font-size: 2rem;
-            color: white;
-            transition: 0.3s ease;
-            text-decoration: none;
-        }
-
-        .social-btn:hover {
-            color: var(--accent-purple);
-            transform: scale(1.1);
-            text-shadow: 0 0 15px var(--accent-purple);
-        }
+        .admin-panel { display: none; background: #111; padding: 15px; border-top: 1px solid #333; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .admin-input { background: #0a0a0a; border: 1px solid #333; color: white; padding: 10px; flex-grow: 1; border-radius: 4px; outline: none; transition: 0.3s; }
+        .admin-input:focus { border-color: var(--accent-purple); }
 
         #add-project-btn {
             display: none; position: fixed; bottom: 30px; right: 30px; 
             background: var(--accent-purple); width: 60px; height: 60px; 
-            border-radius: 0px; border: none; color: white; cursor: pointer;
-            box-shadow: 0 0 20px rgba(142, 45, 226, 0.6); z-index: 2000; font-size: 24px;
+            border-radius: 50%; border: none; color: white; cursor: pointer;
+            box-shadow: var(--neon-glow); z-index: 2000; font-size: 28px; transition: 0.3s;
         }
+        #add-project-btn:hover { transform: scale(1.1); }
 
-        .hidden { display: none !important; }
+        /* Modal Pəncərə (Login & Add Project) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 3000; display: none; justify-content: center; align-items: center; }
+        .modal-box { background: #111; padding: 40px; border: 1px solid #333; border-radius: 8px; width: 400px; text-align: center; }
+        .modal-box input { width: 100%; margin-bottom: 15px; }
+
     </style>
 </head>
-<body oncontextmenu="return false">
+<body>
 
-    <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
-        <div class="spinner" style="width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top-color:var(--accent-purple); border-radius:50%; animation:spin 1s linear infinite;"></div>
+    <!-- Yüklənmə Ekranı -->
+    <div id="loading-screen" style="position:fixed; inset:0; background:var(--bg-dark); z-index:10000; display:flex; justify-content:center; align-items:center; transition:0.5s;">
+        <div style="width:50px; height:50px; border:2px solid transparent; border-top-color:var(--accent-purple); border-radius:50%; animation:spin 1s linear infinite;"></div>
     </div>
 
-    <div id="gatekeeper" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:9999; display:flex; justify-content:center; align-items:center;">
-        <div class="gate-box" style="text-align:center;">
-            <h1 style="letter-spacing:10px; margin-bottom:40px;">YUNIS REHMANZADA</h1>
-            <button class="gate-btn" onclick="showPasswordInput()">ADMIN ACCESS</button>
-            <button class="gate-btn" onclick="enterSite('client')" style="border-color:#555; margin-left:10px;">GUEST</button>
-            <div id="password-modal" style="margin-top:30px; display:none; flex-direction:column; gap:10px; align-items:center;">
-                <input type="password" id="pass-input" placeholder="Password" style="padding:10px; background:#111; border:1px solid #333; color:white; text-align:center;">
-                <button class="gate-btn" onclick="checkPassword()">LOGIN</button>
-            </div>
+    <!-- Admin Login Modalı (Gizlidir) -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-box">
+            <h2 style="margin-bottom:20px; font-family:'Rajdhani'; letter-spacing: 2px;">Admin Login</h2>
+            <input type="email" id="admin-email" class="admin-input" placeholder="Email">
+            <input type="password" id="admin-pass" class="admin-input" placeholder="Password">
+            <button class="btn" onclick="loginAdmin()" style="width:100%; margin-top: 10px;">LOGIN</button>
+            <button class="btn" onclick="document.getElementById('login-modal').style.display='none'" style="width:100%; margin-top: 10px; border-color: #555; background: transparent;">CANCEL</button>
         </div>
     </div>
 
-    <div id="site-content" class="hidden">
+    <div id="site-content">
         <nav>
             <div class="brand-container">
-                <img src="logo_n.jpg" alt="Logo" class="logo-img">
-                <span class="brand-name">Yunis | Virtual Craft</span>
+                <img src="logo_n.jpg" alt="Yunis Logo" class="logo-img">
+                <span class="brand-name">YUNIS | 3D ARTIST</span>
             </div>
-            <ul class="nav-links" style="display:flex; list-style:none; gap:30px;">
+            <ul class="nav-links">
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#work">WORKS</a></li>
-                <li><a href="#reviews">REVIEWS</a></li>
                 <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
 
         <section class="hero">
             <h1>SURFACE ARTIST</h1>
-            <p>CGI / HARD-SURFACE / ENVIRONMENTS</p>
+            <p>CGI • Hard-Surface • Environments</p>
         </section>
 
-        <section class="section" id="about">
-            <h2 style="text-align:center; margin-bottom:30px; letter-spacing:5px;">ABOUT ME</h2>
-            <div class="about-text">
-                <p>
-                    I am a dedicated 3D Generalist with over 3 years of experience specializing in Blender. My core expertise lies in 3D Modeling, where I focus on creating high-quality, optimized, and visually compelling assets.
-                    <br><br>
-                    While modeling is my primary passion, I possess a solid mid-level understanding of the entire 3D pipeline—including texturing, lighting, and rendering. This allows me to bridge the gap between initial concepts and final, polished visuals. I am constantly pushing the boundaries of my creativity to deliver professional results that meet industry standards.
-                </p>
-            </div>
-        </section>
-        <section class="section" id="work" style="border-top: 1px solid var(--border-glass);">
-            <div id="dynamic-projects-container"></div>
-        </section>
-
-        <section class="section" id="reviews" style="border-top: 1px solid var(--border-glass);">
-            <h2 style="text-align:center; margin-bottom:40px; letter-spacing:5px;">CLIENT REVIEWS</h2>
-            
-            <div class="review-form">
-                <h3 style="margin-bottom:15px; color:var(--accent-purple);">LEAVE A REVIEW</h3>
-                <input type="text" id="rev-name" class="review-input" placeholder="Your Name or Company">
-                <textarea id="rev-text" class="review-input" rows="3" placeholder="Share your experience working with me..."></textarea>
-                
-                <div class="star-rating" id="star-container">
-                    <i class="fas fa-star" onclick="setRating(1)"></i>
-                    <i class="fas fa-star" onclick="setRating(2)"></i>
-                    <i class="fas fa-star" onclick="setRating(3)"></i>
-                    <i class="fas fa-star" onclick="setRating(4)"></i>
-                    <i class="fas fa-star" onclick="setRating(5)"></i>
-                </div>
-                <br>
-                <button class="gate-btn" onclick="submitReview()">SUBMIT REVIEW</button>
-            </div>
-
-            <div id="reviews-container" class="reviews-grid">
-                </div>
-        </section>
-        <section class="section" id="contact" style="text-align:center; border-top:1px solid var(--border-glass);">
-            <img src="logo_n.jpg" alt="Logo" class="contact-logo">
-            <h2 style="margin-bottom:20px; letter-spacing:5px; font-weight:300;">GET IN TOUCH</h2>
-            
-            <a href="mailto:yunisrehmanzada@gmail.com" class="contact-email">yunisrehmanzada@gmail.com</a>
-            
-            <div class="social-icons">
-                <a href="https://youtube.com/@yunis-qg3ih?si=jUHWYyuq5ci66Ydj" target="_blank" class="social-btn">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://discord.gg/UFZdyZVP" target="_blank" class="social-btn">
-                    <i class="fab fa-discord"></i>
-                </a>
+        <section class="section" id="work">
+            <div id="dynamic-projects-container">
+                <!-- Proyektlər bura yüklənəcək -->
             </div>
         </section>
     </div>
 
-    <button id="add-project-btn" onclick="openModal()">+</button>
-
-    <div class="modal-overlay" id="project-modal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; display:none; justify-content:center; align-items:center;">
-        <div class="modal-box" style="background:#111; padding:40px; border:1px solid var(--accent-purple); width:400px; box-shadow: 0 0 30px rgba(142,45,226,0.2);">
-            <h2 style="margin-bottom:20px;">Add Project</h2>
-            <input type="text" id="new-title" placeholder="Project Title" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
-            <input type="text" id="new-cat" placeholder="Category" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #333; color:white;">
-            <input type="text" id="new-imgs" placeholder="Image URLs (comma separated)" style="width:100%; padding:10px; margin-bottom:20px; background:#222; border:1px solid #333; color:white;">
-            <button class="gate-btn" onclick="addProjectFirebase()" style="width:100%;">PUBLISH</button>
-            <button class="gate-btn" onclick="closeModal()" style="width:100%; border-color:red; margin-top:10px;">CANCEL</button>
-        </div>
-    </div>
+    <button id="add-project-btn" onclick="openProjectModal()">+</button>
 
     <script type="module">
+        // 1. Firebase Modullarını Import edirik
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, query, orderBy, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
+        // Firebase Config (Sizin məlumatlarınız)
         const firebaseConfig = {
             apiKey: "AIzaSyBafeOXXvPHM-oMjstmkk2vgsxOYN-5Jks",
             authDomain: "portfolio-yunis.firebaseapp.com",
@@ -415,219 +170,106 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app); // Avtorizasiya obyekti
 
         window.isAdmin = false;
-        let allProjectsData = [];
-        let currentRating = 0;
 
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
-        };
-
-        document.addEventListener('wheel', (e) => {
-            const container = e.target.closest('.gallery-wrapper');
-            if (!container) return;
-            e.preventDefault(); 
-            const scrollSpeed = e.deltaY * 1.5;
-            container.scrollBy({ left: scrollSpeed, behavior: 'smooth' });
-        }, { passive: false });
-
-        window.showPasswordInput = () => document.getElementById('password-modal').style.display = 'flex';
-        
-        window.checkPassword = () => {
-            const input = document.getElementById('pass-input').value;
-            if(input === 'Yr142536') {
+        // Sayt yükləndikdə yoxlayırıq ki, əvvəlcədən login olmuşuqmu?
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Əgər istifadəçi tanındısa (Avto-Login işə düşür)
                 window.isAdmin = true;
-                window.enterSite();
-            } else { alert("Wrong Password!"); }
-        };
-
-        window.enterSite = () => {
-            document.getElementById('gatekeeper').style.display = 'none';
-            document.getElementById('site-content').classList.remove('hidden');
-            if(window.isAdmin) document.getElementById('add-project-btn').style.display = 'block';
-            loadProjects();
-            loadReviews(); 
-        };
-
-        window.openModal = () => document.getElementById('project-modal').style.display = 'flex';
-        window.closeModal = () => document.getElementById('project-modal').style.display = 'none';
-
-        window.addProjectFirebase = async () => {
-            const title = document.getElementById('new-title').value;
-            const cat = document.getElementById('new-cat').value;
-            const imgStr = document.getElementById('new-imgs').value;
+                document.getElementById('add-project-btn').style.display = 'block';
+                console.log("Admin avtomatik tanındı!");
+                loadProjects(); // Proyektləri admin rejimi ilə yükləyirik
+            } else {
+                window.isAdmin = false;
+                document.getElementById('add-project-btn').style.display = 'none';
+                loadProjects(); // Proyektləri müştəri rejimi ilə yükləyirik
+            }
             
-            if(!title || !imgStr) return alert("Fill fields!");
+            // Yüklənmə ekranını gizlədirik
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => document.getElementById('loading-screen').style.display = 'none', 500);
+            }, 800);
+        });
 
-            const imgs = imgStr.split(',').map(s => s.trim()).filter(s => s !== "");
-            
-            await addDoc(collection(db, "projects"), { 
-                title, cat, imgs, 
-                orderId: Date.now(), 
-                youtubeLink: "" 
-            });
-            closeModal();
-        };
-
-        window.deleteProject = async (id) => {
-            if(confirm("Delete this project?")) await deleteDoc(doc(db, "projects", id));
-        };
-
-        window.saveVideo = async (id, inputId) => {
-            const val = document.getElementById(inputId).value;
-            await updateDoc(doc(db, "projects", id), { youtubeLink: val });
-            alert("Video Updated!");
-        };
-
-        window.moveProject = async (index, direction) => {
-            if (!window.isAdmin) return;
-            const targetIndex = index + direction;
-            if (targetIndex < 0 || targetIndex >= allProjectsData.length) return;
-            const currentDoc = allProjectsData[index];
-            const targetDoc = allProjectsData[targetIndex];
-            const batch = writeBatch(db);
-            const ref1 = doc(db, "projects", currentDoc.id);
-            const ref2 = doc(db, "projects", targetDoc.id);
-            batch.update(ref1, { orderId: targetDoc.data.orderId });
-            batch.update(ref2, { orderId: currentDoc.data.orderId });
-            await batch.commit();
-        };
-
-        function getYoutubeID(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
+        // "GİZLİ" ADMİN PƏNCƏRƏSİNİ AÇMAQ ÜÇÜN
+        // 1-ci yol: URL-in sonuna ?admin=1 yazmaq
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.get('admin') === '1' && !window.isAdmin) {
+            document.getElementById('login-modal').style.display = 'flex';
         }
 
+        // 2-ci yol: Klaviaturada eyni anda Ctrl + Q basmaq
+        document.addEventListener('keydown', (e) => {
+            if(e.ctrlKey && e.key === 'q') {
+                document.getElementById('login-modal').style.display = 'flex';
+            }
+        });
+
+        // Admin daxil olma funksiyası
+        window.loginAdmin = () => {
+            const email = document.getElementById('admin-email').value;
+            const pass = document.getElementById('admin-pass').value;
+            
+            signInWithEmailAndPassword(auth, email, pass)
+                .then((userCredential) => {
+                    alert("Uğurla giriş edildi!");
+                    document.getElementById('login-modal').style.display = 'none';
+                    // Səhifəni yeniləməyə ehtiyac yoxdur, onAuthStateChanged yuxarıda avtomatik işə düşəcək
+                })
+                .catch((error) => {
+                    alert("Xəta: Email və ya Şifrə yalnışdır!");
+                });
+        };
+
+        // Proyektləri Yükləmə (Qısa versiya, yuxarıdakı isAdmin yoxlanışına uyğun)
         function loadProjects() {
             const q = query(collection(db, "projects"), orderBy("orderId", "desc"));
             onSnapshot(q, (snapshot) => {
                 const container = document.getElementById('dynamic-projects-container');
                 container.innerHTML = "";
-                allProjectsData = [];
 
                 snapshot.forEach((doc) => {
-                    allProjectsData.push({ id: doc.id, data: doc.data() });
-                });
-
-                allProjectsData.forEach((item, index) => {
-                    const p = item.data;
-                    const docId = item.id;
+                    const p = doc.data();
                     
-                    let imgHTML = "";
-                    p.imgs.forEach(src => {
-                        imgHTML += `<img src="${src}" alt="3D Work" onerror="this.remove()">`;
-                    });
-
                     let adminControls = "";
+                    // YALNIZ Admin olduqda idarəetmə paneli render olunur!
                     if (window.isAdmin) {
                         adminControls = `
-                        <div class="admin-controls">
-                            <div class="move-btns">
-                                <button class="move-btn" onclick="moveProject(${index}, -1)">▲</button>
-                                <button class="move-btn" onclick="moveProject(${index}, 1)">▼</button>
-                            </div>
-                            <input type="text" class="admin-input" id="yt-${docId}" placeholder="Paste YouTube Link here..." value="${p.youtubeLink || ''}">
-                            <button class="admin-btn-small" onclick="saveVideo('${docId}', 'yt-${docId}')">SAVE VIDEO</button>
-                            <span onclick="deleteProject('${docId}')" style="color:red; cursor:pointer; margin-left:10px; font-weight:bold;">DELETE PROJECT</span>
+                        <div class="admin-panel" style="display:flex;">
+                            <button class="btn" style="padding: 5px 10px;">▲</button>
+                            <button class="btn" style="padding: 5px 10px;">▼</button>
+                            <span style="color:red; cursor:pointer; font-weight:bold; margin-left:auto;">DELETE</span>
                         </div>`;
                     }
 
-                    let videoHTML = "";
-                    if (p.youtubeLink) {
-                        const vidId = getYoutubeID(p.youtubeLink);
-                        if (vidId) {
-                            videoHTML = `<div class="video-container"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${vidId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
-                        }
-                    }
+                    // Şəkilləri generirasiya etmək
+                    let imgHTML = p.imgs.map(src => `<img src="${src}" alt="3D Work">`).join('');
 
                     container.innerHTML += `
                     <article class="model-card">
                         <div class="model-header">
-                            <div><h3>${p.title}</h3><p style="font-size:0.8rem; color:var(--accent-purple); letter-spacing:1px;">${p.cat}</p></div>
+                            <div><h3>${p.title}</h3><p>${p.cat}</p></div>
                         </div>
                         <div class="gallery-wrapper">${imgHTML}</div>
-                        ${videoHTML}
                         ${adminControls}
                     </article>`;
                 });
             });
         }
 
-        window.setRating = (n) => {
-            currentRating = n;
-            const stars = document.querySelectorAll('#star-container i');
-            stars.forEach((s, idx) => {
-                if(idx < n) s.classList.add('active');
-                else s.classList.remove('active');
-            });
-        };
-
-        window.submitReview = async () => {
-            const name = document.getElementById('rev-name').value;
-            const text = document.getElementById('rev-text').value;
-            
-            if(!name || !text || currentRating === 0) return alert("Please fill name, comment and select stars!");
-
-            await addDoc(collection(db, "reviews"), {
-                name, text, stars: currentRating,
-                timestamp: Date.now()
-            });
-
-            document.getElementById('rev-name').value = "";
-            document.getElementById('rev-text').value = "";
-            window.setRating(0);
-            alert("Review Submitted!");
-        };
-
-        window.deleteReview = async (id) => {
-            if(confirm("Delete this review permanently?")) {
-                await deleteDoc(doc(db, "reviews", id));
+        // Qalereyada Mouse tekeri ile saga-sola surusdurmek
+        document.addEventListener('wheel', (e) => {
+            const container = e.target.closest('.gallery-wrapper');
+            if (container) {
+                e.preventDefault(); 
+                container.scrollBy({ left: e.deltaY * 1.5, behavior: 'smooth' });
             }
-        };
+        }, { passive: false });
 
-        function loadReviews() {
-            const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-            onSnapshot(q, (snapshot) => {
-                const container = document.getElementById('reviews-container');
-                container.innerHTML = "";
-                snapshot.forEach((doc) => {
-                    const r = doc.data();
-                    let starsHTML = "";
-                    for(let i=0; i<5; i++) {
-                        starsHTML += `<i class="fas fa-star" style="color: ${i < r.stars ? '#ffd700' : '#444'}"></i>`;
-                    }
-
-                    let deleteBtn = "";
-                    if(window.isAdmin) {
-                        deleteBtn = `<div class="delete-review-btn" style="display:block;" onclick="deleteReview('${doc.id}')">DELETE</div>`;
-                    }
-
-                    container.innerHTML += `
-                    <div class="review-card">
-                        ${deleteBtn}
-                        <div class="review-header">
-                            <span class="review-name">${r.name}</span>
-                            <span class="review-stars">${starsHTML}</span>
-                        </div>
-                        <p class="review-text">${r.text}</p>
-                    </div>`;
-                });
-            });
-        }
-
-        window.addEventListener('load', () => {
-            document.getElementById('loading-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('gatekeeper').classList.remove('hidden');
-            }, 500);
-        });
     </script>
 </body>
 </html>
